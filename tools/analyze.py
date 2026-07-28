@@ -180,6 +180,15 @@ def main() -> int:
     ap.add_argument("--out", help="markdown report path")
     args = ap.parse_args()
 
+    # The report contains Δ and verdict glyphs. Windows consoles default to
+    # cp1252 and would raise on them, so force UTF-8 where the stream allows it
+    # and degrade to replacement characters rather than losing the whole report.
+    for stream in (sys.stdout, sys.stderr):
+        try:
+            stream.reconfigure(encoding="utf-8", errors="replace")
+        except (AttributeError, OSError):
+            pass
+
     stamp = args.stamp
     if not stamp:
         latest = os.path.join(RESULTS, "run.latest")

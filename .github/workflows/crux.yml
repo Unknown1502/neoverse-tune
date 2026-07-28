@@ -45,6 +45,8 @@ jobs:
           python-version: "3.11"
       - name: Validate adjudicator against synthetic ground truth
         run: python3 tools/test_skeptic.py
+      - name: Validate reporting pipeline end to end
+        run: python3 tools/test_pipeline.py
 
   crux:
     name: Crux on Neoverse N2
