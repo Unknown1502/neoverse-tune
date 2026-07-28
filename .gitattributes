@@ -1,0 +1,11 @@
+# Shell scripts and workflows MUST use LF — they are authored on Windows but
+# execute on arm64 Linux runners. CRLF causes `bad interpreter: /usr/bin/env bash^M`.
+*.sh   text eol=lf
+*.yml  text eol=lf
+*.yaml text eol=lf
+*.py   text eol=lf
+*.md   text eol=lf
+
+# Never let git mangle model or result binaries
+*.gguf binary
+*.data binary

@@ -1,0 +1,28 @@
+# Vendored upstream sources (cloned by scripts/01_build_llama.sh)
+/vendor/
+
+# Build outputs
+build*/
+*.o
+*.so
+*.a
+
+# Models are large; fetched by scripts, never committed
+/models/
+*.gguf
+
+# Raw perf captures are huge; the parsed summaries ARE committed
+perf.data
+perf.data.old
+*.perf
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
