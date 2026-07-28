@@ -49,6 +49,10 @@ jobs:
         run: python3 tools/test_pipeline.py
       - name: Validate load generator against planted timings
         run: python3 tools/test_loadgen.py
+      - name: Validate KleidiAI variant discovery
+        run: python3 tools/test_gen_variants.py
+      - name: Validate serve/probe analysis and advisor
+        run: python3 tools/test_analysis.py
 
   crux:
     name: Crux on Neoverse N2
@@ -98,16 +102,49 @@ jobs:
           SPECARM_SERVE_REQUESTS: "24"
         run: bash scripts/04_serve_bench.sh
 
-      - name: Analyze and adjudicate
+      - name: Analyze kernel sweep
         run: python3 tools/analyze.py
+
+      - name: Analyze serving benchmark
+        run: python3 tools/analyze_serve.py
+
+      # Placed last among the measurements: it vendors and builds KleidiAI, so
+      # it is the slowest and newest step. Everything above has already written
+      # its artifacts, and uploads run with if:always(), so a probe failure
+      # costs the probe result and nothing else.
+      - name: Direct microkernel probe
+        run: bash scripts/05_kai_probe.sh
+
+      - name: Analyze microkernel probe
+        run: python3 tools/analyze_probe.py
+
+      # Exit codes carry the verdict (0 benefit, 3 no crossover, 4 no i8mm,
+      # 5 unknown), so `|| true` keeps a legitimate "no benefit here" answer
+      # from failing the job.
+      - name: Configuration advice
+        run: python3 tools/advisor.py || true
 
       - name: Publish result to job summary
         if: always()
         run: |
           report="$(ls -1t results/report_*.md 2>/dev/null | head -n1 || true)"
+          serve="$(ls -1t results/serve_report_*.md 2>/dev/null | head -n1 || true)"
           {
             if [ -n "$report" ]; then
               cat "$report"
+              for extra in "$serve" results/probe_report.md; do
+                if [ -n "$extra" ] && [ -f "$extra" ]; then
+                  echo ""; echo "---"; echo ""
+                  cat "$extra"
+                fi
+              done
+              if [ -f results/advice.latest.json ]; then
+                echo ""; echo "---"; echo ""
+                echo "## Advisor"
+                echo '```json'
+                cat results/advice.latest.json
+                echo '```'
+              fi
             else
               echo "## No report produced"
               echo ""

@@ -39,7 +39,12 @@ bash scripts/01_build_llama.sh     # llama.cpp built twice: KleidiAI ON and OFF
 bash scripts/02_batch_sweep.sh     # the crux measurement
 bash scripts/03_kernel_attrib.sh   # which kernel actually ran
 bash scripts/04_serve_bench.sh     # serving under concurrency (the Cloud AI regime)
-python3 tools/analyze.py           # adjudicated result table
+bash scripts/05_kai_probe.sh       # call the microkernels directly — no llama.cpp
+
+python3 tools/analyze.py           # kernel sweep, adjudicated
+python3 tools/analyze_serve.py     # serving, adjudicated
+python3 tools/analyze_probe.py     # the crossover result
+python3 tools/advisor.py           # what to actually set on this machine
 ```
 
 **No Arm machine?** Fork this repo and run the `crux` workflow. It executes on
@@ -99,8 +104,14 @@ this design compares.
 | `scripts/01_build_llama.sh` | Builds llama.cpp twice from one checkout — only `GGML_CPU_KLEIDIAI` differs. Counts `kai_*` symbols to catch a flag that silently did nothing. |
 | `scripts/02_batch_sweep.sh` | Sweeps `-p N` across small N. One forward pass over N tokens is the matmul shape of verifying N draft tokens. |
 | `scripts/03_kernel_attrib.sh` | **Mechanism proof.** KleidiAI kernel names encode their ISA (`..._neon_dotprod` vs `..._neon_i8mm`), so the hot symbol names the kernel that ran. Degrades honestly to a capability inventory where `perf` is blocked. |
+| `scripts/04_serve_bench.sh` | Serving under concurrency. A server batches concurrent requests, so client concurrency drives the real matmul batch size — the same variable, reached from the production side. |
+| `src/kai_probe/` | **C++ probe that calls KleidiAI microkernels directly.** No llama.cpp in between. Reports each kernel's declared row granularity `mr` — an API call, not an estimate — then measures where i8mm overtakes dotprod. |
+| `tools/gen_variants.py` | Generates the probe's variant table by scanning your KleidiAI checkout, so no kernel name is ever hardcoded. |
 | `tools/analyze.py` | Finds the knee, adjudicates every comparison, writes the report. |
-| `tools/test_skeptic.py` | Proves the adjudicator itself is sound, against synthetic data with known answers. |
+| `tools/analyze_serve.py` | Adjudicates serving. Keeps latency (real CIs) separate from throughput (one observation, no verdict). |
+| `tools/analyze_probe.py` | The crossover result — the structural finding plus the measured curve. |
+| `tools/advisor.py` | **The reusable artifact.** Consumes the evidence and answers "what do I set, and does this box even benefit?" Degrades honestly when evidence is missing. |
+| `tools/test_*.py` | Five suites. Every tool is validated against synthetic data with known answers before it is pointed at hardware. |
 
 ## The Skeptic
 

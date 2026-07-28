@@ -230,6 +230,14 @@ def main() -> int:
         "ttft_ms": summarize("ttft_ms", [r.ttft_ms for r in ok]),
         "tpot_ms": summarize("tpot_ms", [r.tpot_ms for r in ok]),
         "total_ms": summarize("total_ms", [r.total_ms for r in ok]),
+        # Raw per-request values. Summaries cannot support a confidence
+        # interval, and the Skeptic refuses to adjudicate without one — so the
+        # samples travel with the summary rather than being thrown away.
+        "raw": {
+            "ttft_ms": [round(r.ttft_ms, 4) for r in ok],
+            "tpot_ms": [round(r.tpot_ms, 4) for r in ok],
+            "total_ms": [round(r.total_ms, 4) for r in ok],
+        },
         "errors": sorted({r.error for r in failed})[:5],
     }
 

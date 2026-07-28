@@ -213,6 +213,74 @@ flowchart TD
 Gate order is deliberate. "We measured nothing" is checked before "we measured no
 gain", so a failed run can never be published as a negative result.
 
+### 3.8 `src/kai_probe/` — direct microkernel measurement
+
+The only component that measures KleidiAI with nothing in between. Everything
+else observes kernels *through* llama.cpp, inheriting its threading policy, KV
+cache behaviour and graph scheduling as confounds.
+
+```mermaid
+flowchart LR
+    gen["tools/gen_variants.py<br/>scan checkout"]
+    inc["kai_variants.inc<br/>(generated)"]
+    cpp["kai_probe.cpp<br/>X-macro variant table"]
+    bin["kai_probe"]
+    out["kai_probe.latest.json"]
+
+    kai[("vendor/kleidiai")] --> gen --> inc --> cpp --> bin --> out
+    kai --> bin
+```
+
+Two outputs, of very different epistemic weight:
+
+| Output | Kind | Certainty |
+|:--|:--|:--|
+| `mr` (row granularity) per variant | **API call** | Exact — the kernel declares it |
+| Crossover M where i8mm beats dotprod | measurement | Subject to noise |
+
+The first is why the project has a claim at all: a kernel with `mr=8` computes 8
+rows per macro-tile, so at M=1 it produces one useful row out of eight. That is a
+shape mismatch, not a tuning oversight, and it needs no statistics.
+
+**Variant names are never hardcoded.** They move between KleidiAI releases, so
+`gen_variants.py` discovers the headers actually present and emits the X-macro
+list. An upgrade that renames a kernel produces a clear "variant not found"
+message instead of an opaque linker error.
+
+**Correctness gates timing.** Every variant is cross-checked against the others
+at each shape — they compute the same product, so they must agree. Disagreement
+means the packing is wrong, and the probe exits non-zero rather than reporting
+fast garbage.
+
+### 3.9 `tools/advisor.py` — the reusable artifact
+
+Consumes the evidence chain and answers the developer's actual question. Its
+distinguishing property is **graceful degradation with labelled confidence**:
+
+```mermaid
+flowchart TD
+    e{"env report?"}
+    e -->|no| u["verdict: unknown<br/>'run 00_env_report.sh'"]
+    e -->|yes| i{"has i8mm?"}
+    i -->|no| nb["verdict: no_benefit<br/>no SMMLA path exists here"]
+    i -->|yes| p{"probe data?"}
+    p -->|no| lb["verdict: likely_benefit<br/>confidence: inferred from<br/>CPU features only"]
+    p -->|yes| c{"crossover found?"}
+    c -->|no| nc["verdict: no_crossover"]
+    c -->|yes| b["verdict: benefit<br/>draft length >= crossover<br/>confidence: measured"]
+
+    style b fill:#14432a,color:#fff
+    style nb fill:#5c1a1a,color:#fff
+```
+
+Every recommendation carries whether it was **measured on this machine** or
+**inferred from CPU features**. The verdict is also the process exit code
+(`0` benefit, `3` no crossover, `4` no i8mm, `5` unknown) so it can gate a
+deployment script.
+
+When the serving evidence contradicts the probe, it emits a warning rather than
+picking whichever supports the thesis.
+
 ## 4. Data flow and artifact chain
 
 Every file is an input to the next stage. Nothing is passed in memory between
