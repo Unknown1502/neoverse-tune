@@ -6,6 +6,14 @@
 *.py   text eol=lf
 *.md   text eol=lf
 
+# C/C++ sources and the build system are compiled on arm64 Linux.
+*.cpp  text eol=lf
+*.c    text eol=lf
+*.h    text eol=lf
+*.inc  text eol=lf
+CMakeLists.txt text eol=lf
+*.cmake text eol=lf
+
 # Never let git mangle model or result binaries
 *.gguf binary
 *.data binary
