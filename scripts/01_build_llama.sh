@@ -47,25 +47,39 @@ build_variant() {
     -DLLAMA_CURL=OFF \
     -DLLAMA_BUILD_TESTS=OFF \
     -DLLAMA_BUILD_EXAMPLES=OFF \
-    -DLLAMA_BUILD_SERVER=OFF \
+    -DLLAMA_BUILD_SERVER=ON \
     > "$RESULTS_DIR/build_${name}_configure.log" 2>&1 \
     || { tail -n 40 "$RESULTS_DIR/build_${name}_configure.log" >&2
          die "cmake configure failed for '$name' (full log: $RESULTS_DIR/build_${name}_configure.log)"; }
 
   log "building '$name' with $JOBS jobs"
-  cmake --build "$dir" --target llama-bench -j "$JOBS" \
+  # llama-bench drives the kernel sweep; llama-server drives the serving
+  # benchmark, where concurrent requests batch together and the batch-size
+  # question stops being academic.
+  cmake --build "$dir" --target llama-bench llama-server -j "$JOBS" \
     > "$RESULTS_DIR/build_${name}.log" 2>&1 \
     || { tail -n 40 "$RESULTS_DIR/build_${name}.log" >&2
          die "build failed for '$name' (full log: $RESULTS_DIR/build_${name}.log)"; }
 
-  local bin
-  bin="$(find "$dir" -name llama-bench -type f -perm -u+x 2>/dev/null | head -n1)"
-  [ -n "$bin" ] || die "built '$name' but cannot locate the llama-bench binary under $dir"
-  echo "$bin"
+  local bench server
+  bench="$(find "$dir" -name llama-bench  -type f -perm -u+x 2>/dev/null | head -n1)"
+  server="$(find "$dir" -name llama-server -type f -perm -u+x 2>/dev/null | head -n1)"
+  [ -n "$bench" ]  || die "built '$name' but cannot locate llama-bench under $dir"
+  [ -n "$server" ] || die "built '$name' but cannot locate llama-server under $dir"
+  printf '%s\t%s\n' "$bench" "$server"
 }
 
-BIN_KLEIDI="$(build_variant kleidi ON)"
-BIN_BASE="$(build_variant base OFF)"
+# Command substitution, not process substitution: under `set -e` a failing
+# build_variant must abort the script. `read < <(...)` would take read's exit
+# status instead and sail on with empty paths.
+KLEIDI_PAIR="$(build_variant kleidi ON)"
+BASE_PAIR="$(build_variant base OFF)"
+IFS=$'\t' read -r BIN_KLEIDI SRV_KLEIDI <<< "$KLEIDI_PAIR"
+IFS=$'\t' read -r BIN_BASE   SRV_BASE   <<< "$BASE_PAIR"
+
+for v in BIN_KLEIDI SRV_KLEIDI BIN_BASE SRV_BASE; do
+  [ -n "${!v}" ] || die "internal: $v is empty after build"
+done
 
 # Confirm the KleidiAI build genuinely linked KleidiAI in. A build that silently
 # ignored the flag would otherwise produce a fake "no difference" result.
@@ -81,6 +95,8 @@ cat > "$RESULTS_DIR/build.latest.json" <<EOF
   "llama_cpp_ref": $(json_escape "$LLAMA_REF"),
   "bin_kleidi": $(json_escape "$BIN_KLEIDI"),
   "bin_base": $(json_escape "$BIN_BASE"),
+  "srv_kleidi": $(json_escape "$SRV_KLEIDI"),
+  "srv_base": $(json_escape "$SRV_BASE"),
   "kai_symbols_in_kleidi_build": ${KAI_SYMS:-0},
   "jobs": $JOBS
 }

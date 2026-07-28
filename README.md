@@ -8,10 +8,15 @@ a matrix-multiply instruction that needs multiple rows to pay off. The fastest
 integer matmul path on the chip is therefore largely idle during the phase where
 almost all inference time goes.
 
-Speculative decoding verifies *N* draft tokens in a single forward pass. SpecArm
-measures whether that is enough to move the matmul into the regime where i8mm
-kernels get selected — and proves which kernel actually ran, rather than inferring
-it from a faster stopwatch.
+This matters most when you are **serving**. A server batches concurrent requests
+together, so client concurrency drives the real matmul batch size — and
+speculative decoding verifies *N* draft tokens in a single forward pass. SpecArm
+measures whether either is enough to reach the regime where i8mm kernels get
+selected, and proves which kernel actually ran rather than inferring it from a
+faster stopwatch.
+
+The practical question it answers: **which Arm cloud instance should you run LLM
+serving on, and why** — with kernel-level evidence instead of vibes.
 
 > **Status: measurement harness complete, results not yet collected.**
 > No performance numbers appear in this repo yet. When they do, they will arrive
@@ -33,6 +38,7 @@ bash scripts/fetch_model.sh        # Qwen2.5-0.5B-Instruct Q4_0 (Apache-2.0)
 bash scripts/01_build_llama.sh     # llama.cpp built twice: KleidiAI ON and OFF
 bash scripts/02_batch_sweep.sh     # the crux measurement
 bash scripts/03_kernel_attrib.sh   # which kernel actually ran
+bash scripts/04_serve_bench.sh     # serving under concurrency (the Cloud AI regime)
 python3 tools/analyze.py           # adjudicated result table
 ```
 
@@ -60,6 +66,30 @@ This trips people up, and it decides whether the experiment means anything:
 On a core with no i8mm there is no SMMLA kernel to wake up, so a null result
 proves nothing. `00_env_report.sh` detects this and labels the host `control`
 rather than letting it produce a misleading negative.
+
+### The N1 box is the control group, not a consolation prize
+
+Throughput rises with batch size on *any* core, simply because streaming the
+weights once amortizes across more tokens. So a knee on a single machine cannot
+distinguish "the i8mm kernel woke up" from "batching is just good."
+
+The design that separates them measures KleidiAI **ON vs OFF on each core
+independently**, then compares the two deltas:
+
+| | KleidiAI delta at low batch | KleidiAI delta at high batch | reading |
+|:--|:--|:--|:--|
+| **N2** (has i8mm) | small | **grows** | consistent with reaching i8mm |
+| **N1** (no i8mm) | small | flat | amortization alone |
+
+If the KleidiAI advantage widens with batch size on N2 but stays flat on N1 —
+which has no i8mm path to reach — the widening is attributable to i8mm rather
+than to batching. That is a difference-in-differences, and it is far stronger
+than any single-machine curve.
+
+Being explicit about its limits: N1 and N2 differ in far more than i8mm (IPC,
+caches, memory, generation), so **cross-machine absolute numbers are not
+comparable**. Only the within-machine ON/OFF deltas are, which is exactly what
+this design compares.
 
 ## What each piece does
 

@@ -47,6 +47,8 @@ jobs:
         run: python3 tools/test_skeptic.py
       - name: Validate reporting pipeline end to end
         run: python3 tools/test_pipeline.py
+      - name: Validate load generator against planted timings
+        run: python3 tools/test_loadgen.py
 
   crux:
     name: Crux on Neoverse N2
@@ -85,6 +87,16 @@ jobs:
 
       - name: Kernel attribution (mechanism proof)
         run: bash scripts/03_kernel_attrib.sh
+
+      # Serving under concurrency: the Cloud AI regime. A server batches
+      # concurrent requests, so client concurrency drives the real matmul batch
+      # size. Trimmed here to keep the free runner honest on time; run heavier
+      # settings on a dedicated instance for headline numbers.
+      - name: Serving benchmark (concurrency sweep)
+        env:
+          SPECARM_CONC: "1,2,4,8"
+          SPECARM_SERVE_REQUESTS: "24"
+        run: bash scripts/04_serve_bench.sh
 
       - name: Analyze and adjudicate
         run: python3 tools/analyze.py
