@@ -26,3 +26,12 @@ __pycache__/
 .idea/
 .DS_Store
 Thumbs.db
+
+# Downloaded llama.cpp binaries — never commit these. They are large, they are
+# not ours to redistribute, and on this project they are x86 Windows builds
+# sitting in an Arm repository.
+/llama/
+/llama-*/
+*.dll
+*.exe
+*.so.*
