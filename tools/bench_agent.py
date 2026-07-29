@@ -41,6 +41,37 @@ TENANT_FLAVOR = [
     "I am a frequent flyer and want lounge access noted.",
 ]
 
+# Per-tenant itineraries. Tenants MUST diverge in their actual turn content, not
+# only in an opening line: if every tenant sends identical turn text, the
+# longest-common-prefix between two different tenants is inflated far above what
+# real traffic produces, foreign slots look more attractive than they should,
+# and the measured regression is exaggerated. Each tenant therefore gets its own
+# cities, dates, passenger counts and phrasing.
+TENANT_TRIPS = [
+    ("Delhi", "Singapore", "2026-09-14", "two", "DEL", "SIN"),
+    ("London", "Tokyo", "2026-10-02", "one", "LHR", "HND"),
+    ("Mumbai", "Dubai", "2026-08-30", "four", "BOM", "DXB"),
+    ("San Francisco", "Seoul", "2026-11-11", "three", "SFO", "ICN"),
+    ("Berlin", "Reykjavik", "2026-12-01", "one", "BER", "KEF"),
+    ("Sydney", "Auckland", "2026-09-05", "two", "SYD", "AKL"),
+    ("Toronto", "Lisbon", "2026-10-19", "five", "YYZ", "LIS"),
+    ("Nairobi", "Amsterdam", "2026-11-27", "two", "NBO", "AMS"),
+]
+
+
+def tenant_turn(tenant: int, turn: int) -> str:
+    """Turn text for one tenant, distinct from every other tenant's."""
+    origin, dest, date, pax, o_iata, d_iata = TENANT_TRIPS[tenant % len(TENANT_TRIPS)]
+    templates = [
+        f"Plan a trip: {origin} to {dest} on {date} for {pax} passengers, economy.",
+        f"Now find a hotel in {dest} near {d_iata} for two nights from {date}.",
+        f"What will the weather in {dest} be like when we land on {date}?",
+        f"Convert the running total for this {origin}-{dest} trip into rupees.",
+        f"Add the {o_iata} to {d_iata} departure to my calendar with a 3 hour reminder.",
+        f"Summarise the full {origin} to {dest} itinerary for {pax} travellers.",
+    ]
+    return templates[turn % len(templates)]
+
 
 def _post(url: str, path: str, payload: dict, timeout: float = 30.0):
     req = urllib.request.Request(
@@ -163,7 +194,7 @@ def run(url: str, agents: int, turns: int, max_tokens: int,
 
     for rnd in range(turns):
         for a in range(agents):
-            convs[a].append({"role": "user", "content": TURNS[rnd % len(TURNS)]})
+            convs[a].append({"role": "user", "content": tenant_turn(a, rnd)})
             ptok = tok.count(convs[a])
             ttft, total_ms, otok, text = one_turn(url, convs[a], max_tokens, timeout)
             convs[a].append({"role": "assistant", "content": text[:300] or "{}"})
