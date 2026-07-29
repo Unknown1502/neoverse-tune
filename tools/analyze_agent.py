@@ -18,7 +18,6 @@ Run:  python3 tools/analyze_agent.py [--input results/matrix.json]
 from __future__ import annotations
 
 import argparse
-import importlib.util
 import json
 import os
 import statistics
@@ -29,10 +28,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 RESULTS = os.environ.get("SPECARM_RESULTS", os.path.join(ROOT, "results"))
 
-_spec = importlib.util.spec_from_file_location("analyze", os.path.join(HERE, "analyze.py"))
-analyze = importlib.util.module_from_spec(_spec)
-_spec.loader.exec_module(analyze)
-Stat, verdict = analyze.Stat, analyze.verdict
+sys.path.insert(0, HERE)
+from skeptic import Stat, verdict  # noqa: E402
 
 # Each comparison states in advance what it is testing and which direction
 # counts as the interesting outcome.

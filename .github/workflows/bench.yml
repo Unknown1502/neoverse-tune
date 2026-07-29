@@ -1,0 +1,110 @@
+name: bench
+
+# Reproduce the multi-tenant slot-selection result on Arm.
+#
+# ubuntu-24.04-arm is an Arm-hosted GitHub runner (Cobalt 100 / Neoverse N2),
+# free for public repositories. Every number this repo publishes can therefore
+# be re-run by a stranger at zero cost, which is the only reason to believe a
+# benchmark you did not run yourself.
+
+on:
+  workflow_dispatch:
+    inputs:
+      repeats:
+        description: "Repeats per config (adjudicator needs >= 5)"
+        default: "5"
+      turns:
+        description: "Conversation turns per tenant"
+        default: "4"
+  push:
+    branches: [main]
+    paths:
+      - "tools/**"
+      - "scripts/**"
+      - ".github/workflows/bench.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  # If the adjudicator is broken there is no point spending an Arm runner on
+  # measurements it would misjudge.
+  skeptic:
+    name: Adjudicator self-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - run: python3 tools/test_skeptic.py
+      - run: python3 tools/test_probe_prefill.py
+      - run: python3 tools/test_agent_tools.py
+
+  bench:
+    name: Multi-tenant bench on Neoverse N2
+    needs: skeptic
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 300
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends \
+            build-essential cmake git curl python3
+
+      - name: Environment report (which Arm core is this?)
+        run: bash scripts/00_env_report.sh
+
+      - name: Build llama-server
+        run: bash scripts/01_build_llama.sh
+
+      - name: Fetch model
+        run: bash scripts/fetch_model.sh
+
+      - name: Run config matrix
+        run: |
+          SERVER="$(python3 -c "import json;print(json.load(open('results/build.latest.json'))['server'])")"
+          MODEL="$(cat results/model.path)"
+          python3 tools/run_matrix.py \
+            --server "$SERVER" --model "$MODEL" \
+            --repeats "${{ github.event.inputs.repeats || '5' }}" \
+            --turns "${{ github.event.inputs.turns || '4' }}"
+
+      - name: Adjudicate
+        run: python3 tools/analyze_agent.py
+
+      - name: Extract slot-selection evidence
+        run: python3 tools/parse_slot_log.py --out results/slot_evidence.json
+
+      - name: Publish to job summary
+        if: always()
+        run: |
+          {
+            if [ -f results/agent_report.md ]; then
+              cat results/agent_report.md
+              echo ""; echo "---"; echo ""
+              echo "## Slot-selection evidence"
+              echo '```'
+              python3 tools/parse_slot_log.py 2>/dev/null || echo "unavailable"
+              echo '```'
+            else
+              echo "## No report produced — check the logs above"
+            fi
+            echo ""; echo "---"; echo ""
+            echo "<details><summary>Environment</summary>"
+            echo ""; echo '```json'
+            cat results/env.latest.json 2>/dev/null || echo "{}"
+            echo '```'; echo "</details>"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload raw results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bench-results-${{ github.run_number }}
+          path: results/
+          retention-days: 30
+          if-no-files-found: warn

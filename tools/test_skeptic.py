@@ -14,17 +14,13 @@ Run:  python3 tools/test_skeptic.py
 
 from __future__ import annotations
 
-import importlib.util
 import os
 import random
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-spec = importlib.util.spec_from_file_location("analyze", os.path.join(HERE, "analyze.py"))
-analyze = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(analyze)
-
-Stat, verdict = analyze.Stat, analyze.verdict
+sys.path.insert(0, HERE)
+from skeptic import Stat, verdict  # noqa: E402
 
 FAILURES: list[str] = []
 

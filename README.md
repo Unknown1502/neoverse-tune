@@ -1,149 +1,122 @@
-# SpecArm
+# Multi-tenant agent serving on Arm
 
-**Wake the kernels that sleep during decode.**
+**Four users of the same agent make llama.cpp recompute 6x more tokens per
+request than one user does — because of a default that is right for chat and
+wrong for agents.**
 
-On Arm CPUs, LLM decode runs one token at a time. A batch-1 matmul is a **GEMV**,
-and GEMV cannot use KleidiAI's **i8mm** microkernels — those are built on `SMMLA`,
-a matrix-multiply instruction that needs multiple rows to pay off. The fastest
-integer matmul path on the chip is therefore largely idle during the phase where
-almost all inference time goes.
+```
+550-token system prompt + tool schemas, shared byte-identically by every tenant
+836-token conversations, 4 turns each, requests issued sequentially
 
-This matters most when you are **serving**. A server batches concurrent requests
-together, so client concurrency drives the real matmul batch size — and
-speculative decoding verifies *N* draft tokens in a single forward pass. SpecArm
-measures whether either is enough to reach the regime where i8mm kernels get
-selected, and proves which kernel actually ran rather than inferring it from a
-faster stopwatch.
+                          slot chosen at    tokens recomputed    time to
+                          similarity        per request          first token
+  1 tenant                0.955                  35                 503 ms
+  4 tenants (default)     0.716                 220                2313 ms   4.6x
+  4 tenants (fixed)       0.955                  36                 458 ms
+```
 
-The practical question it answers: **which Arm cloud instance should you run LLM
-serving on, and why** — with kernel-level evidence instead of vibes.
+One flag. `--slot-prompt-similarity 0.9`.
 
-> **Status: measurement harness complete, results not yet collected.**
-> No performance numbers appear in this repo yet. When they do, they will arrive
-> with confidence intervals, the machine they came from, and a verdict — including
-> the ones that get rejected. See [`docs/methodology.md`](docs/methodology.md),
-> which was committed **before** any measurement was taken.
+n=5 independent repeats per configuration, fresh server each time, 95%
+confidence intervals disjoint, every relative standard deviation under 10%.
+Thresholds were registered before any data existed.
 
 ---
 
-## Quickstart
+## Why this happens
 
-Needs an **arm64 Linux** host. Everything is free to reproduce:
+`llama-server` assigns each request to a slot by longest-common-prefix
+similarity, keeping any slot that clears `--slot-prompt-similarity`
+(**default 0.10**). It logs the decision:
 
-```bash
-git clone <your-fork-url> && cd specarm
-
-bash scripts/00_env_report.sh      # which Arm core is this? has it got i8mm?
-bash scripts/fetch_model.sh        # Qwen2.5-0.5B-Instruct Q4_0 (Apache-2.0)
-bash scripts/01_build_llama.sh     # llama.cpp built twice: KleidiAI ON and OFF
-bash scripts/02_batch_sweep.sh     # the crux measurement
-bash scripts/03_kernel_attrib.sh   # which kernel actually ran
-bash scripts/04_serve_bench.sh     # serving under concurrency (the Cloud AI regime)
-bash scripts/05_kai_probe.sh       # call the microkernels directly — no llama.cpp
-
-python3 tools/analyze.py           # kernel sweep, adjudicated
-python3 tools/analyze_serve.py     # serving, adjudicated
-python3 tools/analyze_probe.py     # the crossover result
-python3 tools/advisor.py           # what to actually set on this machine
+```
+selected slot by LCP similarity, f_sim_best = 0.716 (> 0.100 thold)
+prompt eval time = ... / 220 tokens
 ```
 
-**No Arm machine?** Fork this repo and run the `crux` workflow. It executes on
-`ubuntu-24.04-arm`, a free Arm-hosted GitHub runner (Cobalt 100 / Neoverse N2 —
-Armv9 with i8mm, bf16 and SVE2), free for public repositories. Every number here
-is reproducible by a stranger at zero cost.
+Similarity is roughly `shared_prefix / total_prompt`. An agent's tenants all
+carry the same system prompt and tool schemas, so **any two tenants are already
+0.6–0.9 similar to each other**. Against a 0.10 threshold every slot looks like
+a valid match for every tenant, tenants scatter across slots, and each one
+recomputes its own history from scratch on every turn.
 
-Validate the adjudicator on any machine, including x86:
+The consequence is counterintuitive and worth stating plainly:
+
+> **The larger your system prompt and tool schema, the worse the default
+> behaves.** More shared context means higher inter-tenant similarity, which
+> means the threshold separates tenants less well, not more.
+
+It is also invisible to ordinary benchmarking, because a single-conversation
+benchmark never has a second tenant to be confused with. We only found it after
+a single-tenant test came back clean.
+
+## Reproduce it
+
+Needs `llama-server`, a GGUF model, and Python 3. No Arm hardware required to
+see the effect — this is scheduler behaviour, not arithmetic.
 
 ```bash
-python3 tools/test_skeptic.py
+python3 tools/run_matrix.py --server <llama-server> --model <model.gguf> --repeats 5
+python3 tools/analyze_agent.py            # adjudicated table with CIs
+python3 tools/parse_slot_log.py           # mechanism: tokens actually recomputed
 ```
 
-## Not all free Arm is the same Arm
+~47 minutes for 30 runs. Or fork this repo and run the `bench` workflow, which
+executes on `ubuntu-24.04-arm` — a free Arm-hosted runner (Cobalt 100 /
+Neoverse N2) available at no cost on public repositories.
 
-This trips people up, and it decides whether the experiment means anything:
+## Find the right threshold for your own agent
 
-| Host | Core | i8mm | Role |
-|:--|:--|:--:|:--|
-| GitHub `ubuntu-24.04-arm` | Cobalt 100 / **Neoverse N2** (Armv9) | ✅ | **Subject** — the experiment is valid here |
-| AWS `t4g.small` (free trial) | Graviton2 / **Neoverse N1** | ❌ | **Control only** |
-| AWS `c7g` / `c8g` | Graviton3 / 4 | ✅ | Subject, cleaner numbers (not free) |
+```bash
+python3 tools/tune_similarity.py --sweep --server <llama-server> --model <model.gguf>
+```
 
-On a core with no i8mm there is no SMMLA kernel to wake up, so a null result
-proves nothing. `00_env_report.sh` detects this and labels the host `control`
-rather than letting it produce a misleading negative.
+Measures each candidate threshold against a fresh server and reports which one
+wins. There is also a fast analytic mode, but it is explicitly labelled a
+heuristic: its model of the similarity formula is inferred from the flag's
+documentation rather than read from source, and it has already disagreed with
+measurement once.
 
-### The N1 box is the control group, not a consolation prize
-
-Throughput rises with batch size on *any* core, simply because streaming the
-weights once amortizes across more tokens. So a knee on a single machine cannot
-distinguish "the i8mm kernel woke up" from "batching is just good."
-
-The design that separates them measures KleidiAI **ON vs OFF on each core
-independently**, then compares the two deltas:
-
-| | KleidiAI delta at low batch | KleidiAI delta at high batch | reading |
-|:--|:--|:--|:--|
-| **N2** (has i8mm) | small | **grows** | consistent with reaching i8mm |
-| **N1** (no i8mm) | small | flat | amortization alone |
-
-If the KleidiAI advantage widens with batch size on N2 but stays flat on N1 —
-which has no i8mm path to reach — the widening is attributable to i8mm rather
-than to batching. That is a difference-in-differences, and it is far stronger
-than any single-machine curve.
-
-Being explicit about its limits: N1 and N2 differ in far more than i8mm (IPC,
-caches, memory, generation), so **cross-machine absolute numbers are not
-comparable**. Only the within-machine ON/OFF deltas are, which is exactly what
-this design compares.
-
-## What each piece does
+## What lives here
 
 | Path | Role |
 |:--|:--|
-| `scripts/00_env_report.sh` | Identifies the core via MIDR, detects i8mm/sve2/bf16/dotprod, records SVE vector length, flags virtualization. **Gates the whole experiment.** |
-| `scripts/01_build_llama.sh` | Builds llama.cpp twice from one checkout — only `GGML_CPU_KLEIDIAI` differs. Counts `kai_*` symbols to catch a flag that silently did nothing. |
-| `scripts/02_batch_sweep.sh` | Sweeps `-p N` across small N. One forward pass over N tokens is the matmul shape of verifying N draft tokens. |
-| `scripts/03_kernel_attrib.sh` | **Mechanism proof.** KleidiAI kernel names encode their ISA (`..._neon_dotprod` vs `..._neon_i8mm`), so the hot symbol names the kernel that ran. Degrades honestly to a capability inventory where `perf` is blocked. |
-| `scripts/04_serve_bench.sh` | Serving under concurrency. A server batches concurrent requests, so client concurrency drives the real matmul batch size — the same variable, reached from the production side. |
-| `src/kai_probe/` | **C++ probe that calls KleidiAI microkernels directly.** No llama.cpp in between. Reports each kernel's declared row granularity `mr` — an API call, not an estimate — then measures where i8mm overtakes dotprod. |
-| `tools/gen_variants.py` | Generates the probe's variant table by scanning your KleidiAI checkout, so no kernel name is ever hardcoded. |
-| `tools/analyze.py` | Finds the knee, adjudicates every comparison, writes the report. |
-| `tools/analyze_serve.py` | Adjudicates serving. Keeps latency (real CIs) separate from throughput (one observation, no verdict). |
-| `tools/analyze_probe.py` | The crossover result — the structural finding plus the measured curve. |
-| `tools/advisor.py` | **The reusable artifact.** Consumes the evidence and answers "what do I set, and does this box even benefit?" Degrades honestly when evidence is missing. |
-| `tools/test_*.py` | Five suites. Every tool is validated against synthetic data with known answers before it is pointed at hardware. |
+| `tools/bench_agent.py` | One measurement run. Exact token counts from the server's own tokenizer. |
+| `tools/run_matrix.py` | The config matrix, **fresh server per repeat** — a warm server measures carry-over, not the configuration. |
+| `tools/analyze_agent.py` | Aggregates and adjudicates. Independent samples are per-repeat medians, not individual requests. |
+| `tools/parse_slot_log.py` | Mechanism evidence from llama-server's own log: similarity chosen, tokens recomputed. |
+| `tools/tune_similarity.py` | Finds the right threshold for your workload. |
+| `tools/skeptic.py` | The adjudicator. One definition of VERIFIED, tested against known answers. |
+| `tools/probe_prefill.py` | The opportunity sizer that started this — it is what proved single-tenant caching already works. |
 
 ## The Skeptic
 
-Every comparison gets **VERIFIED**, **UNCERTAIN**, or **REJECTED** against
-thresholds fixed in advance: ≥5 reps, relative stdev ≤10%, effect ≥5%, and
+Every comparison returns **VERIFIED**, **UNCERTAIN** or **REJECTED** against
+thresholds fixed in advance: ≥5 repeats, relative stdev ≤10%, effect ≥5%, and
 disjoint 95% confidence intervals. A failed measurement is UNCERTAIN, never
 REJECTED — "we measured nothing" and "we measured no gain" are different claims.
 
-Rejected rows get published. A harness that reports only its wins is a harness
-nobody should believe.
+Uncertain and rejected rows are published. Two of the comparisons in the current
+result are UNCERTAIN, and they stay in the table.
 
-The adjudicator is itself tested (`tools/test_skeptic.py`) against synthetic
-distributions with known ground truth, including the case that matters most: a
-large-looking mean difference drowned in variance must come back UNCERTAIN.
+## What this does not claim
 
-## Either outcome is a result
+- **Not** that llama.cpp is poorly engineered. The 0.10 default is reasonable
+  for chat, where the shared prefix is small. It is wrong for agents.
+- **Not** a throughput result. Time-to-first-token only.
+- **Not** yet measured on Arm. The finding is scheduler behaviour and should
+  transfer, but the Arm numbers are owed and not yet collected.
+- Independent samples are per-repeat medians, so `n` is the repeat count, not
+  the request count.
 
-If the hot kernel is the same ISA path at N=1 and N=32, the "wake the kernels"
-framing is wrong — and *that* is the more valuable finding: KleidiAI leaving i8mm
-unused for small-batch work would be a real gap worth reporting upstream.
-[Section 7 of the methodology](docs/methodology.md) commits to reporting that
-outcome with equal prominence, written down before the data existed.
+Prefill token counts are byte-identical across repeats. That is expected, not
+suspicious: temperature is 0 and the workload is fixed, so token sequences are
+deterministic and only wall-clock varies.
 
 ## License
 
 [Apache-2.0](LICENSE).
 
-## Acknowledgements
-
-Built on [llama.cpp](https://github.com/ggml-org/llama.cpp) and
-[Arm KleidiAI](https://gitlab.arm.com/kleidi/kleidiai). Model:
-[Qwen2.5-0.5B-Instruct-GGUF](https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct-GGUF)
-(Apache-2.0). Motivated by llama.cpp
-[issue #21453](https://github.com/ggml-org/llama.cpp/issues/21453), an open
-request for speculative decoding work targeting low-latency CPU inference.
+Built on [llama.cpp](https://github.com/ggml-org/llama.cpp). Model:
+[Qwen2.5-1.5B-Instruct-GGUF](https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct-GGUF)
+(Apache-2.0).
