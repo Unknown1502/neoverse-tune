@@ -2,8 +2,14 @@
 
 | Document | Answers |
 |:--|:--|
+| [architecture.md](architecture.md) | What the pieces are — system context, module map, internals, data model, deployment |
+| [flows.md](flows.md) | How it runs — the mechanism, one turn, the matrix, adjudication, CI |
 | [methodology.md](methodology.md) | What is being tested, how, and what would prove it wrong |
 | [../README.md](../README.md) | The finding and how to reproduce it |
+
+All diagrams are Mermaid and render inline on GitHub. Start with
+[flows.md §1](flows.md#1-the-mechanism--how-a-slot-gets-chosen-wrong) — it is the
+one diagram that explains why the project exists.
 
 ## The short version
 
@@ -23,18 +29,22 @@ token 2313 ms versus 458 ms.
 **Tokens-recomputed is the finding; TTFT is the symptom.** Latency folds in
 scheduling, thermal state and memory pressure. The token count comes from the
 server's own log and is immune to all of it.
+→ [flows.md §7](flows.md#7-mechanism-extraction-from-logs)
 
 **Independent samples are per-repeat medians.** Requests inside one run share a
 server and a cache state. Treating them as independent would shrink the
 confidence intervals to nothing.
+→ [architecture.md — data model](architecture.md#data-model)
 
 **A bigger system prompt makes the default worse.** More shared context raises
 inter-tenant similarity, so a fixed low threshold separates tenants *less* well.
 This is backwards from intuition and is why the problem is not obvious.
+→ [flows.md §1](flows.md#1-the-mechanism--how-a-slot-gets-chosen-wrong)
 
 ## Why the git history is worth reading
 
 Three earlier hypotheses were killed by measurement before this one survived —
 including one that was killed *before* two weeks went into fixing a problem that
-did not exist. [methodology.md §1](methodology.md#1-honest-history) lists them.
-The adjudication thresholds have not changed across any of it.
+did not exist. [methodology.md §1](methodology.md#1-honest-history) lists them,
+and [flows.md §10](flows.md#10-how-three-hypotheses-died) diagrams how each one
+died. The adjudication thresholds have not changed across any of it.

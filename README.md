@@ -89,6 +89,14 @@ measurement once.
 | `tools/skeptic.py` | The adjudicator. One definition of VERIFIED, tested against known answers. |
 | `tools/probe_prefill.py` | The opportunity sizer that started this — it is what proved single-tenant caching already works. |
 
+## Documentation
+
+| Document | Answers |
+|:--|:--|
+| [docs/flows.md](docs/flows.md) | Every flow, diagrammed. **Start with §1** — how a slot gets chosen wrong. |
+| [docs/architecture.md](docs/architecture.md) | System context, module map, internals, data model, deployment |
+| [docs/methodology.md](docs/methodology.md) | What is tested, how, and what would falsify it |
+
 ## The Skeptic
 
 Every comparison returns **VERIFIED**, **UNCERTAIN** or **REJECTED** against
