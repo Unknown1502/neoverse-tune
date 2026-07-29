@@ -37,10 +37,42 @@ prompt eval time = ... / 220 tokens
 Similarity is roughly `shared_prefix / total_prompt`. An agent's tenants all
 carry the same system prompt and tool schemas, so **any two tenants are already
 0.6–0.9 similar to each other**. Against a 0.10 threshold every slot looks like
-a valid match for every tenant, tenants scatter across slots, and each one
-recomputes its own history from scratch on every turn.
+a valid match for every tenant:
+
+```mermaid
+flowchart LR
+    req["Tenant B, turn 3<br/>836 tokens<br/><small>550 of them shared</small>"] --> score["score every slot by<br/>longest common prefix"]
+    score --> s0["slot 0 · tenant A<br/>0.716"]
+    score --> s1["slot 1 · tenant B<br/>0.955 ← correct"]
+    score --> s2["slot 2 · tenant C<br/>0.702"]
+    score --> s3["slot 3 · tenant D<br/>0.698"]
+    s0 --> gate{"clears the<br/>threshold?"}
+    s1 --> gate
+    s2 --> gate
+    s3 --> gate
+    gate -->|"<b>0.10 default</b><br/>all four qualify"| bad["lands on a foreign slot<br/><b>220 tokens · 2313 ms</b>"]
+    gate -->|"<b>0.90</b><br/>only slot 1 qualifies"| good["lands on its own slot<br/><b>36 tokens · 458 ms</b>"]
+
+    style s1 fill:#1a365d,color:#fff
+    style bad fill:#742a2a,color:#fff
+    style good fill:#22543d,color:#fff
+```
+
+So tenants scatter across slots, and each recomputes its own history from
+scratch every turn. Worse, it is self-sustaining: when B displaces A it also
+destroys A's cache, so A pays full prefill on its next turn too. The regression
+does not decay — it is a stable thrashing state.
 
 The consequence is counterintuitive and worth stating plainly:
+
+```mermaid
+flowchart LR
+    a["small shared preamble<br/><small>ordinary chat</small>"] --> b["inter-tenant<br/>similarity <b>low</b>"] --> c["0.10 separates<br/>tenants fine ✅"]
+    d["large shared preamble<br/><small>agent + tool schemas</small>"] --> e["inter-tenant<br/>similarity <b>0.6–0.9</b>"] --> f["0.10 separates<br/>nothing ❌"]
+
+    style c fill:#22543d,color:#fff
+    style f fill:#742a2a,color:#fff
+```
 
 > **The larger your system prompt and tool schema, the worse the default
 > behaves.** More shared context means higher inter-tenant similarity, which
@@ -50,10 +82,27 @@ It is also invisible to ordinary benchmarking, because a single-conversation
 benchmark never has a second tenant to be confused with. We only found it after
 a single-tenant test came back clean.
 
+Full diagrams — slot lifetime, the measurement sequence, the adjudication gates,
+CI — are in [docs/flows.md](docs/flows.md) and
+[docs/architecture.md](docs/architecture.md).
+
 ## Reproduce it
 
-Needs `llama-server`, a GGUF model, and Python 3. No Arm hardware required to
-see the effect — this is scheduler behaviour, not arithmetic.
+Needs `llama-server`, a GGUF model, and Python 3 — stdlib only, nothing to
+install.
+
+```mermaid
+flowchart LR
+    rm["run_matrix.py<br/><small>6 configs × 5 repeats<br/><b>fresh server each</b></small>"] --> mx[("matrix.json")]
+    rm --> lg[("server_*.log")]
+    mx --> aa["analyze_agent.py"] --> sk["skeptic.py<br/><small>VERIFIED / UNCERTAIN<br/>/ REJECTED</small>"]
+    sk --> rep[("agent_report.md<br/><small>the consequence: TTFT + CIs</small>")]
+    lg --> ps["parse_slot_log.py"] --> ev[("slot_evidence.json<br/><small>the cause: tokens recomputed</small>")]
+
+    style sk fill:#22543d,color:#fff
+    style ev fill:#742a2a,color:#fff
+    style rep fill:#742a2a,color:#fff
+```
 
 ```bash
 python3 tools/run_matrix.py --server <llama-server> --model <model.gguf> --repeats 5
@@ -64,6 +113,14 @@ python3 tools/parse_slot_log.py           # mechanism: tokens actually recompute
 ~47 minutes for 30 runs. Or fork this repo and run the `bench` workflow, which
 executes on `ubuntu-24.04-arm` — a free Arm-hosted runner (Cobalt 100 /
 Neoverse N2) available at no cost on public repositories.
+
+**On hardware dependence, stated precisely.** The *mechanism* is scheduler
+behaviour, so it reproduces on any architecture. What it *costs* is prefill time
+for those 220 extra tokens — so the price of a mis-routed slot scales with the
+core's prefill throughput, which is not constant across Neoverse generations
+(N1 has no i8mm; N2 does). Whether that changes the optimal threshold per core
+is the obvious next question and **is not yet measured.** Nothing here claims it
+does.
 
 ## Find the right threshold for your own agent
 
