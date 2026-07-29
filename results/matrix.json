@@ -1,0 +1,7374 @@
+{
+  "schema": "specarm.matrix/1",
+  "server": ".\\llama\\llama-server.exe",
+  "model": "qwen1.5b.gguf",
+  "ctx": 32768,
+  "threads": 8,
+  "turns": 4,
+  "repeats": 5,
+  "elapsed_s": 2811.9,
+  "configs": {
+    "solo_baseline": [
+      {
+        "schema": "specarm.agentbench/1",
+        "label": "solo_baseline_r0",
+        "agents": 1,
+        "turns": 4,
+        "token_count_method": "apply_template+tokenize",
+        "preamble_tokens": 550,
+        "final_prompt_tokens": 836,
+        "cold_ttft_ms": [
+          5584.24
+        ],
+        "warm_ttft_ms": [
+          420.36,
+          564.06,
+          626.96
+        ],
+        "warm_median_ms": 564.06,
+        "cold_median_ms": 5584.24,
+        "rows": [
+          {
+            "seq": 1,
+            "round": 1,
+            "agent": 0,
+            "prompt_tokens": 610,
+            "ttft_ms": 5584.24,
+            "total_ms": 10315.36,
+            "out_tokens": 48
+          },
+          {
+            "seq": 2,
+            "round": 2,
+            "agent": 0,
+            "prompt_tokens": 692,
+            "ttft_ms": 420.36,
+            "total_ms": 3510.46,
+            "out_tokens": 48
+          },
+          {
+            "seq": 3,
+            "round": 3,
+            "agent": 0,
+            "prompt_tokens": 774,
+            "ttft_ms": 564.06,
+            "total_ms": 3198.48,
+            "out_tokens": 37
+          },
+          {
+            "seq": 4,
+            "round": 4,
+            "agent": 0,
+            "prompt_tokens": 836,
+            "ttft_ms": 626.96,
+            "total_ms": 3637.85,
+            "out_tokens": 32
+          }
+        ],
+        "config": "solo_baseline",
+        "repeat": 0,
+        "server_args": [
+          "-np",
+          "4",
+          "--slot-prompt-similarity",
+          "0.1"
+        ]
+      },
+      {
+        "schema": "specarm.agentbench/1",
+        "label": "solo_baseline_r1",
+        "agents": 1,
+        "turns": 4,
+        "token_count_method": "apply_template+tokenize",
+        "preamble_tokens": 550,
+        "final_prompt_tokens": 836,
+        "cold_ttft_ms": [
+          6684.49
+        ],
+        "warm_ttft_ms": [
+          597.11,
+          484.4,
+          343.26
+        ],
+        "warm_median_ms": 484.4,
+        "cold_median_ms": 6684.49,
+        "rows": [
+          {
+            "seq": 1,
+            "round": 1,
+            "agent": 0,
+            "prompt_tokens": 610,
+            "ttft_ms": 6684.49,
+            "total_ms": 10179.31,
+            "out_tokens": 48
+          },
+          {
+            "seq": 2,
+            "round": 2,
+            "agent": 0,
+            "prompt_tokens": 692,
+            "ttft_ms": 597.11,
+            "total_ms": 3715.43,
+            "out_tokens": 48
+          },
+          {
+            "seq": 3,
+            "round": 3,
+            "agent": 0,
+            "prompt_tokens": 774,
+            "ttft_ms": 484.4,
+            "total_ms": 2765.55,
+            "out_tokens": 37
+          },
+          {
+            "seq": 4,
+            "round": 4,
+            "agent": 0,
+            "prompt_tokens": 836,
+            "ttft_ms": 343.26,
+            "total_ms": 2375.75,
+            "out_tokens": 32
+          }
+        ],
+        "config": "solo_baseline",
+        "repeat": 1,
+        "server_args": [
+          "-np",
+          "4",
+          "--slot-prompt-similarity",
+          "0.1"
+        ]
+      },
+      {
+        "schema": "specarm.agentbench/1",
+        "label": "solo_baseline_r2",
+        "agents": 1,
+        "turns": 4,
+        "token_count_method": "apply_template+tokenize",
+        "preamble_tokens": 550,
+        "final_prompt_tokens": 836,
+        "cold_ttft_ms": [
+          5556.42
+        ],
+        "warm_ttft_ms": [
+          478.22,
+          522.77,
+          389.56
+        ],
+        "warm_median_ms": 478.22,
+        "cold_median_ms": 5556.42,
+        "rows": [
+          {
+            "seq": 1,
+            "round": 1,
+            "agent": 0,
+            "prompt_tokens": 610,
+            "ttft_ms": 5556.42,
+            "total_ms": 9009.81,
+            "out_tokens": 48
+          },
+          {
+            "seq": 2,
+            "round": 2,
+            "agent": 0,
+            "prompt_tokens": 692,
+            "ttft_ms": 478.22,
+            "total_ms": 3565.48,
+            "out_tokens": 48
+          },
+          {
+            "seq": 3,
+            "round": 3,
+            "agent": 0,
+            "prompt_tokens": 774,
+            "ttft_ms": 522.77,
+            "total_ms": 3168.24,
+            "out_tokens": 37
+          },
+          {
+            "seq": 4,
+            "round": 4,
+            "agent": 0,
+            "prompt_tokens": 836,
+            "ttft_ms": 389.56,
+            "total_ms": 2566.38,
+            "out_tokens": 32
+          }
+        ],
+        "config": "solo_baseline",
+        "repeat": 2,
+        "server_args": [
+          "-np",
+          "4",
+          "--slot-prompt-similarity",
+          "0.1"
+        ]
+      },
+      {
+        "schema": "specarm.agentbench/1",
+        "label": "solo_baseline_r3",
+        "agents": 1,
+        "turns": 4,
+        "token_count_method": "apply_template+tokenize",
+        "preamble_tokens": 550,
+        "final_prompt_tokens": 836,
+        "cold_ttft_ms": [
+          5617.4
+        ],
+        "warm_ttft_ms": [
+          490.48,
+          738.83,
+          408.9
+        ],
+        "warm_median_ms": 490.48,
+        "cold_median_ms": 5617.4,
+        "rows": [
+          {
+            "seq": 1,
+            "round": 1,
+            "agent": 0,
+            "prompt_tokens": 610,
+            "ttft_ms": 5617.4,
+            "total_ms": 8806.19,
+            "out_tokens": 48
+          },
+          {
+            "seq": 2,
+            "round": 2,
+            "agent": 0,
+            "prompt_tokens": 692,
+            "ttft_ms": 490.48,
+            "total_ms": 3832.38,
+            "out_tokens": 48
+          },
+          {
+            "seq": 3,
+            "round": 3,
+            "agent": 0,
+            "prompt_tokens": 774,
+            "ttft_ms": 738.83,
+            "total_ms": 4101.95,
+            "out_tokens": 37
+          },
+          {
+            "seq": 4,
+            "round": 4,
+            "agent": 0,
+            "prompt_tokens": 836,
+            "ttft_ms": 408.9,
+            "total_ms": 2912.0,
+            "out_tokens": 32
+          }
+        ],
+        "config": "solo_baseline",
+        "repeat": 3,
+        "server_args": [
+          "-np",
+          "4",
+          "--slot-prompt-similarity",
+          "0.1"
+        ]
+      },
+      {
+        "schema": "specarm.agentbench/1",
+        "label": "solo_baseline_r4",
+        "agents": 1,
+        "turns": 4,
+        "token_count_method": "apply_template+tokenize",
+        "preamble_tokens": 550,
+        "final_prompt_tokens": 836,
+        "cold_ttft_ms": [
+          6060.49
+        ],
+        "warm_ttft_ms": [
+          498.86,
+          508.54,
+          342.6
+        ],
+        "warm_median_ms": 498.86,
+        "cold_median_ms": 6060.49,
+        "rows": [
+          {
+            "seq": 1,
+            "round": 1,
+            "agent": 0,
+            "prompt_tokens": 610,
+            "ttft_ms": 6060.49,
+            "total_ms": 11071.52,
+            "out_tokens": 48
+          },
+          {
+            "seq": 2,
+            "round": 2,
+            "agent": 0,
+            "prompt_tokens": 692,
+            "ttft_ms": 498.86,
+            "total_ms": 3776.8,
+            "out_tokens": 48
+          },
+          {
+            "seq": 3,
+            "round": 3,
+            "agent": 0,
+            "prompt_tokens": 774,
+            "ttft_ms": 508.54,
+            "total_ms": 3147.19,
+            "out_tokens": 37
+          },
+          {
+            "seq": 4,
+            "round": 4,
+            "agent": 0,
+            "prompt_tokens": 836,
+            "ttft_ms": 342.6,
+            "total_ms": 2951.2,
+            "out_tokens": 32
+          }
+        ],
+        "config": "solo_baseline",
+        "repeat": 4,
+        "server_args": [
+          "-np",
+          "4",
+          "--slot-prompt-similarity",
+          "0.1"
+        ]
+      }
+    ],
+    "4tenant_default": [
+      {
+        "schema": "specarm.agentbench/1",
+        "label": "4tenant_default_r0",
+        "agents": 4,
+        "turns": 4,
+        "token_count_method": "apply_template+tokenize",
+        "preamble_tokens": 550,
+        "final_prompt_tokens": 838,
+        "cold_ttft_ms": [
+          5823.67,
+          733.46,
+          766.84,
+          754.12
+        ],
+        "warm_ttft_ms": [
+          1482.01,
+          1347.88,
+          2293.1,
+          1465.53,
+          2388.96,
+          2214.7,
+          2301.71,
+          2304.63,
+          3146.02,
+          2907.5,
+          2936.4,
+          2705.77
+        ],
+        "warm_median_ms": 2303.17,
+        "cold_median_ms": 760.48,
+        "rows": [
+          {
+            "seq": 1,
+            "round": 1,
+            "agent": 0,
+            "prompt_tokens": 610,
+            "ttft_ms": 5823.67,
+            "total_ms": 9119.94,
+            "out_tokens": 48
+          },
+          {
+            "seq": 2,
+            "round": 1,
+            "agent": 1,
+            "prompt_tokens": 605,
+            "ttft_ms": 733.46,
+            "total_ms": 3853.82,
+            "out_tokens": 48
+          },
+          {
+            "seq": 3,
+            "round": 1,
+            "agent": 2,
+            "prompt_tokens": 610,
+            "ttft_ms": 766.84,
+            "total_ms": 3957.28,
+            "out_tokens": 48
+          },
+          {
+            "seq": 4,
+            "round": 1,
+            "agent": 3,
+            "prompt_tokens": 610,
+            "ttft_ms": 754.12,
+            "total_ms": 3915.1,
+            "out_tokens": 48
+          },
+          {
+            "seq": 5,
+            "round": 2,
+            "agent": 0,
+            "prompt_tokens": 692,
+            "ttft_ms": 1482.01,
+            "total_ms": 4977.82,
+            "out_tokens": 48
+          },
+          {
+            "seq": 6,
+            "round": 2,
+            "agent": 1,
+            "prompt_tokens": 688,
+            "ttft_ms": 1347.88,
+            "total_ms": 4699.28,
+            "out_tokens": 48
+          },
+          {
+            "seq": 7,
+            "round": 2,
+            "agent": 2,
+            "prompt_tokens": 693,
+            "ttft_ms": 2293.1,
+            "total_ms": 5672.97,
+            "out_tokens": 48
+          },
+          {
+            "seq": 8,
+            "round": 2,
+            "agent": 3,
+            "prompt_tokens": 693,
+            "ttft_ms": 1465.53,
+            "total_ms": 4563.12,
+            "out_tokens": 48
+          },
+          {
+            "seq": 9,
+            "round": 3,
+            "agent": 0,
+            "prompt_tokens": 774,
+            "ttft_ms": 2388.96,
+            "total_ms": 4816.22,
+            "out_tokens": 37
+          },
+          {
+            "seq": 10,
+            "round": 3,
+            "agent": 1,
+            "prompt_tokens": 770,
+            "ttft_ms": 2214.7,
+            "total_ms": 4740.91,
+            "out_tokens": 38
+          },
+          {
+            "seq": 11,
+            "round": 3,
+            "agent": 2,
+            "prompt_tokens": 775,
+            "ttft_ms": 2301.71,
+            "total_ms": 5020.41,
+            "out_tokens": 38
+          },
+          {
+            "seq": 12,
+            "round": 3,
+            "agent": 3,
+            "prompt_tokens": 775,
+            "ttft_ms": 2304.63,
+            "total_ms": 5336.6,
+            "out_tokens": 38
+          },
+          {
+            "seq": 13,
+            "round": 4,
+            "agent": 0,
+            "prompt_tokens": 836,
+            "ttft_ms": 3146.02,
+            "total_ms": 5580.98,
+            "out_tokens": 32
+          },
+          {
+            "seq": 14,
+            "round": 4,
+            "agent": 1,
+            "prompt_tokens": 833,
+            "ttft_ms": 2907.5,
+            "total_ms": 5613.64,
+            "out_tokens": 32
+          },
+          {
+            "seq": 15,
+            "round": 4,
+            "agent": 2,
+            "prompt_tokens": 838,
+            "ttft_ms": 2936.4,
+            "total_ms": 5236.98,
+            "out_tokens": 32
+          },
+          {
+            "seq": 16,
+            "round": 4,
+            "agent": 3,
+            "prompt_tokens": 838,
+            "ttft_ms": 2705.77,
+            "total_ms": 4641.47,
+            "out_tokens": 32
+          }
+        ],
+        "config": "4tenant_default",
+        "repeat": 0,
+        "server_args": [
+          "-np",
+          "4",
+          "--slot-prompt-similarity",
+          "0.1"
+        ]
+      },
+      {
+        "schema": "specarm.agentbench/1",
+        "label": "4tenant_default_r1",
+        "agents": 4,
+        "turns": 4,
+        "token_count_method": "apply_template+tokenize",
+        "preamble_tokens": 550,
+        "final_prompt_tokens": 838,
+        "cold_ttft_ms": [
+          6177.06,
+          692.68,
+          960.02,
+          1076.77
+        ],
+        "warm_ttft_ms": [
+          1713.35,
+          1433.15,
+          1662.03,
+          1782.73,
+          2413.48,
+          3143.93,
+          2380.91,
+          2739.0,
+          2958.88,
+          2888.27,
+          2727.23,
+          2857.04
+        ],
+        "warm_median_ms": 2570.36,
+        "cold_median_ms": 1018.39,
+        "rows": [
+          {
+            "seq": 1,
+            "round": 1,
+            "agent": 0,
+            "prompt_tokens": 610,
+            "ttft_ms": 6177.06,
+            "total_ms": 9851.84,
+            "out_tokens": 48
+          },
+          {
+            "seq": 2,
+            "round": 1,
+            "agent": 1,
+            "prompt_tokens": 605,
+            "ttft_ms": 692.68,
+            "total_ms": 3970.74,
+            "out_tokens": 48
+          },
+          {
+            "seq": 3,
+            "round": 1,
+            "agent": 2,
+            "prompt_tokens": 610,
+            "ttft_ms": 960.02,
+            "total_ms": 5872.01,
+            "out_tokens": 48
+          },
+          {
+            "seq": 4,
+            "round": 1,
+            "agent": 3,
+            "prompt_tokens": 610,
+            "ttft_ms": 1076.77,
+            "total_ms": 4825.13,
+            "out_tokens": 48
+          },
+          {
+            "seq": 5,
+            "round": 2,
+            "agent": 0,
+            "prompt_tokens": 692,
+            "ttft_ms": 1713.35,
+            "total_ms": 5320.91,
+            "out_tokens": 48
+          },
+          {
+            "seq": 6,
+            "round": 2,
+            "agent": 1,
+            "prompt_tokens": 688,
+            "ttft_ms": 1433.15,
+            "total_ms": 5045.76,
+            "out_tokens": 48
+          },
+          {
+            "seq": 7,
+            "round": 2,
+            "agent": 2,
+            "prompt_tokens": 693,
+            "ttft_ms": 1662.03,
+            "total_ms": 5147.32,
+            "out_tokens": 48
+          },
+          {
+            "seq": 8,
+            "round": 2,
+            "agent": 3,
+            "prompt_tokens": 693,
+            "ttft_ms": 1782.73,
+            "total_ms": 5652.8,
+            "out_tokens": 48
+          },
+          {
+            "seq": 9,
+            "round": 3,
+            "agent": 0,
+            "prompt_tokens": 774,
+            "ttft_ms": 2413.48,
+            "total_ms": 5098.89,
+            "out_tokens": 37
+          },
+          {
+            "seq": 10,
+            "round": 3,
+            "agent": 1,
+            "prompt_tokens": 770,
+            "ttft_ms": 3143.93,
+            "total_ms": 7449.6,
+            "out_tokens": 38
+          },
+          {
+            "seq": 11,
+            "round": 3,
+            "agent": 2,
+            "prompt_tokens": 775,
+            "ttft_ms": 2380.91,
+            "total_ms": 5301.78,
+            "out_tokens": 38
+          },
+          {
+            "seq": 12,
+            "round": 3,
+            "agent": 3,
+            "prompt_tokens": 775,
+            "ttft_ms": 2739.0,
+            "total_ms": 6050.11,
+            "out_tokens": 38
+          },
+          {
+            "seq": 13,
+            "round": 4,
+            "agent": 0,
+            "prompt_tokens": 836,
+            "ttft_ms": 2958.88,
+            "total_ms": 5218.42,
+            "out_tokens": 32
+          },
+          {
+            "seq": 14,
+            "round": 4,
+            "agent": 1,
+            "prompt_tokens": 833,
+            "ttft_ms": 2888.27,
+            "total_ms": 5069.43,
+            "out_tokens": 32
+          },
+          {
+            "seq": 15,
+            "round": 4,
+            "agent": 2,
+            "prompt_tokens": 838,
+            "ttft_ms": 2727.23,
+            "total_ms": 4903.05,
+            "out_tokens": 32
+          },
+          {
+            "seq": 16,
+            "round": 4,
+            "agent": 3,
+            "prompt_tokens": 838,
+            "ttft_ms": 2857.04,
+            "total_ms": 5398.86,
+            "out_tokens": 32
+          }
+        ],
+        "config": "4tenant_default",
+        "repeat": 1,
+        "server_args": [
+          "-np",
+          "4",
+          "--slot-prompt-similarity",
+          "0.1"
+        ]
+      },
+      {
+        "schema": "specarm.agentbench/1",
+        "label": "4tenant_default_r2",
+        "agents": 4,
+        "turns": 4,
+        "token_count_method": "apply_template+tokenize",
+        "preamble_tokens": 550,
+        "final_prompt_tokens": 838,
+        "cold_ttft_ms": [
+          5926.77,
+          680.97,
+          771.46,
+          1349.54
+        ],
+        "warm_ttft_ms": [
+          1543.22,
+          1756.21,
+          1471.46,
+          1494.26,
+          2279.53,
+          2265.24,
+          2301.17,
+          2362.57,
+          2849.59,
+          2868.6,
+          2910.5,
+          3263.15
+        ],
+        "warm_median_ms": 2290.35,
+        "cold_median_ms": 1060.5,
+        "rows": [
+          {
+            "seq": 1,
+            "round": 1,
+            "agent": 0,
+            "prompt_tokens": 610,
+            "ttft_ms": 5926.77,
+            "total_ms": 9568.81,
+            "out_tokens": 48
+          },
+          {
+            "seq": 2,
+            "round": 1,
+            "agent": 1,
+            "prompt_tokens": 605,
+            "ttft_ms": 680.97,
+            "total_ms": 4144.68,
+            "out_tokens": 48
+          },
+          {
+            "seq": 3,
+            "round": 1,
+            "agent": 2,
+            "prompt_tokens": 610,
+            "ttft_ms": 771.46,
+            "total_ms": 4625.71,
+            "out_tokens": 48
+          },
+          {
+            "seq": 4,
+            "round": 1,
+            "agent": 3,
+            "prompt_tokens": 610,
+            "ttft_ms": 1349.54,
+            "total_ms": 5598.37,
+            "out_tokens": 48
+          },
+          {
+            "seq": 5,
+            "round": 2,
+            "agent": 0,
+            "prompt_tokens": 692,
+            "ttft_ms": 1543.22,
+            "total_ms": 4996.78,
+            "out_tokens": 48
+          },
+          {
+            "seq": 6,
+            "round": 2,
+            "agent": 1,
+            "prompt_tokens": 688,
+            "ttft_ms": 1756.21,
+            "total_ms": 5176.2,
+            "out_tokens": 48
+          },
+          {
+            "seq": 7,
+            "round": 2,
+            "agent": 2,
+            "prompt_tokens": 693,
+            "ttft_ms": 1471.46,
+            "total_ms": 4678.26,
+            "out_tokens": 48
+          },
+          {
+            "seq": 8,
+            "round": 2,
+            "agent": 3,
+            "prompt_tokens": 693,
+            "ttft_ms": 1494.26,
+            "total_ms": 4865.39,
+            "out_tokens": 48
+          },
+          {
+            "seq": 9,
+            "round": 3,
+            "agent": 0,
+            "prompt_tokens": 774,
+            "ttft_ms": 2279.53,
+            "total_ms": 4925.16,
+            "out_tokens": 37
+          },
+          {
+            "seq": 10,
+            "round": 3,
+            "agent": 1,
+            "prompt_tokens": 770,
+            "ttft_ms": 2265.24,
+            "total_ms": 4951.16,
+            "out_tokens": 38
+          },
+          {
+            "seq": 11,
+            "round": 3,
+            "agent": 2,
+            "prompt_tokens": 775,
+            "ttft_ms": 2301.17,
+            "total_ms": 5020.91,
+            "out_tokens": 38
+          },
+          {
+            "seq": 12,
+            "round": 3,
+            "agent": 3,
+            "prompt_tokens": 775,
+            "ttft_ms": 2362.57,
+            "total_ms": 5330.07,
+            "out_tokens": 38
+          },
+          {
+            "seq": 13,
+            "round": 4,
+            "agent": 0,
+            "prompt_tokens": 836,
+            "ttft_ms": 2849.59,
+            "total_ms": 5065.03,
+            "out_tokens": 32
+          },
+          {
+            "seq": 14,
+            "round": 4,
+            "agent": 1,
+            "prompt_tokens": 833,
+            "ttft_ms": 2868.6,
+            "total_ms": 4921.63,
+            "out_tokens": 32
+          },
+          {
+            "seq": 15,
+            "round": 4,
+            "agent": 2,
+            "prompt_tokens": 838,
+            "ttft_ms": 2910.5,
+            "total_ms": 5612.58,
+            "out_tokens": 32
+          },
+          {
+            "seq": 16,
+            "round": 4,
+            "agent": 3,
+            "prompt_tokens": 838,
+            "ttft_ms": 3263.15,
+            "total_ms": 5880.88,
+            "out_tokens": 32
+          }
+        ],
+        "config": "4tenant_default",
+        "repeat": 2,
+        "server_args": [
+          "-np",
+          "4",
+          "--slot-prompt-similarity",
+          "0.1"
+        ]
+      },
+      {
+        "schema": "specarm.agentbench/1",
+        "label": "4tenant_default_r3",
+        "agents": 4,
+        "turns": 4,
+        "token_count_method": "apply_template+tokenize",
+        "preamble_tokens": 550,
+        "final_prompt_tokens": 838,
+        "cold_ttft_ms": [
+          5878.55,
+          688.19,
+          698.45,
+          765.56
+        ],
+        "warm_ttft_ms": [
+          1639.42,
+          1962.53,
+          1674.35,
+          1478.88,
+          2117.97,
+          2334.62,
+          2684.02,
+          2574.39,
+          2672.03,
+          2614.7,
+          2444.67,
+          2533.77
+        ],
+        "warm_median_ms": 2389.64,
+        "cold_median_ms": 732.0,
+        "rows": [
+          {
+            "seq": 1,
+            "round": 1,
+            "agent": 0,
+            "prompt_tokens": 610,
+            "ttft_ms": 5878.55,
+            "total_ms": 8962.3,
+            "out_tokens": 48
+          },
+          {
+            "seq": 2,
+            "round": 1,
+            "agent": 1,
+            "prompt_tokens": 605,
+            "ttft_ms": 688.19,
+            "total_ms": 4085.63,
+            "out_tokens": 48
+          },
+          {
+            "seq": 3,
+            "round": 1,
+            "agent": 2,
+            "prompt_tokens": 610,
+            "ttft_ms": 698.45,
+            "total_ms": 3855.49,
+            "out_tokens": 48
+          },
+          {
+            "seq": 4,
+            "round": 1,
+            "agent": 3,
+            "prompt_tokens": 610,
+            "ttft_ms": 765.56,
+            "total_ms": 5089.72,
+            "out_tokens": 48
+          },
+          {
+            "seq": 5,
+            "round": 2,
+            "agent": 0,
+            "prompt_tokens": 692,
+            "ttft_ms": 1639.42,
+            "total_ms": 5412.58,
+            "out_tokens": 48
+          },
+          {
+            "seq": 6,
+            "round": 2,
+            "agent": 1,
+            "prompt_tokens": 688,
+            "ttft_ms": 1962.53,
+            "total_ms": 5546.81,
+            "out_tokens": 48
+          },
+          {
+            "seq": 7,
+            "round": 2,
+            "agent": 2,
+            "prompt_tokens": 693,
+            "ttft_ms": 1674.35,
+            "total_ms": 5441.1,
+            "out_tokens": 48
+          },
+          {
+            "seq": 8,
+            "round": 2,
+            "agent": 3,
+            "prompt_tokens": 693,
+            "ttft_ms": 1478.88,
+            "total_ms": 4467.37,
+            "out_tokens": 48
+          },
+          {
+            "seq": 9,
+            "round": 3,
+            "agent": 0,
+            "prompt_tokens": 774,
+            "ttft_ms": 2117.97,
+            "total_ms": 4354.85,
+            "out_tokens": 37
+          },
+          {
+            "seq": 10,
+            "round": 3,
+            "agent": 1,
+            "prompt_tokens": 770,
+            "ttft_ms": 2334.62,
+            "total_ms": 5451.12,
+            "out_tokens": 38
+          },
+          {
+            "seq": 11,
+            "round": 3,
+            "agent": 2,
+            "prompt_tokens": 775,
+            "ttft_ms": 2684.02,
+            "total_ms": 6252.39,
+            "out_tokens": 38
+          },
+          {
+            "seq": 12,
+            "round": 3,
+            "agent": 3,
+            "prompt_tokens": 775,
+            "ttft_ms": 2574.39,
+            "total_ms": 5153.81,
+            "out_tokens": 38
+          },
+          {
+            "seq": 13,
+            "round": 4,
+            "agent": 0,
+            "prompt_tokens": 836,
+            "ttft_ms": 2672.03,
+            "total_ms": 4662.2,
+            "out_tokens": 32
+          },
+          {
+            "seq": 14,
+            "round": 4,
+            "agent": 1,
+            "prompt_tokens": 833,
+            "ttft_ms": 2614.7,
+            "total_ms": 4728.01,
+            "out_tokens": 32
+          },
+          {
+            "seq": 15,
+            "round": 4,
+            "agent": 2,
+            "prompt_tokens": 838,
+            "ttft_ms": 2444.67,
+            "total_ms": 4322.12,
+            "out_tokens": 32
+          },
+          {
+            "seq": 16,
+            "round": 4,
+            "agent": 3,
+            "prompt_tokens": 838,
+            "ttft_ms": 2533.77,
+            "total_ms": 4364.71,
+            "out_tokens": 32
+          }
+        ],
+        "config": "4tenant_default",
+        "repeat": 3,
+        "server_args": [
+          "-np",
+          "4",
+          "--slot-prompt-similarity",
+          "0.1"
+        ]
+      },
+      {
+        "schema": "specarm.agentbench/1",
+        "label": "4tenant_default_r4",
+        "agents": 4,
+        "turns": 4,
+        "token_count_method": "apply_template+tokenize",
+        "preamble_tokens": 550,
+        "final_prompt_tokens": 838,
+        "cold_ttft_ms": [
+          5074.68,
+          624.1,
+          669.56,
+          767.49
+        ],
+        "warm_ttft_ms": [
+          1428.16,
+          1347.69,
+          1364.99,
+          1555.28,
+          1994.51,
+          1988.69,
+          2025.11,
+          2198.43,
+          2472.5,
+          2560.47,
+          2568.02,
+          2587.51
+        ],
+        "warm_median_ms": 2009.81,
+        "cold_median_ms": 718.52,
+        "rows": [
+          {
+            "seq": 1,
+            "round": 1,
+            "agent": 0,
+            "prompt_tokens": 610,
+            "ttft_ms": 5074.68,
+            "total_ms": 7788.3,
+            "out_tokens": 48
+          },
+          {
+            "seq": 2,
+            "round": 1,
+            "agent": 1,
+            "prompt_tokens": 605,
+            "ttft_ms": 624.1,
+            "total_ms": 3577.87,
+            "out_tokens": 48
+          },
+          {
+            "seq": 3,
+            "round": 1,
+            "agent": 2,
+            "prompt_tokens": 610,
+            "ttft_ms": 669.56,
+            "total_ms": 3773.98,
+            "out_tokens": 48
+          },
+          {
+            "seq": 4,
+            "round": 1,
+            "agent": 3,
+            "prompt_tokens": 610,
+            "ttft_ms": 767.49,
+            "total_ms": 4073.47,
+            "out_tokens": 48
+          },
+          {
+            "seq": 5,
+            "round": 2,
+            "agent": 0,
+            "prompt_tokens": 692,
+            "ttft_ms": 1428.16,
+            "total_ms": 5282.59,
+            "out_tokens": 48
+          },
+          {
+            "seq": 6,
+            "round": 2,
+            "agent": 1,
+            "prompt_tokens": 688,
+            "ttft_ms": 1347.69,
+            "total_ms": 4112.06,
+            "out_tokens": 48
+          },
+          {
+            "seq": 7,
+            "round": 2,
+            "agent": 2,
+            "prompt_tokens": 693,
+            "ttft_ms": 1364.99,
+            "total_ms": 4374.79,
+            "out_tokens": 48
+          },
+          {
+            "seq": 8,
+            "round": 2,
+            "agent": 3,
+            "prompt_tokens": 693,
+            "ttft_ms": 1555.28,
+            "total_ms": 4350.61,
+            "out_tokens": 48
+          },
+          {
+            "seq": 9,
+            "round": 3,
+            "agent": 0,
+            "prompt_tokens": 774,
+            "ttft_ms": 1994.51,
+            "total_ms": 4111.64,
+            "out_tokens": 37
+          },
+          {
+            "seq": 10,
+            "round": 3,
+            "agent": 1,
+            "prompt_tokens": 770,
+            "ttft_ms": 1988.69,
+            "total_ms": 4234.94,
+            "out_tokens": 38
+          },
+          {
+            "seq": 11,
+            "round": 3,
+            "agent": 2,
+            "prompt_tokens": 775,
+            "ttft_ms": 2025.11,
+            "total_ms": 4926.71,
+            "out_tokens": 38
+          },
+          {
+            "seq": 12,
+            "round": 3,
+            "agent": 3,
+            "prompt_tokens": 775,
+            "ttft_ms": 2198.43,
+            "total_ms": 4432.0,
+            "out_tokens": 38
+          },
+          {
+            "seq": 13,
+            "round": 4,
+            "agent": 0,
+            "prompt_tokens": 836,
+            "ttft_ms": 2472.5,
+            "total_ms": 4306.61,
+            "out_tokens": 32
+          },
+          {
+            "seq": 14,
+            "round": 4,
+            "agent": 1,
+            "prompt_tokens": 833,
+            "ttft_ms": 2560.47,
+            "total_ms": 4597.29,
+            "out_tokens": 32
+          },
+          {
+            "seq": 15,
+            "round": 4,
+            "agent": 2,
+            "prompt_tokens": 838,
+            "ttft_ms": 2568.02,
+            "total_ms": 5117.55,
+            "out_tokens": 32
+          },
+          {
+            "seq": 16,
+            "round": 4,
+            "agent": 3,
+            "prompt_tokens": 838,
+            "ttft_ms": 2587.51,
+            "total_ms": 4519.24,
+            "out_tokens": 32
+          }
+        ],
+        "config": "4tenant_default",
+        "repeat": 4,
+        "server_args": [
+          "-np",
+          "4",
+          "--slot-prompt-similarity",
+          "0.1"
+        ]
+      }
+    ],
+    "8tenant_default": [
+      {
+        "schema": "specarm.agentbench/1",
+        "label": "8tenant_default_r0",
+        "agents": 8,
+        "turns": 4,
+        "token_count_method": "apply_template+tokenize",
+        "preamble_tokens": 550,
+        "final_prompt_tokens": 834,
+        "cold_ttft_ms": [
+          5510.76,
+          597.61,
+          617.28,
+          623.11,
+          793.64,
+          626.7,
+          621.75,
+          588.2
+        ],
+        "warm_ttft_ms": [
+          1225.77,
+          1218.53,
+          1237.98,
+          1491.7,
+          1372.99,
+          1231.54,
+          1269.74,
+          1351.22,
+          2240.94,
+          1935.45,
+          1949.78,
+          2046.66,
+          2077.59,
+          1931.81,
+          1916.04,
+          1906.44,
+          2438.0,
+          2411.55,
+          2524.67,
+          2565.01,
+          2461.84,
+          2375.74,
+          2618.78,
+          2594.37
+        ],
+        "warm_median_ms": 1942.62,
+        "cold_median_ms": 622.43,
+        "rows": [
+          {
+            "seq": 1,
+            "round": 1,
+            "agent": 0,
+            "prompt_tokens": 610,
+            "ttft_ms": 5510.76,
+            "total_ms": 8253.84,
+            "out_tokens": 48
+          },
+          {
+            "seq": 2,
+            "round": 1,
+            "agent": 1,
+            "prompt_tokens": 605,
+            "ttft_ms": 597.61,
+            "total_ms": 3179.62,
+            "out_tokens": 48
+          },
+          {
+            "seq": 3,
+            "round": 1,
+            "agent": 2,
+            "prompt_tokens": 610,
+            "ttft_ms": 617.28,
+            "total_ms": 3251.76,
+            "out_tokens": 48
+          },
+          {
+            "seq": 4,
+            "round": 1,
+            "agent": 3,
+            "prompt_tokens": 610,
+            "ttft_ms": 623.11,
+            "total_ms": 3358.18,
+            "out_tokens": 48
+          },
+          {
+            "seq": 5,
+            "round": 1,
+            "agent": 4,
+            "prompt_tokens": 611,
+            "ttft_ms": 793.64,
+            "total_ms": 3235.74,
+            "out_tokens": 48
+          },
+          {
+            "seq": 6,
+            "round": 1,
+            "agent": 5,
+            "prompt_tokens": 608,
+            "ttft_ms": 626.7,
+            "total_ms": 3039.52,
+            "out_tokens": 48
+          },
+          {
+            "seq": 7,
+            "round": 1,
+            "agent": 6,
+            "prompt_tokens": 609,
+            "ttft_ms": 621.75,
+            "total_ms": 3150.84,
+            "out_tokens": 48
+          },
+          {
+            "seq": 8,
+            "round": 1,
+            "agent": 7,
+            "prompt_tokens": 609,
+            "ttft_ms": 588.2,
+            "total_ms": 3004.59,
+            "out_tokens": 48
+          },
+          {
+            "seq": 9,
+            "round": 2,
+            "agent": 0,
+            "prompt_tokens": 692,
+            "ttft_ms": 1225.77,
+            "total_ms": 3650.55,
+            "out_tokens": 48
+          },
+          {
+            "seq": 10,
+            "round": 2,
+            "agent": 1,
+            "prompt_tokens": 688,
+            "ttft_ms": 1218.53,
+            "total_ms": 3702.29,
+            "out_tokens": 48
+          },
+          {
+            "seq": 11,
+            "round": 2,
+            "agent": 2,
+            "prompt_tokens": 693,
+            "ttft_ms": 1237.98,
+            "total_ms": 3894.56,
+            "out_tokens": 48
+          },
+          {
+            "seq": 12,
+            "round": 2,
+            "agent": 3,
+            "prompt_tokens": 693,
+            "ttft_ms": 1491.7,
+            "total_ms": 4275.84,
+            "out_tokens": 48
+          },
+          {
+            "seq": 13,
+            "round": 2,
+            "agent": 4,
+            "prompt_tokens": 697,
+            "ttft_ms": 1372.99,
+            "total_ms": 3875.28,
+            "out_tokens": 48
+          },
+          {
+            "seq": 14,
+            "round": 2,
+            "agent": 5,
+            "prompt_tokens": 691,
+            "ttft_ms": 1231.54,
+            "total_ms": 3748.39,
+            "out_tokens": 48
+          },
+          {
+            "seq": 15,
+            "round": 2,
+            "agent": 6,
+            "prompt_tokens": 691,
+            "ttft_ms": 1269.74,
+            "total_ms": 4188.5,
+            "out_tokens": 48
+          },
+          {
+            "seq": 16,
+            "round": 2,
+            "agent": 7,
+            "prompt_tokens": 691,
+            "ttft_ms": 1351.22,
+            "total_ms": 4116.93,
+            "out_tokens": 48
+          },
+          {
+            "seq": 17,
+            "round": 3,
+            "agent": 0,
+            "prompt_tokens": 774,
+            "ttft_ms": 2240.94,
+            "total_ms": 4366.13,
+            "out_tokens": 37
+          },
+          {
+            "seq": 18,
+            "round": 3,
+            "agent": 1,
+            "prompt_tokens": 770,
+            "ttft_ms": 1935.45,
+            "total_ms": 3986.5,
+            "out_tokens": 38
+          },
+          {
+            "seq": 19,
+            "round": 3,
+            "agent": 2,
+            "prompt_tokens": 775,
+            "ttft_ms": 1949.78,
+            "total_ms": 4089.27,
+            "out_tokens": 38
+          },
+          {
+            "seq": 20,
+            "round": 3,
+            "agent": 3,
+            "prompt_tokens": 775,
+            "ttft_ms": 2046.66,
+            "total_ms": 4053.35,
+            "out_tokens": 38
+          },
+          {
+            "seq": 21,
+            "round": 3,
+            "agent": 4,
+            "prompt_tokens": 782,
+            "ttft_ms": 2077.59,
+            "total_ms": 4168.75,
+            "out_tokens": 40
+          },
+          {
+            "seq": 22,
+            "round": 3,
+            "agent": 5,
+            "prompt_tokens": 773,
+            "ttft_ms": 1931.81,
+            "total_ms": 4056.28,
+            "out_tokens": 38
+          },
+          {
+            "seq": 23,
+            "round": 3,
+            "agent": 6,
+            "prompt_tokens": 773,
+            "ttft_ms": 1916.04,
+            "total_ms": 4030.93,
+            "out_tokens": 38
+          },
+          {
+            "seq": 24,
+            "round": 3,
+            "agent": 7,
+            "prompt_tokens": 773,
+            "ttft_ms": 1906.44,
+            "total_ms": 3791.14,
+            "out_tokens": 37
+          },
+          {
+            "seq": 25,
+            "round": 4,
+            "agent": 0,
+            "prompt_tokens": 836,
+            "ttft_ms": 2438.0,
+            "total_ms": 4143.62,
+            "out_tokens": 32
+          },
+          {
+            "seq": 26,
+            "round": 4,
+            "agent": 1,
+            "prompt_tokens": 833,
+            "ttft_ms": 2411.55,
+            "total_ms": 4136.69,
+            "out_tokens": 32
+          },
+          {
+            "seq": 27,
+            "round": 4,
+            "agent": 2,
+            "prompt_tokens": 838,
+            "ttft_ms": 2524.67,
+            "total_ms": 4243.87,
+            "out_tokens": 32
+          },
+          {
+            "seq": 28,
+            "round": 4,
+            "agent": 3,
+            "prompt_tokens": 838,
+            "ttft_ms": 2565.01,
+            "total_ms": 4360.65,
+            "out_tokens": 32
+          },
+          {
+            "seq": 29,
+            "round": 4,
+            "agent": 4,
+            "prompt_tokens": 848,
+            "ttft_ms": 2461.84,
+            "total_ms": 4254.31,
+            "out_tokens": 32
+          },
+          {
+            "seq": 30,
+            "round": 4,
+            "agent": 5,
+            "prompt_tokens": 835,
+            "ttft_ms": 2375.74,
+            "total_ms": 4065.67,
+            "out_tokens": 32
+          },
+          {
+            "seq": 31,
+            "round": 4,
+            "agent": 6,
+            "prompt_tokens": 836,
+            "ttft_ms": 2618.78,
+            "total_ms": 4458.9,
+            "out_tokens": 32
+          },
+          {
+            "seq": 32,
+            "round": 4,
+            "agent": 7,
+            "prompt_tokens": 834,
+            "ttft_ms": 2594.37,
+            "total_ms": 4433.94,
+            "out_tokens": 32
+          }
+        ],
+        "config": "8tenant_default",
+        "repeat": 0,
+        "server_args": [
+          "-np",
+          "4",
+          "--slot-prompt-similarity",
+          "0.1"
+        ]
+      },
+      {
+        "schema": "specarm.agentbench/1",
+        "label": "8tenant_default_r1",
+        "agents": 8,
+        "turns": 4,
+        "token_count_method": "apply_template+tokenize",
+        "preamble_tokens": 550,
+        "final_prompt_tokens": 834,
+        "cold_ttft_ms": [
+          5089.03,
+          600.39,
+          610.27,
+          610.15,
+          642.74,
+          589.15,
+          604.9,
+          615.14
+        ],
+        "warm_ttft_ms": [
+          1307.48,
+          1449.38,
+          1621.0,
+          1318.57,
+          1534.47,
+          1328.74,
+          1279.87,
+          1325.15,
+          2147.49,
+          2044.32,
+          2053.96,
+          2205.3,
+          2189.2,
+          2423.98,
+          2296.79,
+          2139.12,
+          2699.89,
+          3082.87,
+          3027.85,
+          2807.72,
+          2820.23,
+          2721.32,
+          2935.12,
+          2658.17
+        ],
+        "warm_median_ms": 2168.34,
+        "cold_median_ms": 610.21,
+        "rows": [
+          {
+            "seq": 1,
+            "round": 1,
+            "agent": 0,
+            "prompt_tokens": 610,
+            "ttft_ms": 5089.03,
+            "total_ms": 7468.2,
+            "out_tokens": 48
+          },
+          {
+            "seq": 2,
+            "round": 1,
+            "agent": 1,
+            "prompt_tokens": 605,
+            "ttft_ms": 600.39,
+            "total_ms": 3008.49,
+            "out_tokens": 48
+          },
+          {
+            "seq": 3,
+            "round": 1,
+            "agent": 2,
+            "prompt_tokens": 610,
+            "ttft_ms": 610.27,
+            "total_ms": 3053.24,
+            "out_tokens": 48
+          },
+          {
+            "seq": 4,
+            "round": 1,
+            "agent": 3,
+            "prompt_tokens": 610,
+            "ttft_ms": 610.15,
+            "total_ms": 2975.76,
+            "out_tokens": 48
+          },
+          {
+            "seq": 5,
+            "round": 1,
+            "agent": 4,
+            "prompt_tokens": 611,
+            "ttft_ms": 642.74,
+            "total_ms": 3049.96,
+            "out_tokens": 48
+          },
+          {
+            "seq": 6,
+            "round": 1,
+            "agent": 5,
+            "prompt_tokens": 608,
+            "ttft_ms": 589.15,
+            "total_ms": 3074.41,
+            "out_tokens": 48
+          },
+          {
+            "seq": 7,
+            "round": 1,
+            "agent": 6,
+            "prompt_tokens": 609,
+            "ttft_ms": 604.9,
+            "total_ms": 3345.05,
+            "out_tokens": 48
+          },
+          {
+            "seq": 8,
+            "round": 1,
+            "agent": 7,
+            "prompt_tokens": 609,
+            "ttft_ms": 615.14,
+            "total_ms": 3618.46,
+            "out_tokens": 48
+          },
+          {
+            "seq": 9,
+            "round": 2,
+            "agent": 0,
+            "prompt_tokens": 692,
+            "ttft_ms": 1307.48,
+            "total_ms": 4630.95,
+            "out_tokens": 48
+          },
+          {
+            "seq": 10,
+            "round": 2,
+            "agent": 1,
+            "prompt_tokens": 688,
+            "ttft_ms": 1449.38,
+            "total_ms": 4346.06,
+            "out_tokens": 48
+          },
+          {
+            "seq": 11,
+            "round": 2,
+            "agent": 2,
+            "prompt_tokens": 693,
+            "ttft_ms": 1621.0,
+            "total_ms": 4496.18,
+            "out_tokens": 48
+          },
+          {
+            "seq": 12,
+            "round": 2,
+            "agent": 3,
+            "prompt_tokens": 693,
+            "ttft_ms": 1318.57,
+            "total_ms": 4033.29,
+            "out_tokens": 48
+          },
+          {
+            "seq": 13,
+            "round": 2,
+            "agent": 4,
+            "prompt_tokens": 697,
+            "ttft_ms": 1534.47,
+            "total_ms": 4837.17,
+            "out_tokens": 48
+          },
+          {
+            "seq": 14,
+            "round": 2,
+            "agent": 5,
+            "prompt_tokens": 691,
+            "ttft_ms": 1328.74,
+            "total_ms": 4132.08,
+            "out_tokens": 48
+          },
+          {
+            "seq": 15,
+            "round": 2,
+            "agent": 6,
+            "prompt_tokens": 691,
+            "ttft_ms": 1279.87,
+            "total_ms": 4191.94,
+            "out_tokens": 48
+          },
+          {
+            "seq": 16,
+            "round": 2,
+            "agent": 7,
+            "prompt_tokens": 691,
+            "ttft_ms": 1325.15,
+            "total_ms": 4091.97,
+            "out_tokens": 48
+          },
+          {
+            "seq": 17,
+            "round": 3,
+            "agent": 0,
+            "prompt_tokens": 774,
+            "ttft_ms": 2147.49,
+            "total_ms": 4382.41,
+            "out_tokens": 37
+          },
+          {
+            "seq": 18,
+            "round": 3,
+            "agent": 1,
+            "prompt_tokens": 770,
+            "ttft_ms": 2044.32,
+            "total_ms": 4303.99,
+            "out_tokens": 38
+          },
+          {
+            "seq": 19,
+            "round": 3,
+            "agent": 2,
+            "prompt_tokens": 775,
+            "ttft_ms": 2053.96,
+            "total_ms": 5082.14,
+            "out_tokens": 38
+          },
+          {
+            "seq": 20,
+            "round": 3,
+            "agent": 3,
+            "prompt_tokens": 775,
+            "ttft_ms": 2205.3,
+            "total_ms": 4778.56,
+            "out_tokens": 38
+          },
+          {
+            "seq": 21,
+            "round": 3,
+            "agent": 4,
+            "prompt_tokens": 782,
+            "ttft_ms": 2189.2,
+            "total_ms": 4905.32,
+            "out_tokens": 40
+          },
+          {
+            "seq": 22,
+            "round": 3,
+            "agent": 5,
+            "prompt_tokens": 773,
+            "ttft_ms": 2423.98,
+            "total_ms": 4955.53,
+            "out_tokens": 38
+          },
+          {
+            "seq": 23,
+            "round": 3,
+            "agent": 6,
+            "prompt_tokens": 773,
+            "ttft_ms": 2296.79,
+            "total_ms": 4850.09,
+            "out_tokens": 38
+          },
+          {
+            "seq": 24,
+            "round": 3,
+            "agent": 7,
+            "prompt_tokens": 773,
+            "ttft_ms": 2139.12,
+            "total_ms": 4748.44,
+            "out_tokens": 37
+          },
+          {
+            "seq": 25,
+            "round": 4,
+            "agent": 0,
+            "prompt_tokens": 836,
+            "ttft_ms": 2699.89,
+            "total_ms": 4844.93,
+            "out_tokens": 32
+          },
+          {
+            "seq": 26,
+            "round": 4,
+            "agent": 1,
+            "prompt_tokens": 833,
+            "ttft_ms": 3082.87,
+            "total_ms": 5542.47,
+            "out_tokens": 32
+          },
+          {
+            "seq": 27,
+            "round": 4,
+            "agent": 2,
+            "prompt_tokens": 838,
+            "ttft_ms": 3027.85,
+            "total_ms": 5165.44,
+            "out_tokens": 32
+          },
+          {
+            "seq": 28,
+            "round": 4,
+            "agent": 3,
+            "prompt_tokens": 838,
+            "ttft_ms": 2807.72,
+            "total_ms": 5067.09,
+            "out_tokens": 32
+          },
+          {
+            "seq": 29,
+            "round": 4,
+            "agent": 4,
+            "prompt_tokens": 848,
+            "ttft_ms": 2820.23,
+            "total_ms": 4902.28,
+            "out_tokens": 32
+          },
+          {
+            "seq": 30,
+            "round": 4,
+            "agent": 5,
+            "prompt_tokens": 835,
+            "ttft_ms": 2721.32,
+            "total_ms": 4994.43,
+            "out_tokens": 32
+          },
+          {
+            "seq": 31,
+            "round": 4,
+            "agent": 6,
+            "prompt_tokens": 836,
+            "ttft_ms": 2935.12,
+            "total_ms": 5030.32,
+            "out_tokens": 32
+          },
+          {
+            "seq": 32,
+            "round": 4,
+            "agent": 7,
+            "prompt_tokens": 834,
+            "ttft_ms": 2658.17,
+            "total_ms": 4822.66,
+            "out_tokens": 32
+          }
+        ],
+        "config": "8tenant_default",
+        "repeat": 1,
+        "server_args": [
+          "-np",
+          "4",
+          "--slot-prompt-similarity",
+          "0.1"
+        ]
+      },
+      {
+        "schema": "specarm.agentbench/1",
+        "label": "8tenant_default_r2",
+        "agents": 8,
+        "turns": 4,
+        "token_count_method": "apply_template+tokenize",
+        "preamble_tokens": 550,
+        "final_prompt_tokens": 834,
+        "cold_ttft_ms": [
+          5458.25,
+          669.17,
+          697.9,
+          670.12,
+          865.35,
+          667.96,
+          662.65,
+          669.03
+        ],
+        "warm_ttft_ms": [
+          1342.95,
+          1431.71,
+          1391.6,
+          1423.86,
+          1370.67,
+          1498.91,
+          1427.67,
+          1347.18,
+          2233.65,
+          2355.41,
+          2376.31,
+          2183.9,
+          2148.08,
+          2086.18,
+          2353.89,
+          2032.83,
+          2589.6,
+          2545.47,
+          2732.46,
+          2574.67,
+          2799.81,
+          2731.68,
+          2778.43,
+          2604.46
+        ],
+        "warm_median_ms": 2208.78,
+        "cold_median_ms": 669.64,
+        "rows": [
+          {
+            "seq": 1,
+            "round": 1,
+            "agent": 0,
+            "prompt_tokens": 610,
+            "ttft_ms": 5458.25,
+            "total_ms": 8779.31,
+            "out_tokens": 48
+          },
+          {
+            "seq": 2,
+            "round": 1,
+            "agent": 1,
+            "prompt_tokens": 605,
+            "ttft_ms": 669.17,
+            "total_ms": 3865.34,
+            "out_tokens": 48
+          },
+          {
+            "seq": 3,
+            "round": 1,
+            "agent": 2,
+            "prompt_tokens": 610,
+            "ttft_ms": 697.9,
+            "total_ms": 3730.24,
+            "out_tokens": 48
+          },
+          {
+            "seq": 4,
+            "round": 1,
+            "agent": 3,
+            "prompt_tokens": 610,
+            "ttft_ms": 670.12,
+            "total_ms": 6661.69,
+            "out_tokens": 48
+          },
+          {
+            "seq": 5,
+            "round": 1,
+            "agent": 4,
+            "prompt_tokens": 611,
+            "ttft_ms": 865.35,
+            "total_ms": 3989.53,
+            "out_tokens": 48
+          },
+          {
+            "seq": 6,
+            "round": 1,
+            "agent": 5,
+            "prompt_tokens": 608,
+            "ttft_ms": 667.96,
+            "total_ms": 3776.71,
+            "out_tokens": 48
+          },
+          {
+            "seq": 7,
+            "round": 1,
+            "agent": 6,
+            "prompt_tokens": 609,
+            "ttft_ms": 662.65,
+            "total_ms": 3915.48,
+            "out_tokens": 48
+          },
+          {
+            "seq": 8,
+            "round": 1,
+            "agent": 7,
+            "prompt_tokens": 609,
+            "ttft_ms": 669.03,
+            "total_ms": 3967.18,
+            "out_tokens": 48
+          },
+          {
+            "seq": 9,
+            "round": 2,
+            "agent": 0,
+            "prompt_tokens": 692,
+            "ttft_ms": 1342.95,
+            "total_ms": 4463.29,
+            "out_tokens": 48
+          },
+          {
+            "seq": 10,
+            "round": 2,
+            "agent": 1,
+            "prompt_tokens": 688,
+            "ttft_ms": 1431.71,
+            "total_ms": 4525.69,
+            "out_tokens": 48
+          },
+          {
+            "seq": 11,
+            "round": 2,
+            "agent": 2,
+            "prompt_tokens": 693,
+            "ttft_ms": 1391.6,
+            "total_ms": 4495.28,
+            "out_tokens": 48
+          },
+          {
+            "seq": 12,
+            "round": 2,
+            "agent": 3,
+            "prompt_tokens": 693,
+            "ttft_ms": 1423.86,
+            "total_ms": 4565.44,
+            "out_tokens": 48
+          },
+          {
+            "seq": 13,
+            "round": 2,
+            "agent": 4,
+            "prompt_tokens": 697,
+            "ttft_ms": 1370.67,
+            "total_ms": 4563.68,
+            "out_tokens": 48
+          },
+          {
+            "seq": 14,
+            "round": 2,
+            "agent": 5,
+            "prompt_tokens": 691,
+            "ttft_ms": 1498.91,
+            "total_ms": 4602.48,
+            "out_tokens": 48
+          },
+          {
+            "seq": 15,
+            "round": 2,
+            "agent": 6,
+            "prompt_tokens": 691,
+            "ttft_ms": 1427.67,
+            "total_ms": 4573.02,
+            "out_tokens": 48
+          },
+          {
+            "seq": 16,
+            "round": 2,
+            "agent": 7,
+            "prompt_tokens": 691,
+            "ttft_ms": 1347.18,
+            "total_ms": 4710.98,
+            "out_tokens": 48
+          },
+          {
+            "seq": 17,
+            "round": 3,
+            "agent": 0,
+            "prompt_tokens": 774,
+            "ttft_ms": 2233.65,
+            "total_ms": 5234.84,
+            "out_tokens": 37
+          },
+          {
+            "seq": 18,
+            "round": 3,
+            "agent": 1,
+            "prompt_tokens": 770,
+            "ttft_ms": 2355.41,
+            "total_ms": 5060.42,
+            "out_tokens": 38
+          },
+          {
+            "seq": 19,
+            "round": 3,
+            "agent": 2,
+            "prompt_tokens": 775,
+            "ttft_ms": 2376.31,
+            "total_ms": 5023.74,
+            "out_tokens": 38
+          },
+          {
+            "seq": 20,
+            "round": 3,
+            "agent": 3,
+            "prompt_tokens": 775,
+            "ttft_ms": 2183.9,
+            "total_ms": 4511.71,
+            "out_tokens": 38
+          },
+          {
+            "seq": 21,
+            "round": 3,
+            "agent": 4,
+            "prompt_tokens": 782,
+            "ttft_ms": 2148.08,
+            "total_ms": 4509.82,
+            "out_tokens": 40
+          },
+          {
+            "seq": 22,
+            "round": 3,
+            "agent": 5,
+            "prompt_tokens": 773,
+            "ttft_ms": 2086.18,
+            "total_ms": 4390.19,
+            "out_tokens": 38
+          },
+          {
+            "seq": 23,
+            "round": 3,
+            "agent": 6,
+            "prompt_tokens": 773,
+            "ttft_ms": 2353.89,
+            "total_ms": 4657.85,
+            "out_tokens": 38
+          },
+          {
+            "seq": 24,
+            "round": 3,
+            "agent": 7,
+            "prompt_tokens": 773,
+            "ttft_ms": 2032.83,
+            "total_ms": 4292.45,
+            "out_tokens": 37
+          },
+          {
+            "seq": 25,
+            "round": 4,
+            "agent": 0,
+            "prompt_tokens": 836,
+            "ttft_ms": 2589.6,
+            "total_ms": 4460.36,
+            "out_tokens": 32
+          },
+          {
+            "seq": 26,
+            "round": 4,
+            "agent": 1,
+            "prompt_tokens": 833,
+            "ttft_ms": 2545.47,
+            "total_ms": 4708.99,
+            "out_tokens": 32
+          },
+          {
+            "seq": 27,
+            "round": 4,
+            "agent": 2,
+            "prompt_tokens": 838,
+            "ttft_ms": 2732.46,
+            "total_ms": 4655.42,
+            "out_tokens": 32
+          },
+          {
+            "seq": 28,
+            "round": 4,
+            "agent": 3,
+            "prompt_tokens": 838,
+            "ttft_ms": 2574.67,
+            "total_ms": 4517.24,
+            "out_tokens": 32
+          },
+          {
+            "seq": 29,
+            "round": 4,
+            "agent": 4,
+            "prompt_tokens": 848,
+            "ttft_ms": 2799.81,
+            "total_ms": 4625.05,
+            "out_tokens": 32
+          },
+          {
+            "seq": 30,
+            "round": 4,
+            "agent": 5,
+            "prompt_tokens": 835,
+            "ttft_ms": 2731.68,
+            "total_ms": 4892.11,
+            "out_tokens": 32
+          },
+          {
+            "seq": 31,
+            "round": 4,
+            "agent": 6,
+            "prompt_tokens": 836,
+            "ttft_ms": 2778.43,
+            "total_ms": 4651.34,
+            "out_tokens": 32
+          },
+          {
+            "seq": 32,
+            "round": 4,
+            "agent": 7,
+            "prompt_tokens": 834,
+            "ttft_ms": 2604.46,
+            "total_ms": 4416.0,
+            "out_tokens": 32
+          }
+        ],
+        "config": "8tenant_default",
+        "repeat": 2,
+        "server_args": [
+          "-np",
+          "4",
+          "--slot-prompt-similarity",
+          "0.1"
+        ]
+      },
+      {
+        "schema": "specarm.agentbench/1",
+        "label": "8tenant_default_r3",
+        "agents": 8,
+        "turns": 4,
+        "token_count_method": "apply_template+tokenize",
+        "preamble_tokens": 550,
+        "final_prompt_tokens": 834,
+        "cold_ttft_ms": [
+          5156.63,
+          602.79,
+          619.56,
+          627.88,
+          732.47,
+          612.44,
+          734.38,
+          651.95
+        ],
+        "warm_ttft_ms": [
+          1354.45,
+          1232.6,
+          1306.24,
+          1556.18,
+          1323.06,
+          1268.77,
+          1330.38,
+          1298.82,
+          2028.38,
+          2190.45,
+          2027.43,
+          2117.51,
+          2109.26,
+          2145.85,
+          2111.31,
+          2231.85,
+          2536.01,
+          2804.91,
+          2640.66,
+          2697.61,
+          2726.77,
+          2566.89,
+          2599.02,
+          2540.56
+        ],
+        "warm_median_ms": 2114.41,
+        "cold_median_ms": 639.91,
+        "rows": [
+          {
+            "seq": 1,
+            "round": 1,
+            "agent": 0,
+            "prompt_tokens": 610,
+            "ttft_ms": 5156.63,
+            "total_ms": 7789.67,
+            "out_tokens": 48
+          },
+          {
+            "seq": 2,
+            "round": 1,
+            "agent": 1,
+            "prompt_tokens": 605,
+            "ttft_ms": 602.79,
+            "total_ms": 3329.28,
+            "out_tokens": 48
+          },
+          {
+            "seq": 3,
+            "round": 1,
+            "agent": 2,
+            "prompt_tokens": 610,
+            "ttft_ms": 619.56,
+            "total_ms": 3275.74,
+            "out_tokens": 48
+          },
+          {
+            "seq": 4,
+            "round": 1,
+            "agent": 3,
+            "prompt_tokens": 610,
+            "ttft_ms": 627.88,
+            "total_ms": 3326.88,
+            "out_tokens": 48
+          },
+          {
+            "seq": 5,
+            "round": 1,
+            "agent": 4,
+            "prompt_tokens": 611,
+            "ttft_ms": 732.47,
+            "total_ms": 3637.72,
+            "out_tokens": 48
+          },
+          {
+            "seq": 6,
+            "round": 1,
+            "agent": 5,
+            "prompt_tokens": 608,
+            "ttft_ms": 612.44,
+            "total_ms": 3368.0,
+            "out_tokens": 48
+          },
+          {
+            "seq": 7,
+            "round": 1,
+            "agent": 6,
+            "prompt_tokens": 609,
+            "ttft_ms": 734.38,
+            "total_ms": 3443.74,
+            "out_tokens": 48
+          },
+          {
+            "seq": 8,
+            "round": 1,
+            "agent": 7,
+            "prompt_tokens": 609,
+            "ttft_ms": 651.95,
+            "total_ms": 3369.42,
+            "out_tokens": 48
+          },
+          {
+            "seq": 9,
+            "round": 2,
+            "agent": 0,
+            "prompt_tokens": 692,
+            "ttft_ms": 1354.45,
+            "total_ms": 4053.26,
+            "out_tokens": 48
+          },
+          {
+            "seq": 10,
+            "round": 2,
+            "agent": 1,
+            "prompt_tokens": 688,
+            "ttft_ms": 1232.6,
+            "total_ms": 4228.89,
+            "out_tokens": 48
+          },
+          {
+            "seq": 11,
+            "round": 2,
+            "agent": 2,
+            "prompt_tokens": 693,
+            "ttft_ms": 1306.24,
+            "total_ms": 4008.76,
+            "out_tokens": 48
+          },
+          {
+            "seq": 12,
+            "round": 2,
+            "agent": 3,
+            "prompt_tokens": 693,
+            "ttft_ms": 1556.18,
+            "total_ms": 5146.9,
+            "out_tokens": 48
+          },
+          {
+            "seq": 13,
+            "round": 2,
+            "agent": 4,
+            "prompt_tokens": 697,
+            "ttft_ms": 1323.06,
+            "total_ms": 4044.84,
+            "out_tokens": 48
+          },
+          {
+            "seq": 14,
+            "round": 2,
+            "agent": 5,
+            "prompt_tokens": 691,
+            "ttft_ms": 1268.77,
+            "total_ms": 3952.63,
+            "out_tokens": 48
+          },
+          {
+            "seq": 15,
+            "round": 2,
+            "agent": 6,
+            "prompt_tokens": 691,
+            "ttft_ms": 1330.38,
+            "total_ms": 4149.37,
+            "out_tokens": 48
+          },
+          {
+            "seq": 16,
+            "round": 2,
+            "agent": 7,
+            "prompt_tokens": 691,
+            "ttft_ms": 1298.82,
+            "total_ms": 4084.13,
+            "out_tokens": 48
+          },
+          {
+            "seq": 17,
+            "round": 3,
+            "agent": 0,
+            "prompt_tokens": 774,
+            "ttft_ms": 2028.38,
+            "total_ms": 4193.86,
+            "out_tokens": 37
+          },
+          {
+            "seq": 18,
+            "round": 3,
+            "agent": 1,
+            "prompt_tokens": 770,
+            "ttft_ms": 2190.45,
+            "total_ms": 4361.27,
+            "out_tokens": 38
+          },
+          {
+            "seq": 19,
+            "round": 3,
+            "agent": 2,
+            "prompt_tokens": 775,
+            "ttft_ms": 2027.43,
+            "total_ms": 4252.16,
+            "out_tokens": 38
+          },
+          {
+            "seq": 20,
+            "round": 3,
+            "agent": 3,
+            "prompt_tokens": 775,
+            "ttft_ms": 2117.51,
+            "total_ms": 4257.51,
+            "out_tokens": 38
+          },
+          {
+            "seq": 21,
+            "round": 3,
+            "agent": 4,
+            "prompt_tokens": 782,
+            "ttft_ms": 2109.26,
+            "total_ms": 4445.55,
+            "out_tokens": 40
+          },
+          {
+            "seq": 22,
+            "round": 3,
+            "agent": 5,
+            "prompt_tokens": 773,
+            "ttft_ms": 2145.85,
+            "total_ms": 4676.44,
+            "out_tokens": 38
+          },
+          {
+            "seq": 23,
+            "round": 3,
+            "agent": 6,
+            "prompt_tokens": 773,
+            "ttft_ms": 2111.31,
+            "total_ms": 4506.76,
+            "out_tokens": 38
+          },
+          {
+            "seq": 24,
+            "round": 3,
+            "agent": 7,
+            "prompt_tokens": 773,
+            "ttft_ms": 2231.85,
+            "total_ms": 4711.17,
+            "out_tokens": 37
+          },
+          {
+            "seq": 25,
+            "round": 4,
+            "agent": 0,
+            "prompt_tokens": 836,
+            "ttft_ms": 2536.01,
+            "total_ms": 4716.77,
+            "out_tokens": 32
+          },
+          {
+            "seq": 26,
+            "round": 4,
+            "agent": 1,
+            "prompt_tokens": 833,
+            "ttft_ms": 2804.91,
+            "total_ms": 4823.7,
+            "out_tokens": 32
+          },
+          {
+            "seq": 27,
+            "round": 4,
+            "agent": 2,
+            "prompt_tokens": 838,
+            "ttft_ms": 2640.66,
+            "total_ms": 5196.92,
+            "out_tokens": 32
+          },
+          {
+            "seq": 28,
+            "round": 4,
+            "agent": 3,
+            "prompt_tokens": 838,
+            "ttft_ms": 2697.61,
+            "total_ms": 4806.15,
+            "out_tokens": 32
+          },
+          {
+            "seq": 29,
+            "round": 4,
+            "agent": 4,
+            "prompt_tokens": 848,
+            "ttft_ms": 2726.77,
+            "total_ms": 4815.87,
+            "out_tokens": 32
+          },
+          {
+            "seq": 30,
+            "round": 4,
+            "agent": 5,
+            "prompt_tokens": 835,
+            "ttft_ms": 2566.89,
+            "total_ms": 4631.1,
+            "out_tokens": 32
+          },
+          {
+            "seq": 31,
+            "round": 4,
+            "agent": 6,
+            "prompt_tokens": 836,
+            "ttft_ms": 2599.02,
+            "total_ms": 4477.01,
+            "out_tokens": 32
+          },
+          {
+            "seq": 32,
+            "round": 4,
+            "agent": 7,
+            "prompt_tokens": 834,
+            "ttft_ms": 2540.56,
+            "total_ms": 4478.62,
+            "out_tokens": 32
+          }
+        ],
+        "config": "8tenant_default",
+        "repeat": 3,
+        "server_args": [
+          "-np",
+          "4",
+          "--slot-prompt-similarity",
+          "0.1"
+        ]
+      },
+      {
+        "schema": "specarm.agentbench/1",
+        "label": "8tenant_default_r4",
+        "agents": 8,
+        "turns": 4,
+        "token_count_method": "apply_template+tokenize",
+        "preamble_tokens": 550,
+        "final_prompt_tokens": 834,
+        "cold_ttft_ms": [
+          5215.29,
+          617.38,
+          681.21,
+          674.92,
+          651.82,
+          702.57,
+          686.96,
+          699.32
+        ],
+        "warm_ttft_ms": [
+          1487.57,
+          1234.2,
+          1370.34,
+          1400.15,
+          1404.47,
+          1341.78,
+          1281.85,
+          1394.54,
+          2075.27,
+          2016.67,
+          2118.31,
+          2390.4,
+          2171.73,
+          2070.95,
+          2008.25,
+          1989.9,
+          2563.74,
+          2454.34,
+          2544.02,
+          2537.36,
+          2581.27,
+          2521.47,
+          2486.2,
+          2624.53
+        ],
+        "warm_median_ms": 2073.11,
+        "cold_median_ms": 684.09,
+        "rows": [
+          {
+            "seq": 1,
+            "round": 1,
+            "agent": 0,
+            "prompt_tokens": 610,
+            "ttft_ms": 5215.29,
+            "total_ms": 7962.48,
+            "out_tokens": 48
+          },
+          {
+            "seq": 2,
+            "round": 1,
+            "agent": 1,
+            "prompt_tokens": 605,
+            "ttft_ms": 617.38,
+            "total_ms": 3611.41,
+            "out_tokens": 48
+          },
+          {
+            "seq": 3,
+            "round": 1,
+            "agent": 2,
+            "prompt_tokens": 610,
+            "ttft_ms": 681.21,
+            "total_ms": 3606.62,
+            "out_tokens": 48
+          },
+          {
+            "seq": 4,
+            "round": 1,
+            "agent": 3,
+            "prompt_tokens": 610,
+            "ttft_ms": 674.92,
+            "total_ms": 3392.41,
+            "out_tokens": 48
+          },
+          {
+            "seq": 5,
+            "round": 1,
+            "agent": 4,
+            "prompt_tokens": 611,
+            "ttft_ms": 651.82,
+            "total_ms": 5213.22,
+            "out_tokens": 48
+          },
+          {
+            "seq": 6,
+            "round": 1,
+            "agent": 5,
+            "prompt_tokens": 608,
+            "ttft_ms": 702.57,
+            "total_ms": 3598.16,
+            "out_tokens": 48
+          },
+          {
+            "seq": 7,
+            "round": 1,
+            "agent": 6,
+            "prompt_tokens": 609,
+            "ttft_ms": 686.96,
+            "total_ms": 3462.84,
+            "out_tokens": 48
+          },
+          {
+            "seq": 8,
+            "round": 1,
+            "agent": 7,
+            "prompt_tokens": 609,
+            "ttft_ms": 699.32,
+            "total_ms": 3307.93,
+            "out_tokens": 48
+          },
+          {
+            "seq": 9,
+            "round": 2,
+            "agent": 0,
+            "prompt_tokens": 692,
+            "ttft_ms": 1487.57,
+            "total_ms": 4381.8,
+            "out_tokens": 48
+          },
+          {
+            "seq": 10,
+            "round": 2,
+            "agent": 1,
+            "prompt_tokens": 688,
+            "ttft_ms": 1234.2,
+            "total_ms": 3923.37,
+            "out_tokens": 48
+          },
+          {
+            "seq": 11,
+            "round": 2,
+            "agent": 2,
+            "prompt_tokens": 693,
+            "ttft_ms": 1370.34,
+            "total_ms": 3911.24,
+            "out_tokens": 48
+          },
+          {
+            "seq": 12,
+            "round": 2,
+            "agent": 3,
+            "prompt_tokens": 693,
+            "ttft_ms": 1400.15,
+            "total_ms": 4152.6,
+            "out_tokens": 48
+          },
+          {
+            "seq": 13,
+            "round": 2,
+            "agent": 4,
+            "prompt_tokens": 697,
+            "ttft_ms": 1404.47,
+            "total_ms": 4286.43,
+            "out_tokens": 48
+          },
+          {
+            "seq": 14,
+            "round": 2,
+            "agent": 5,
+            "prompt_tokens": 691,
+            "ttft_ms": 1341.78,
+            "total_ms": 4251.83,
+            "out_tokens": 48
+          },
+          {
+            "seq": 15,
+            "round": 2,
+            "agent": 6,
+            "prompt_tokens": 691,
+            "ttft_ms": 1281.85,
+            "total_ms": 4081.44,
+            "out_tokens": 48
+          },
+          {
+            "seq": 16,
+            "round": 2,
+            "agent": 7,
+            "prompt_tokens": 691,
+            "ttft_ms": 1394.54,
+            "total_ms": 4080.76,
+            "out_tokens": 48
+          },
+          {
+            "seq": 17,
+            "round": 3,
+            "agent": 0,
+            "prompt_tokens": 774,
+            "ttft_ms": 2075.27,
+            "total_ms": 4201.63,
+            "out_tokens": 37
+          },
+          {
+            "seq": 18,
+            "round": 3,
+            "agent": 1,
+            "prompt_tokens": 770,
+            "ttft_ms": 2016.67,
+            "total_ms": 4349.86,
+            "out_tokens": 38
+          },
+          {
+            "seq": 19,
+            "round": 3,
+            "agent": 2,
+            "prompt_tokens": 775,
+            "ttft_ms": 2118.31,
+            "total_ms": 4527.09,
+            "out_tokens": 38
+          },
+          {
+            "seq": 20,
+            "round": 3,
+            "agent": 3,
+            "prompt_tokens": 775,
+            "ttft_ms": 2390.4,
+            "total_ms": 5598.23,
+            "out_tokens": 38
+          },
+          {
+            "seq": 21,
+            "round": 3,
+            "agent": 4,
+            "prompt_tokens": 782,
+            "ttft_ms": 2171.73,
+            "total_ms": 4482.44,
+            "out_tokens": 40
+          },
+          {
+            "seq": 22,
+            "round": 3,
+            "agent": 5,
+            "prompt_tokens": 773,
+            "ttft_ms": 2070.95,
+            "total_ms": 4516.71,
+            "out_tokens": 38
+          },
+          {
+            "seq": 23,
+            "round": 3,
+            "agent": 6,
+            "prompt_tokens": 773,
+            "ttft_ms": 2008.25,
+            "total_ms": 4136.44,
+            "out_tokens": 38
+          },
+          {
+            "seq": 24,
+            "round": 3,
+            "agent": 7,
+            "prompt_tokens": 773,
+            "ttft_ms": 1989.9,
+            "total_ms": 4072.78,
+            "out_tokens": 37
+          },
+          {
+            "seq": 25,
+            "round": 4,
+            "agent": 0,
+            "prompt_tokens": 836,
+            "ttft_ms": 2563.74,
+            "total_ms": 4302.2,
+            "out_tokens": 32
+          },
+          {
+            "seq": 26,
+            "round": 4,
+            "agent": 1,
+            "prompt_tokens": 833,
+            "ttft_ms": 2454.34,
+            "total_ms": 4224.95,
+            "out_tokens": 32
+          },
+          {
+            "seq": 27,
+            "round": 4,
+            "agent": 2,
+            "prompt_tokens": 838,
+            "ttft_ms": 2544.02,
+            "total_ms": 4423.82,
+            "out_tokens": 32
+          },
+          {
+            "seq": 28,
+            "round": 4,
+            "agent": 3,
+            "prompt_tokens": 838,
+            "ttft_ms": 2537.36,
+            "total_ms": 4309.92,
+            "out_tokens": 32
+          },
+          {
+            "seq": 29,
+            "round": 4,
+            "agent": 4,
+            "prompt_tokens": 848,
+            "ttft_ms": 2581.27,
+            "total_ms": 4415.49,
+            "out_tokens": 32
+          },
+          {
+            "seq": 30,
+            "round": 4,
+            "agent": 5,
+            "prompt_tokens": 835,
+            "ttft_ms": 2521.47,
+            "total_ms": 4361.96,
+            "out_tokens": 32
+          },
+          {
+            "seq": 31,
+            "round": 4,
+            "agent": 6,
+            "prompt_tokens": 836,
+            "ttft_ms": 2486.2,
+            "total_ms": 4336.86,
+            "out_tokens": 32
+          },
+          {
+            "seq": 32,
+            "round": 4,
+            "agent": 7,
+            "prompt_tokens": 834,
+            "ttft_ms": 2624.53,
+            "total_ms": 4424.68,
+            "out_tokens": 32
+          }
+        ],
+        "config": "8tenant_default",
+        "repeat": 4,
+        "server_args": [
+          "-np",
+          "4",
+          "--slot-prompt-similarity",
+          "0.1"
+        ]
+      }
+    ],
+    "4tenant_sim09": [
+      {
+        "schema": "specarm.agentbench/1",
+        "label": "4tenant_sim09_r0",
+        "agents": 4,
+        "turns": 4,
+        "token_count_method": "apply_template+tokenize",
+        "preamble_tokens": 550,
+        "final_prompt_tokens": 838,
+        "cold_ttft_ms": [
+          5446.12,
+          630.25,
+          628.39,
+          625.8
+        ],
+        "warm_ttft_ms": [
+          5772.92,
+          1237.85,
+          1350.91,
+          411.95,
+          428.83,
+          463.66,
+          696.62,
+          461.24,
+          323.07,
+          375.97,
+          325.8,
+          327.96
+        ],
+        "warm_median_ms": 445.03,
+        "cold_median_ms": 629.32,
+        "rows": [
+          {
+            "seq": 1,
+            "round": 1,
+            "agent": 0,
+            "prompt_tokens": 610,
+            "ttft_ms": 5446.12,
+            "total_ms": 8927.2,
+            "out_tokens": 48
+          },
+          {
+            "seq": 2,
+            "round": 1,
+            "agent": 1,
+            "prompt_tokens": 605,
+            "ttft_ms": 630.25,
+            "total_ms": 3398.07,
+            "out_tokens": 48
+          },
+          {
+            "seq": 3,
+            "round": 1,
+            "agent": 2,
+            "prompt_tokens": 610,
+            "ttft_ms": 628.39,
+            "total_ms": 3204.27,
+            "out_tokens": 48
+          },
+          {
+            "seq": 4,
+            "round": 1,
+            "agent": 3,
+            "prompt_tokens": 610,
+            "ttft_ms": 625.8,
+            "total_ms": 3532.09,
+            "out_tokens": 48
+          },
+          {
+            "seq": 5,
+            "round": 2,
+            "agent": 0,
+            "prompt_tokens": 692,
+            "ttft_ms": 5772.92,
+            "total_ms": 8481.85,
+            "out_tokens": 48
+          },
+          {
+            "seq": 6,
+            "round": 2,
+            "agent": 1,
+            "prompt_tokens": 688,
+            "ttft_ms": 1237.85,
+            "total_ms": 3900.64,
+            "out_tokens": 48
+          },
+          {
+            "seq": 7,
+            "round": 2,
+            "agent": 2,
+            "prompt_tokens": 693,
+            "ttft_ms": 1350.91,
+            "total_ms": 3915.28,
+            "out_tokens": 48
+          },
+          {
+            "seq": 8,
+            "round": 2,
+            "agent": 3,
+            "prompt_tokens": 693,
+            "ttft_ms": 411.95,
+            "total_ms": 3124.57,
+            "out_tokens": 48
+          },
+          {
+            "seq": 9,
+            "round": 3,
+            "agent": 0,
+            "prompt_tokens": 774,
+            "ttft_ms": 428.83,
+            "total_ms": 2654.13,
+            "out_tokens": 37
+          },
+          {
+            "seq": 10,
+            "round": 3,
+            "agent": 1,
+            "prompt_tokens": 770,
+            "ttft_ms": 463.66,
+            "total_ms": 2555.75,
+            "out_tokens": 38
+          },
+          {
+            "seq": 11,
+            "round": 3,
+            "agent": 2,
+            "prompt_tokens": 775,
+            "ttft_ms": 696.62,
+            "total_ms": 2903.03,
+            "out_tokens": 38
+          },
+          {
+            "seq": 12,
+            "round": 3,
+            "agent": 3,
+            "prompt_tokens": 775,
+            "ttft_ms": 461.24,
+            "total_ms": 2623.49,
+            "out_tokens": 38
+          },
+          {
+            "seq": 13,
+            "round": 4,
+            "agent": 0,
+            "prompt_tokens": 836,
+            "ttft_ms": 323.07,
+            "total_ms": 2164.4,
+            "out_tokens": 32
+          },
+          {
+            "seq": 14,
+            "round": 4,
+            "agent": 1,
+            "prompt_tokens": 833,
+            "ttft_ms": 375.97,
+            "total_ms": 2190.92,
+            "out_tokens": 32
+          },
+          {
+            "seq": 15,
+            "round": 4,
+            "agent": 2,
+            "prompt_tokens": 838,
+            "ttft_ms": 325.8,
+            "total_ms": 2157.54,
+            "out_tokens": 32
+          },
+          {
+            "seq": 16,
+            "round": 4,
+            "agent": 3,
+            "prompt_tokens": 838,
+            "ttft_ms": 327.96,
+            "total_ms": 2336.66,
+            "out_tokens": 32
+          }
+        ],
+        "config": "4tenant_sim09",
+        "repeat": 0,
+        "server_args": [
+          "-np",
+          "4",
+          "--slot-prompt-similarity",
+          "0.9"
+        ]
+      },
+      {
+        "schema": "specarm.agentbench/1",
+        "label": "4tenant_sim09_r1",
+        "agents": 4,
+        "turns": 4,
+        "token_count_method": "apply_template+tokenize",
+        "preamble_tokens": 550,
+        "final_prompt_tokens": 838,
+        "cold_ttft_ms": [
+          4906.62,
+          586.75,
+          692.68,
+          631.3
+        ],
+        "warm_ttft_ms": [
+          6123.37,
+          1243.82,
+          1305.57,
+          420.68,
+          429.45,
+          482.79,
+          441.2,
+          447.66,
+          389.15,
+          357.79,
+          327.59,
+          367.94
+        ],
+        "warm_median_ms": 435.32,
+        "cold_median_ms": 661.99,
+        "rows": [
+          {
+            "seq": 1,
+            "round": 1,
+            "agent": 0,
+            "prompt_tokens": 610,
+            "ttft_ms": 4906.62,
+            "total_ms": 7427.41,
+            "out_tokens": 48
+          },
+          {
+            "seq": 2,
+            "round": 1,
+            "agent": 1,
+            "prompt_tokens": 605,
+            "ttft_ms": 586.75,
+            "total_ms": 3215.27,
+            "out_tokens": 48
+          },
+          {
+            "seq": 3,
+            "round": 1,
+            "agent": 2,
+            "prompt_tokens": 610,
+            "ttft_ms": 692.68,
+            "total_ms": 3239.09,
+            "out_tokens": 48
+          },
+          {
+            "seq": 4,
+            "round": 1,
+            "agent": 3,
+            "prompt_tokens": 610,
+            "ttft_ms": 631.3,
+            "total_ms": 3273.05,
+            "out_tokens": 48
+          },
+          {
+            "seq": 5,
+            "round": 2,
+            "agent": 0,
+            "prompt_tokens": 692,
+            "ttft_ms": 6123.37,
+            "total_ms": 9144.18,
+            "out_tokens": 48
+          },
+          {
+            "seq": 6,
+            "round": 2,
+            "agent": 1,
+            "prompt_tokens": 688,
+            "ttft_ms": 1243.82,
+            "total_ms": 3950.38,
+            "out_tokens": 48
+          },
+          {
+            "seq": 7,
+            "round": 2,
+            "agent": 2,
+            "prompt_tokens": 693,
+            "ttft_ms": 1305.57,
+            "total_ms": 3945.75,
+            "out_tokens": 48
+          },
+          {
+            "seq": 8,
+            "round": 2,
+            "agent": 3,
+            "prompt_tokens": 693,
+            "ttft_ms": 420.68,
+            "total_ms": 3133.39,
+            "out_tokens": 48
+          },
+          {
+            "seq": 9,
+            "round": 3,
+            "agent": 0,
+            "prompt_tokens": 774,
+            "ttft_ms": 429.45,
+            "total_ms": 2855.02,
+            "out_tokens": 37
+          },
+          {
+            "seq": 10,
+            "round": 3,
+            "agent": 1,
+            "prompt_tokens": 770,
+            "ttft_ms": 482.79,
+            "total_ms": 2742.43,
+            "out_tokens": 38
+          },
+          {
+            "seq": 11,
+            "round": 3,
+            "agent": 2,
+            "prompt_tokens": 775,
+            "ttft_ms": 441.2,
+            "total_ms": 2645.87,
+            "out_tokens": 38
+          },
+          {
+            "seq": 12,
+            "round": 3,
+            "agent": 3,
+            "prompt_tokens": 775,
+            "ttft_ms": 447.66,
+            "total_ms": 2621.77,
+            "out_tokens": 38
+          },
+          {
+            "seq": 13,
+            "round": 4,
+            "agent": 0,
+            "prompt_tokens": 836,
+            "ttft_ms": 389.15,
+            "total_ms": 2203.85,
+            "out_tokens": 32
+          },
+          {
+            "seq": 14,
+            "round": 4,
+            "agent": 1,
+            "prompt_tokens": 833,
+            "ttft_ms": 357.79,
+            "total_ms": 2135.76,
+            "out_tokens": 32
+          },
+          {
+            "seq": 15,
+            "round": 4,
+            "agent": 2,
+            "prompt_tokens": 838,
+            "ttft_ms": 327.59,
+            "total_ms": 2333.48,
+            "out_tokens": 32
+          },
+          {
+            "seq": 16,
+            "round": 4,
+            "agent": 3,
+            "prompt_tokens": 838,
+            "ttft_ms": 367.94,
+            "total_ms": 2358.03,
+            "out_tokens": 32
+          }
+        ],
+        "config": "4tenant_sim09",
+        "repeat": 1,
+        "server_args": [
+          "-np",
+          "4",
+          "--slot-prompt-similarity",
+          "0.9"
+        ]
+      },
+      {
+        "schema": "specarm.agentbench/1",
+        "label": "4tenant_sim09_r2",
+        "agents": 4,
+        "turns": 4,
+        "token_count_method": "apply_template+tokenize",
+        "preamble_tokens": 550,
+        "final_prompt_tokens": 838,
+        "cold_ttft_ms": [
+          5080.16,
+          561.75,
+          635.91,
+          663.88
+        ],
+        "warm_ttft_ms": [
+          5792.17,
+          1542.18,
+          1323.01,
+          411.47,
+          533.93,
+          458.54,
+          440.16,
+          467.35,
+          470.62,
+          475.76,
+          365.95,
+          328.22
+        ],
+        "warm_median_ms": 468.99,
+        "cold_median_ms": 649.89,
+        "rows": [
+          {
+            "seq": 1,
+            "round": 1,
+            "agent": 0,
+            "prompt_tokens": 610,
+            "ttft_ms": 5080.16,
+            "total_ms": 7736.12,
+            "out_tokens": 48
+          },
+          {
+            "seq": 2,
+            "round": 1,
+            "agent": 1,
+            "prompt_tokens": 605,
+            "ttft_ms": 561.75,
+            "total_ms": 3139.85,
+            "out_tokens": 48
+          },
+          {
+            "seq": 3,
+            "round": 1,
+            "agent": 2,
+            "prompt_tokens": 610,
+            "ttft_ms": 635.91,
+            "total_ms": 3244.81,
+            "out_tokens": 48
+          },
+          {
+            "seq": 4,
+            "round": 1,
+            "agent": 3,
+            "prompt_tokens": 610,
+            "ttft_ms": 663.88,
+            "total_ms": 3623.52,
+            "out_tokens": 48
+          },
+          {
+            "seq": 5,
+            "round": 2,
+            "agent": 0,
+            "prompt_tokens": 692,
+            "ttft_ms": 5792.17,
+            "total_ms": 8773.63,
+            "out_tokens": 48
+          },
+          {
+            "seq": 6,
+            "round": 2,
+            "agent": 1,
+            "prompt_tokens": 688,
+            "ttft_ms": 1542.18,
+            "total_ms": 4282.88,
+            "out_tokens": 48
+          },
+          {
+            "seq": 7,
+            "round": 2,
+            "agent": 2,
+            "prompt_tokens": 693,
+            "ttft_ms": 1323.01,
+            "total_ms": 4045.31,
+            "out_tokens": 48
+          },
+          {
+            "seq": 8,
+            "round": 2,
+            "agent": 3,
+            "prompt_tokens": 693,
+            "ttft_ms": 411.47,
+            "total_ms": 3271.55,
+            "out_tokens": 48
+          },
+          {
+            "seq": 9,
+            "round": 3,
+            "agent": 0,
+            "prompt_tokens": 774,
+            "ttft_ms": 533.93,
+            "total_ms": 2825.24,
+            "out_tokens": 37
+          },
+          {
+            "seq": 10,
+            "round": 3,
+            "agent": 1,
+            "prompt_tokens": 770,
+            "ttft_ms": 458.54,
+            "total_ms": 2669.52,
+            "out_tokens": 38
+          },
+          {
+            "seq": 11,
+            "round": 3,
+            "agent": 2,
+            "prompt_tokens": 775,
+            "ttft_ms": 440.16,
+            "total_ms": 2954.25,
+            "out_tokens": 38
+          },
+          {
+            "seq": 12,
+            "round": 3,
+            "agent": 3,
+            "prompt_tokens": 775,
+            "ttft_ms": 467.35,
+            "total_ms": 2719.63,
+            "out_tokens": 38
+          },
+          {
+            "seq": 13,
+            "round": 4,
+            "agent": 0,
+            "prompt_tokens": 836,
+            "ttft_ms": 470.62,
+            "total_ms": 2683.53,
+            "out_tokens": 32
+          },
+          {
+            "seq": 14,
+            "round": 4,
+            "agent": 1,
+            "prompt_tokens": 833,
+            "ttft_ms": 475.76,
+            "total_ms": 2633.17,
+            "out_tokens": 32
+          },
+          {
+            "seq": 15,
+            "round": 4,
+            "agent": 2,
+            "prompt_tokens": 838,
+            "ttft_ms": 365.95,
+            "total_ms": 2361.27,
+            "out_tokens": 32
+          },
+          {
+            "seq": 16,
+            "round": 4,
+            "agent": 3,
+            "prompt_tokens": 838,
+            "ttft_ms": 328.22,
+            "total_ms": 2197.15,
+            "out_tokens": 32
+          }
+        ],
+        "config": "4tenant_sim09",
+        "repeat": 2,
+        "server_args": [
+          "-np",
+          "4",
+          "--slot-prompt-similarity",
+          "0.9"
+        ]
+      },
+      {
+        "schema": "specarm.agentbench/1",
+        "label": "4tenant_sim09_r3",
+        "agents": 4,
+        "turns": 4,
+        "token_count_method": "apply_template+tokenize",
+        "preamble_tokens": 550,
+        "final_prompt_tokens": 838,
+        "cold_ttft_ms": [
+          5110.48,
+          568.1,
+          698.31,
+          637.61
+        ],
+        "warm_ttft_ms": [
+          5851.77,
+          1347.53,
+          1374.61,
+          411.97,
+          465.23,
+          501.77,
+          442.87,
+          463.12,
+          331.92,
+          368.96,
+          357.71,
+          328.98
+        ],
+        "warm_median_ms": 453.0,
+        "cold_median_ms": 667.96,
+        "rows": [
+          {
+            "seq": 1,
+            "round": 1,
+            "agent": 0,
+            "prompt_tokens": 610,
+            "ttft_ms": 5110.48,
+            "total_ms": 7860.48,
+            "out_tokens": 48
+          },
+          {
+            "seq": 2,
+            "round": 1,
+            "agent": 1,
+            "prompt_tokens": 605,
+            "ttft_ms": 568.1,
+            "total_ms": 3224.47,
+            "out_tokens": 48
+          },
+          {
+            "seq": 3,
+            "round": 1,
+            "agent": 2,
+            "prompt_tokens": 610,
+            "ttft_ms": 698.31,
+            "total_ms": 3692.35,
+            "out_tokens": 48
+          },
+          {
+            "seq": 4,
+            "round": 1,
+            "agent": 3,
+            "prompt_tokens": 610,
+            "ttft_ms": 637.61,
+            "total_ms": 3431.52,
+            "out_tokens": 48
+          },
+          {
+            "seq": 5,
+            "round": 2,
+            "agent": 0,
+            "prompt_tokens": 692,
+            "ttft_ms": 5851.77,
+            "total_ms": 8481.94,
+            "out_tokens": 48
+          },
+          {
+            "seq": 6,
+            "round": 2,
+            "agent": 1,
+            "prompt_tokens": 688,
+            "ttft_ms": 1347.53,
+            "total_ms": 4039.91,
+            "out_tokens": 48
+          },
+          {
+            "seq": 7,
+            "round": 2,
+            "agent": 2,
+            "prompt_tokens": 693,
+            "ttft_ms": 1374.61,
+            "total_ms": 4093.69,
+            "out_tokens": 48
+          },
+          {
+            "seq": 8,
+            "round": 2,
+            "agent": 3,
+            "prompt_tokens": 693,
+            "ttft_ms": 411.97,
+            "total_ms": 3264.58,
+            "out_tokens": 48
+          },
+          {
+            "seq": 9,
+            "round": 3,
+            "agent": 0,
+            "prompt_tokens": 774,
+            "ttft_ms": 465.23,
+            "total_ms": 2616.65,
+            "out_tokens": 37
+          },
+          {
+            "seq": 10,
+            "round": 3,
+            "agent": 1,
+            "prompt_tokens": 770,
+            "ttft_ms": 501.77,
+            "total_ms": 2759.79,
+            "out_tokens": 38
+          },
+          {
+            "seq": 11,
+            "round": 3,
+            "agent": 2,
+            "prompt_tokens": 775,
+            "ttft_ms": 442.87,
+            "total_ms": 2662.55,
+            "out_tokens": 38
+          },
+          {
+            "seq": 12,
+            "round": 3,
+            "agent": 3,
+            "prompt_tokens": 775,
+            "ttft_ms": 463.12,
+            "total_ms": 3065.65,
+            "out_tokens": 38
+          },
+          {
+            "seq": 13,
+            "round": 4,
+            "agent": 0,
+            "prompt_tokens": 836,
+            "ttft_ms": 331.92,
+            "total_ms": 2304.31,
+            "out_tokens": 32
+          },
+          {
+            "seq": 14,
+            "round": 4,
+            "agent": 1,
+            "prompt_tokens": 833,
+            "ttft_ms": 368.96,
+            "total_ms": 2333.12,
+            "out_tokens": 32
+          },
+          {
+            "seq": 15,
+            "round": 4,
+            "agent": 2,
+            "prompt_tokens": 838,
+            "ttft_ms": 357.71,
+            "total_ms": 2215.06,
+            "out_tokens": 32
+          },
+          {
+            "seq": 16,
+            "round": 4,
+            "agent": 3,
+            "prompt_tokens": 838,
+            "ttft_ms": 328.98,
+            "total_ms": 2281.02,
+            "out_tokens": 32
+          }
+        ],
+        "config": "4tenant_sim09",
+        "repeat": 3,
+        "server_args": [
+          "-np",
+          "4",
+          "--slot-prompt-similarity",
+          "0.9"
+        ]
+      },
+      {
+        "schema": "specarm.agentbench/1",
+        "label": "4tenant_sim09_r4",
+        "agents": 4,
+        "turns": 4,
+        "token_count_method": "apply_template+tokenize",
+        "preamble_tokens": 550,
+        "final_prompt_tokens": 838,
+        "cold_ttft_ms": [
+          4919.23,
+          612.63,
+          647.43,
+          640.23
+        ],
+        "warm_ttft_ms": [
+          6129.2,
+          1374.09,
+          1441.94,
+          441.21,
+          470.86,
+          506.62,
+          544.05,
+          521.52,
+          387.3,
+          370.61,
+          365.37,
+          357.8
+        ],
+        "warm_median_ms": 488.74,
+        "cold_median_ms": 643.83,
+        "rows": [
+          {
+            "seq": 1,
+            "round": 1,
+            "agent": 0,
+            "prompt_tokens": 610,
+            "ttft_ms": 4919.23,
+            "total_ms": 7779.23,
+            "out_tokens": 48
+          },
+          {
+            "seq": 2,
+            "round": 1,
+            "agent": 1,
+            "prompt_tokens": 605,
+            "ttft_ms": 612.63,
+            "total_ms": 3309.27,
+            "out_tokens": 48
+          },
+          {
+            "seq": 3,
+            "round": 1,
+            "agent": 2,
+            "prompt_tokens": 610,
+            "ttft_ms": 647.43,
+            "total_ms": 3531.56,
+            "out_tokens": 48
+          },
+          {
+            "seq": 4,
+            "round": 1,
+            "agent": 3,
+            "prompt_tokens": 610,
+            "ttft_ms": 640.23,
+            "total_ms": 3388.58,
+            "out_tokens": 48
+          },
+          {
+            "seq": 5,
+            "round": 2,
+            "agent": 0,
+            "prompt_tokens": 692,
+            "ttft_ms": 6129.2,
+            "total_ms": 9445.24,
+            "out_tokens": 48
+          },
+          {
+            "seq": 6,
+            "round": 2,
+            "agent": 1,
+            "prompt_tokens": 688,
+            "ttft_ms": 1374.09,
+            "total_ms": 4654.41,
+            "out_tokens": 48
+          },
+          {
+            "seq": 7,
+            "round": 2,
+            "agent": 2,
+            "prompt_tokens": 693,
+            "ttft_ms": 1441.94,
+            "total_ms": 4495.47,
+            "out_tokens": 48
+          },
+          {
+            "seq": 8,
+            "round": 2,
+            "agent": 3,
+            "prompt_tokens": 693,
+            "ttft_ms": 441.21,
+            "total_ms": 3744.84,
+            "out_tokens": 48
+          },
+          {
+            "seq": 9,
+            "round": 3,
+            "agent": 0,
+            "prompt_tokens": 774,
+            "ttft_ms": 470.86,
+            "total_ms": 2920.26,
+            "out_tokens": 37
+          },
+          {
+            "seq": 10,
+            "round": 3,
+            "agent": 1,
+            "prompt_tokens": 770,
+            "ttft_ms": 506.62,
+            "total_ms": 3466.72,
+            "out_tokens": 38
+          },
+          {
+            "seq": 11,
+            "round": 3,
+            "agent": 2,
+            "prompt_tokens": 775,
+            "ttft_ms": 544.05,
+            "total_ms": 3298.91,
+            "out_tokens": 38
+          },
+          {
+            "seq": 12,
+            "round": 3,
+            "agent": 3,
+            "prompt_tokens": 775,
+            "ttft_ms": 521.52,
+            "total_ms": 3088.25,
+            "out_tokens": 38
+          },
+          {
+            "seq": 13,
+            "round": 4,
+            "agent": 0,
+            "prompt_tokens": 836,
+            "ttft_ms": 387.3,
+            "total_ms": 2505.65,
+            "out_tokens": 32
+          },
+          {
+            "seq": 14,
+            "round": 4,
+            "agent": 1,
+            "prompt_tokens": 833,
+            "ttft_ms": 370.61,
+            "total_ms": 2814.42,
+            "out_tokens": 32
+          },
+          {
+            "seq": 15,
+            "round": 4,
+            "agent": 2,
+            "prompt_tokens": 838,
+            "ttft_ms": 365.37,
+            "total_ms": 2435.06,
+            "out_tokens": 32
+          },
+          {
+            "seq": 16,
+            "round": 4,
+            "agent": 3,
+            "prompt_tokens": 838,
+            "ttft_ms": 357.8,
+            "total_ms": 2436.88,
+            "out_tokens": 32
+          }
+        ],
+        "config": "4tenant_sim09",
+        "repeat": 4,
+        "server_args": [
+          "-np",
+          "4",
+          "--slot-prompt-similarity",
+          "0.9"
+        ]
+      }
+    ],
+    "8tenant_sim09": [
+      {
+        "schema": "specarm.agentbench/1",
+        "label": "8tenant_sim09_r0",
+        "agents": 8,
+        "turns": 4,
+        "token_count_method": "apply_template+tokenize",
+        "preamble_tokens": 550,
+        "final_prompt_tokens": 835,
+        "cold_ttft_ms": [
+          5484.54,
+          606.87,
+          693.32,
+          728.6,
+          697.15,
+          644.09,
+          666.78,
+          778.2
+        ],
+        "warm_ttft_ms": [
+          6802.0,
+          1485.19,
+          1435.25,
+          1397.16,
+          1426.49,
+          1396.57,
+          1402.81,
+          1354.08,
+          465.33,
+          2188.17,
+          497.96,
+          517.44,
+          499.23,
+          473.52,
+          487.81,
+          528.61,
+          359.15,
+          356.39,
+          392.83,
+          370.68,
+          391.69,
+          345.08,
+          399.28,
+          339.51
+        ],
+        "warm_median_ms": 498.6,
+        "cold_median_ms": 695.24,
+        "rows": [
+          {
+            "seq": 1,
+            "round": 1,
+            "agent": 0,
+            "prompt_tokens": 610,
+            "ttft_ms": 5484.54,
+            "total_ms": 8655.8,
+            "out_tokens": 48
+          },
+          {
+            "seq": 2,
+            "round": 1,
+            "agent": 1,
+            "prompt_tokens": 605,
+            "ttft_ms": 606.87,
+            "total_ms": 3923.24,
+            "out_tokens": 48
+          },
+          {
+            "seq": 3,
+            "round": 1,
+            "agent": 2,
+            "prompt_tokens": 610,
+            "ttft_ms": 693.32,
+            "total_ms": 3808.0,
+            "out_tokens": 48
+          },
+          {
+            "seq": 4,
+            "round": 1,
+            "agent": 3,
+            "prompt_tokens": 610,
+            "ttft_ms": 728.6,
+            "total_ms": 3768.12,
+            "out_tokens": 48
+          },
+          {
+            "seq": 5,
+            "round": 1,
+            "agent": 4,
+            "prompt_tokens": 611,
+            "ttft_ms": 697.15,
+            "total_ms": 3866.02,
+            "out_tokens": 48
+          },
+          {
+            "seq": 6,
+            "round": 1,
+            "agent": 5,
+            "prompt_tokens": 608,
+            "ttft_ms": 644.09,
+            "total_ms": 3698.87,
+            "out_tokens": 48
+          },
+          {
+            "seq": 7,
+            "round": 1,
+            "agent": 6,
+            "prompt_tokens": 609,
+            "ttft_ms": 666.78,
+            "total_ms": 3920.63,
+            "out_tokens": 48
+          },
+          {
+            "seq": 8,
+            "round": 1,
+            "agent": 7,
+            "prompt_tokens": 609,
+            "ttft_ms": 778.2,
+            "total_ms": 3982.62,
+            "out_tokens": 48
+          },
+          {
+            "seq": 9,
+            "round": 2,
+            "agent": 0,
+            "prompt_tokens": 692,
+            "ttft_ms": 6802.0,
+            "total_ms": 9817.75,
+            "out_tokens": 48
+          },
+          {
+            "seq": 10,
+            "round": 2,
+            "agent": 1,
+            "prompt_tokens": 688,
+            "ttft_ms": 1485.19,
+            "total_ms": 4468.23,
+            "out_tokens": 48
+          },
+          {
+            "seq": 11,
+            "round": 2,
+            "agent": 2,
+            "prompt_tokens": 693,
+            "ttft_ms": 1435.25,
+            "total_ms": 4461.54,
+            "out_tokens": 48
+          },
+          {
+            "seq": 12,
+            "round": 2,
+            "agent": 3,
+            "prompt_tokens": 693,
+            "ttft_ms": 1397.16,
+            "total_ms": 4649.65,
+            "out_tokens": 48
+          },
+          {
+            "seq": 13,
+            "round": 2,
+            "agent": 4,
+            "prompt_tokens": 697,
+            "ttft_ms": 1426.49,
+            "total_ms": 4417.27,
+            "out_tokens": 48
+          },
+          {
+            "seq": 14,
+            "round": 2,
+            "agent": 5,
+            "prompt_tokens": 691,
+            "ttft_ms": 1396.57,
+            "total_ms": 4412.47,
+            "out_tokens": 48
+          },
+          {
+            "seq": 15,
+            "round": 2,
+            "agent": 6,
+            "prompt_tokens": 691,
+            "ttft_ms": 1402.81,
+            "total_ms": 4623.75,
+            "out_tokens": 48
+          },
+          {
+            "seq": 16,
+            "round": 2,
+            "agent": 7,
+            "prompt_tokens": 691,
+            "ttft_ms": 1354.08,
+            "total_ms": 4428.84,
+            "out_tokens": 48
+          },
+          {
+            "seq": 17,
+            "round": 3,
+            "agent": 0,
+            "prompt_tokens": 774,
+            "ttft_ms": 465.33,
+            "total_ms": 2850.32,
+            "out_tokens": 37
+          },
+          {
+            "seq": 18,
+            "round": 3,
+            "agent": 1,
+            "prompt_tokens": 770,
+            "ttft_ms": 2188.17,
+            "total_ms": 4943.61,
+            "out_tokens": 38
+          },
+          {
+            "seq": 19,
+            "round": 3,
+            "agent": 2,
+            "prompt_tokens": 775,
+            "ttft_ms": 497.96,
+            "total_ms": 2912.47,
+            "out_tokens": 38
+          },
+          {
+            "seq": 20,
+            "round": 3,
+            "agent": 3,
+            "prompt_tokens": 775,
+            "ttft_ms": 517.44,
+            "total_ms": 3057.18,
+            "out_tokens": 38
+          },
+          {
+            "seq": 21,
+            "round": 3,
+            "agent": 4,
+            "prompt_tokens": 782,
+            "ttft_ms": 499.23,
+            "total_ms": 3183.84,
+            "out_tokens": 40
+          },
+          {
+            "seq": 22,
+            "round": 3,
+            "agent": 5,
+            "prompt_tokens": 773,
+            "ttft_ms": 473.52,
+            "total_ms": 3361.9,
+            "out_tokens": 38
+          },
+          {
+            "seq": 23,
+            "round": 3,
+            "agent": 6,
+            "prompt_tokens": 773,
+            "ttft_ms": 487.81,
+            "total_ms": 3459.95,
+            "out_tokens": 38
+          },
+          {
+            "seq": 24,
+            "round": 3,
+            "agent": 7,
+            "prompt_tokens": 773,
+            "ttft_ms": 528.61,
+            "total_ms": 3225.83,
+            "out_tokens": 38
+          },
+          {
+            "seq": 25,
+            "round": 4,
+            "agent": 0,
+            "prompt_tokens": 836,
+            "ttft_ms": 359.15,
+            "total_ms": 2629.68,
+            "out_tokens": 32
+          },
+          {
+            "seq": 26,
+            "round": 4,
+            "agent": 1,
+            "prompt_tokens": 833,
+            "ttft_ms": 356.39,
+            "total_ms": 2400.42,
+            "out_tokens": 32
+          },
+          {
+            "seq": 27,
+            "round": 4,
+            "agent": 2,
+            "prompt_tokens": 838,
+            "ttft_ms": 392.83,
+            "total_ms": 2707.54,
+            "out_tokens": 32
+          },
+          {
+            "seq": 28,
+            "round": 4,
+            "agent": 3,
+            "prompt_tokens": 838,
+            "ttft_ms": 370.68,
+            "total_ms": 2510.52,
+            "out_tokens": 32
+          },
+          {
+            "seq": 29,
+            "round": 4,
+            "agent": 4,
+            "prompt_tokens": 848,
+            "ttft_ms": 391.69,
+            "total_ms": 2546.4,
+            "out_tokens": 32
+          },
+          {
+            "seq": 30,
+            "round": 4,
+            "agent": 5,
+            "prompt_tokens": 835,
+            "ttft_ms": 345.08,
+            "total_ms": 2419.75,
+            "out_tokens": 32
+          },
+          {
+            "seq": 31,
+            "round": 4,
+            "agent": 6,
+            "prompt_tokens": 836,
+            "ttft_ms": 399.28,
+            "total_ms": 2556.61,
+            "out_tokens": 32
+          },
+          {
+            "seq": 32,
+            "round": 4,
+            "agent": 7,
+            "prompt_tokens": 835,
+            "ttft_ms": 339.51,
+            "total_ms": 2470.76,
+            "out_tokens": 32
+          }
+        ],
+        "config": "8tenant_sim09",
+        "repeat": 0,
+        "server_args": [
+          "-np",
+          "4",
+          "--slot-prompt-similarity",
+          "0.9"
+        ]
+      },
+      {
+        "schema": "specarm.agentbench/1",
+        "label": "8tenant_sim09_r1",
+        "agents": 8,
+        "turns": 4,
+        "token_count_method": "apply_template+tokenize",
+        "preamble_tokens": 550,
+        "final_prompt_tokens": 835,
+        "cold_ttft_ms": [
+          5252.01,
+          647.82,
+          674.66,
+          671.76,
+          698.33,
+          637.22,
+          688.88,
+          634.14
+        ],
+        "warm_ttft_ms": [
+          6119.11,
+          1282.08,
+          1404.37,
+          1316.94,
+          1353.85,
+          1277.93,
+          1300.64,
+          1375.05,
+          456.14,
+          2051.26,
+          446.55,
+          476.9,
+          535.03,
+          474.97,
+          468.02,
+          450.04,
+          363.62,
+          342.8,
+          346.13,
+          349.17,
+          369.1,
+          329.76,
+          347.05,
+          321.26
+        ],
+        "warm_median_ms": 471.5,
+        "cold_median_ms": 673.21,
+        "rows": [
+          {
+            "seq": 1,
+            "round": 1,
+            "agent": 0,
+            "prompt_tokens": 610,
+            "ttft_ms": 5252.01,
+            "total_ms": 8283.27,
+            "out_tokens": 48
+          },
+          {
+            "seq": 2,
+            "round": 1,
+            "agent": 1,
+            "prompt_tokens": 605,
+            "ttft_ms": 647.82,
+            "total_ms": 3936.74,
+            "out_tokens": 48
+          },
+          {
+            "seq": 3,
+            "round": 1,
+            "agent": 2,
+            "prompt_tokens": 610,
+            "ttft_ms": 674.66,
+            "total_ms": 3633.45,
+            "out_tokens": 48
+          },
+          {
+            "seq": 4,
+            "round": 1,
+            "agent": 3,
+            "prompt_tokens": 610,
+            "ttft_ms": 671.76,
+            "total_ms": 3535.56,
+            "out_tokens": 48
+          },
+          {
+            "seq": 5,
+            "round": 1,
+            "agent": 4,
+            "prompt_tokens": 611,
+            "ttft_ms": 698.33,
+            "total_ms": 3617.35,
+            "out_tokens": 48
+          },
+          {
+            "seq": 6,
+            "round": 1,
+            "agent": 5,
+            "prompt_tokens": 608,
+            "ttft_ms": 637.22,
+            "total_ms": 5240.64,
+            "out_tokens": 48
+          },
+          {
+            "seq": 7,
+            "round": 1,
+            "agent": 6,
+            "prompt_tokens": 609,
+            "ttft_ms": 688.88,
+            "total_ms": 4031.99,
+            "out_tokens": 48
+          },
+          {
+            "seq": 8,
+            "round": 1,
+            "agent": 7,
+            "prompt_tokens": 609,
+            "ttft_ms": 634.14,
+            "total_ms": 3438.67,
+            "out_tokens": 48
+          },
+          {
+            "seq": 9,
+            "round": 2,
+            "agent": 0,
+            "prompt_tokens": 692,
+            "ttft_ms": 6119.11,
+            "total_ms": 9201.86,
+            "out_tokens": 48
+          },
+          {
+            "seq": 10,
+            "round": 2,
+            "agent": 1,
+            "prompt_tokens": 688,
+            "ttft_ms": 1282.08,
+            "total_ms": 4154.59,
+            "out_tokens": 48
+          },
+          {
+            "seq": 11,
+            "round": 2,
+            "agent": 2,
+            "prompt_tokens": 693,
+            "ttft_ms": 1404.37,
+            "total_ms": 4286.82,
+            "out_tokens": 48
+          },
+          {
+            "seq": 12,
+            "round": 2,
+            "agent": 3,
+            "prompt_tokens": 693,
+            "ttft_ms": 1316.94,
+            "total_ms": 4204.9,
+            "out_tokens": 48
+          },
+          {
+            "seq": 13,
+            "round": 2,
+            "agent": 4,
+            "prompt_tokens": 697,
+            "ttft_ms": 1353.85,
+            "total_ms": 4171.82,
+            "out_tokens": 48
+          },
+          {
+            "seq": 14,
+            "round": 2,
+            "agent": 5,
+            "prompt_tokens": 691,
+            "ttft_ms": 1277.93,
+            "total_ms": 4024.81,
+            "out_tokens": 48
+          },
+          {
+            "seq": 15,
+            "round": 2,
+            "agent": 6,
+            "prompt_tokens": 691,
+            "ttft_ms": 1300.64,
+            "total_ms": 4343.89,
+            "out_tokens": 48
+          },
+          {
+            "seq": 16,
+            "round": 2,
+            "agent": 7,
+            "prompt_tokens": 691,
+            "ttft_ms": 1375.05,
+            "total_ms": 4518.56,
+            "out_tokens": 48
+          },
+          {
+            "seq": 17,
+            "round": 3,
+            "agent": 0,
+            "prompt_tokens": 774,
+            "ttft_ms": 456.14,
+            "total_ms": 2684.39,
+            "out_tokens": 37
+          },
+          {
+            "seq": 18,
+            "round": 3,
+            "agent": 1,
+            "prompt_tokens": 770,
+            "ttft_ms": 2051.26,
+            "total_ms": 4429.57,
+            "out_tokens": 38
+          },
+          {
+            "seq": 19,
+            "round": 3,
+            "agent": 2,
+            "prompt_tokens": 775,
+            "ttft_ms": 446.55,
+            "total_ms": 2759.85,
+            "out_tokens": 38
+          },
+          {
+            "seq": 20,
+            "round": 3,
+            "agent": 3,
+            "prompt_tokens": 775,
+            "ttft_ms": 476.9,
+            "total_ms": 3235.57,
+            "out_tokens": 38
+          },
+          {
+            "seq": 21,
+            "round": 3,
+            "agent": 4,
+            "prompt_tokens": 782,
+            "ttft_ms": 535.03,
+            "total_ms": 3316.18,
+            "out_tokens": 40
+          },
+          {
+            "seq": 22,
+            "round": 3,
+            "agent": 5,
+            "prompt_tokens": 773,
+            "ttft_ms": 474.97,
+            "total_ms": 2777.82,
+            "out_tokens": 38
+          },
+          {
+            "seq": 23,
+            "round": 3,
+            "agent": 6,
+            "prompt_tokens": 773,
+            "ttft_ms": 468.02,
+            "total_ms": 2716.4,
+            "out_tokens": 38
+          },
+          {
+            "seq": 24,
+            "round": 3,
+            "agent": 7,
+            "prompt_tokens": 773,
+            "ttft_ms": 450.04,
+            "total_ms": 2890.62,
+            "out_tokens": 38
+          },
+          {
+            "seq": 25,
+            "round": 4,
+            "agent": 0,
+            "prompt_tokens": 836,
+            "ttft_ms": 363.62,
+            "total_ms": 2449.01,
+            "out_tokens": 32
+          },
+          {
+            "seq": 26,
+            "round": 4,
+            "agent": 1,
+            "prompt_tokens": 833,
+            "ttft_ms": 342.8,
+            "total_ms": 2212.84,
+            "out_tokens": 32
+          },
+          {
+            "seq": 27,
+            "round": 4,
+            "agent": 2,
+            "prompt_tokens": 838,
+            "ttft_ms": 346.13,
+            "total_ms": 2296.79,
+            "out_tokens": 32
+          },
+          {
+            "seq": 28,
+            "round": 4,
+            "agent": 3,
+            "prompt_tokens": 838,
+            "ttft_ms": 349.17,
+            "total_ms": 2253.81,
+            "out_tokens": 32
+          },
+          {
+            "seq": 29,
+            "round": 4,
+            "agent": 4,
+            "prompt_tokens": 848,
+            "ttft_ms": 369.1,
+            "total_ms": 2544.27,
+            "out_tokens": 32
+          },
+          {
+            "seq": 30,
+            "round": 4,
+            "agent": 5,
+            "prompt_tokens": 835,
+            "ttft_ms": 329.76,
+            "total_ms": 2203.67,
+            "out_tokens": 32
+          },
+          {
+            "seq": 31,
+            "round": 4,
+            "agent": 6,
+            "prompt_tokens": 836,
+            "ttft_ms": 347.05,
+            "total_ms": 2250.13,
+            "out_tokens": 32
+          },
+          {
+            "seq": 32,
+            "round": 4,
+            "agent": 7,
+            "prompt_tokens": 835,
+            "ttft_ms": 321.26,
+            "total_ms": 2321.03,
+            "out_tokens": 32
+          }
+        ],
+        "config": "8tenant_sim09",
+        "repeat": 1,
+        "server_args": [
+          "-np",
+          "4",
+          "--slot-prompt-similarity",
+          "0.9"
+        ]
+      },
+      {
+        "schema": "specarm.agentbench/1",
+        "label": "8tenant_sim09_r2",
+        "agents": 8,
+        "turns": 4,
+        "token_count_method": "apply_template+tokenize",
+        "preamble_tokens": 550,
+        "final_prompt_tokens": 835,
+        "cold_ttft_ms": [
+          5196.25,
+          587.01,
+          689.69,
+          636.62,
+          654.54,
+          742.7,
+          642.19,
+          656.41
+        ],
+        "warm_ttft_ms": [
+          6310.34,
+          1582.72,
+          1428.69,
+          1412.21,
+          1427.35,
+          1382.93,
+          1354.6,
+          1362.74,
+          472.07,
+          2155.27,
+          571.37,
+          503.51,
+          519.83,
+          487.78,
+          479.3,
+          471.74,
+          386.52,
+          357.6,
+          412.57,
+          358.51,
+          383.67,
+          338.87,
+          400.44,
+          341.11
+        ],
+        "warm_median_ms": 495.64,
+        "cold_median_ms": 655.47,
+        "rows": [
+          {
+            "seq": 1,
+            "round": 1,
+            "agent": 0,
+            "prompt_tokens": 610,
+            "ttft_ms": 5196.25,
+            "total_ms": 8036.31,
+            "out_tokens": 48
+          },
+          {
+            "seq": 2,
+            "round": 1,
+            "agent": 1,
+            "prompt_tokens": 605,
+            "ttft_ms": 587.01,
+            "total_ms": 3589.97,
+            "out_tokens": 48
+          },
+          {
+            "seq": 3,
+            "round": 1,
+            "agent": 2,
+            "prompt_tokens": 610,
+            "ttft_ms": 689.69,
+            "total_ms": 3436.03,
+            "out_tokens": 48
+          },
+          {
+            "seq": 4,
+            "round": 1,
+            "agent": 3,
+            "prompt_tokens": 610,
+            "ttft_ms": 636.62,
+            "total_ms": 3493.85,
+            "out_tokens": 48
+          },
+          {
+            "seq": 5,
+            "round": 1,
+            "agent": 4,
+            "prompt_tokens": 611,
+            "ttft_ms": 654.54,
+            "total_ms": 3369.66,
+            "out_tokens": 48
+          },
+          {
+            "seq": 6,
+            "round": 1,
+            "agent": 5,
+            "prompt_tokens": 608,
+            "ttft_ms": 742.7,
+            "total_ms": 3924.22,
+            "out_tokens": 48
+          },
+          {
+            "seq": 7,
+            "round": 1,
+            "agent": 6,
+            "prompt_tokens": 609,
+            "ttft_ms": 642.19,
+            "total_ms": 3555.71,
+            "out_tokens": 48
+          },
+          {
+            "seq": 8,
+            "round": 1,
+            "agent": 7,
+            "prompt_tokens": 609,
+            "ttft_ms": 656.41,
+            "total_ms": 3368.04,
+            "out_tokens": 48
+          },
+          {
+            "seq": 9,
+            "round": 2,
+            "agent": 0,
+            "prompt_tokens": 692,
+            "ttft_ms": 6310.34,
+            "total_ms": 9662.18,
+            "out_tokens": 48
+          },
+          {
+            "seq": 10,
+            "round": 2,
+            "agent": 1,
+            "prompt_tokens": 688,
+            "ttft_ms": 1582.72,
+            "total_ms": 4749.89,
+            "out_tokens": 48
+          },
+          {
+            "seq": 11,
+            "round": 2,
+            "agent": 2,
+            "prompt_tokens": 693,
+            "ttft_ms": 1428.69,
+            "total_ms": 4434.78,
+            "out_tokens": 48
+          },
+          {
+            "seq": 12,
+            "round": 2,
+            "agent": 3,
+            "prompt_tokens": 693,
+            "ttft_ms": 1412.21,
+            "total_ms": 4476.06,
+            "out_tokens": 48
+          },
+          {
+            "seq": 13,
+            "round": 2,
+            "agent": 4,
+            "prompt_tokens": 697,
+            "ttft_ms": 1427.35,
+            "total_ms": 4522.64,
+            "out_tokens": 48
+          },
+          {
+            "seq": 14,
+            "round": 2,
+            "agent": 5,
+            "prompt_tokens": 691,
+            "ttft_ms": 1382.93,
+            "total_ms": 4669.1,
+            "out_tokens": 48
+          },
+          {
+            "seq": 15,
+            "round": 2,
+            "agent": 6,
+            "prompt_tokens": 691,
+            "ttft_ms": 1354.6,
+            "total_ms": 4639.15,
+            "out_tokens": 48
+          },
+          {
+            "seq": 16,
+            "round": 2,
+            "agent": 7,
+            "prompt_tokens": 691,
+            "ttft_ms": 1362.74,
+            "total_ms": 4372.79,
+            "out_tokens": 48
+          },
+          {
+            "seq": 17,
+            "round": 3,
+            "agent": 0,
+            "prompt_tokens": 774,
+            "ttft_ms": 472.07,
+            "total_ms": 3017.61,
+            "out_tokens": 37
+          },
+          {
+            "seq": 18,
+            "round": 3,
+            "agent": 1,
+            "prompt_tokens": 770,
+            "ttft_ms": 2155.27,
+            "total_ms": 4722.32,
+            "out_tokens": 38
+          },
+          {
+            "seq": 19,
+            "round": 3,
+            "agent": 2,
+            "prompt_tokens": 775,
+            "ttft_ms": 571.37,
+            "total_ms": 3530.37,
+            "out_tokens": 38
+          },
+          {
+            "seq": 20,
+            "round": 3,
+            "agent": 3,
+            "prompt_tokens": 775,
+            "ttft_ms": 503.51,
+            "total_ms": 3179.64,
+            "out_tokens": 38
+          },
+          {
+            "seq": 21,
+            "round": 3,
+            "agent": 4,
+            "prompt_tokens": 782,
+            "ttft_ms": 519.83,
+            "total_ms": 3166.86,
+            "out_tokens": 40
+          },
+          {
+            "seq": 22,
+            "round": 3,
+            "agent": 5,
+            "prompt_tokens": 773,
+            "ttft_ms": 487.78,
+            "total_ms": 2981.06,
+            "out_tokens": 38
+          },
+          {
+            "seq": 23,
+            "round": 3,
+            "agent": 6,
+            "prompt_tokens": 773,
+            "ttft_ms": 479.3,
+            "total_ms": 3200.85,
+            "out_tokens": 38
+          },
+          {
+            "seq": 24,
+            "round": 3,
+            "agent": 7,
+            "prompt_tokens": 773,
+            "ttft_ms": 471.74,
+            "total_ms": 3114.76,
+            "out_tokens": 38
+          },
+          {
+            "seq": 25,
+            "round": 4,
+            "agent": 0,
+            "prompt_tokens": 836,
+            "ttft_ms": 386.52,
+            "total_ms": 2501.75,
+            "out_tokens": 32
+          },
+          {
+            "seq": 26,
+            "round": 4,
+            "agent": 1,
+            "prompt_tokens": 833,
+            "ttft_ms": 357.6,
+            "total_ms": 2405.85,
+            "out_tokens": 32
+          },
+          {
+            "seq": 27,
+            "round": 4,
+            "agent": 2,
+            "prompt_tokens": 838,
+            "ttft_ms": 412.57,
+            "total_ms": 2607.39,
+            "out_tokens": 32
+          },
+          {
+            "seq": 28,
+            "round": 4,
+            "agent": 3,
+            "prompt_tokens": 838,
+            "ttft_ms": 358.51,
+            "total_ms": 2376.16,
+            "out_tokens": 32
+          },
+          {
+            "seq": 29,
+            "round": 4,
+            "agent": 4,
+            "prompt_tokens": 848,
+            "ttft_ms": 383.67,
+            "total_ms": 2595.77,
+            "out_tokens": 32
+          },
+          {
+            "seq": 30,
+            "round": 4,
+            "agent": 5,
+            "prompt_tokens": 835,
+            "ttft_ms": 338.87,
+            "total_ms": 2375.08,
+            "out_tokens": 32
+          },
+          {
+            "seq": 31,
+            "round": 4,
+            "agent": 6,
+            "prompt_tokens": 836,
+            "ttft_ms": 400.44,
+            "total_ms": 2538.22,
+            "out_tokens": 32
+          },
+          {
+            "seq": 32,
+            "round": 4,
+            "agent": 7,
+            "prompt_tokens": 835,
+            "ttft_ms": 341.11,
+            "total_ms": 2380.94,
+            "out_tokens": 32
+          }
+        ],
+        "config": "8tenant_sim09",
+        "repeat": 2,
+        "server_args": [
+          "-np",
+          "4",
+          "--slot-prompt-similarity",
+          "0.9"
+        ]
+      },
+      {
+        "schema": "specarm.agentbench/1",
+        "label": "8tenant_sim09_r3",
+        "agents": 8,
+        "turns": 4,
+        "token_count_method": "apply_template+tokenize",
+        "preamble_tokens": 550,
+        "final_prompt_tokens": 835,
+        "cold_ttft_ms": [
+          5385.36,
+          703.04,
+          676.78,
+          761.53,
+          829.45,
+          687.71,
+          674.27,
+          651.32
+        ],
+        "warm_ttft_ms": [
+          5832.36,
+          1158.04,
+          1280.5,
+          1226.9,
+          1209.48,
+          1156.47,
+          1382.78,
+          1252.03,
+          517.53,
+          2150.14,
+          525.63,
+          459.52,
+          443.47,
+          464.7,
+          506.8,
+          473.57,
+          339.39,
+          350.08,
+          337.39,
+          476.48,
+          356.34,
+          349.6,
+          333.41,
+          314.66
+        ],
+        "warm_median_ms": 491.64,
+        "cold_median_ms": 695.38,
+        "rows": [
+          {
+            "seq": 1,
+            "round": 1,
+            "agent": 0,
+            "prompt_tokens": 610,
+            "ttft_ms": 5385.36,
+            "total_ms": 8328.17,
+            "out_tokens": 48
+          },
+          {
+            "seq": 2,
+            "round": 1,
+            "agent": 1,
+            "prompt_tokens": 605,
+            "ttft_ms": 703.04,
+            "total_ms": 3743.22,
+            "out_tokens": 48
+          },
+          {
+            "seq": 3,
+            "round": 1,
+            "agent": 2,
+            "prompt_tokens": 610,
+            "ttft_ms": 676.78,
+            "total_ms": 3642.86,
+            "out_tokens": 48
+          },
+          {
+            "seq": 4,
+            "round": 1,
+            "agent": 3,
+            "prompt_tokens": 610,
+            "ttft_ms": 761.53,
+            "total_ms": 4696.82,
+            "out_tokens": 48
+          },
+          {
+            "seq": 5,
+            "round": 1,
+            "agent": 4,
+            "prompt_tokens": 611,
+            "ttft_ms": 829.45,
+            "total_ms": 3963.74,
+            "out_tokens": 48
+          },
+          {
+            "seq": 6,
+            "round": 1,
+            "agent": 5,
+            "prompt_tokens": 608,
+            "ttft_ms": 687.71,
+            "total_ms": 3779.23,
+            "out_tokens": 48
+          },
+          {
+            "seq": 7,
+            "round": 1,
+            "agent": 6,
+            "prompt_tokens": 609,
+            "ttft_ms": 674.27,
+            "total_ms": 3989.76,
+            "out_tokens": 48
+          },
+          {
+            "seq": 8,
+            "round": 1,
+            "agent": 7,
+            "prompt_tokens": 609,
+            "ttft_ms": 651.32,
+            "total_ms": 3726.73,
+            "out_tokens": 48
+          },
+          {
+            "seq": 9,
+            "round": 2,
+            "agent": 0,
+            "prompt_tokens": 692,
+            "ttft_ms": 5832.36,
+            "total_ms": 8235.65,
+            "out_tokens": 48
+          },
+          {
+            "seq": 10,
+            "round": 2,
+            "agent": 1,
+            "prompt_tokens": 688,
+            "ttft_ms": 1158.04,
+            "total_ms": 3516.89,
+            "out_tokens": 48
+          },
+          {
+            "seq": 11,
+            "round": 2,
+            "agent": 2,
+            "prompt_tokens": 693,
+            "ttft_ms": 1280.5,
+            "total_ms": 3627.68,
+            "out_tokens": 48
+          },
+          {
+            "seq": 12,
+            "round": 2,
+            "agent": 3,
+            "prompt_tokens": 693,
+            "ttft_ms": 1226.9,
+            "total_ms": 3476.62,
+            "out_tokens": 48
+          },
+          {
+            "seq": 13,
+            "round": 2,
+            "agent": 4,
+            "prompt_tokens": 697,
+            "ttft_ms": 1209.48,
+            "total_ms": 3771.78,
+            "out_tokens": 48
+          },
+          {
+            "seq": 14,
+            "round": 2,
+            "agent": 5,
+            "prompt_tokens": 691,
+            "ttft_ms": 1156.47,
+            "total_ms": 3489.31,
+            "out_tokens": 48
+          },
+          {
+            "seq": 15,
+            "round": 2,
+            "agent": 6,
+            "prompt_tokens": 691,
+            "ttft_ms": 1382.78,
+            "total_ms": 3961.43,
+            "out_tokens": 48
+          },
+          {
+            "seq": 16,
+            "round": 2,
+            "agent": 7,
+            "prompt_tokens": 691,
+            "ttft_ms": 1252.03,
+            "total_ms": 3906.49,
+            "out_tokens": 48
+          },
+          {
+            "seq": 17,
+            "round": 3,
+            "agent": 0,
+            "prompt_tokens": 774,
+            "ttft_ms": 517.53,
+            "total_ms": 2478.98,
+            "out_tokens": 37
+          },
+          {
+            "seq": 18,
+            "round": 3,
+            "agent": 1,
+            "prompt_tokens": 770,
+            "ttft_ms": 2150.14,
+            "total_ms": 4328.71,
+            "out_tokens": 38
+          },
+          {
+            "seq": 19,
+            "round": 3,
+            "agent": 2,
+            "prompt_tokens": 775,
+            "ttft_ms": 525.63,
+            "total_ms": 2669.56,
+            "out_tokens": 38
+          },
+          {
+            "seq": 20,
+            "round": 3,
+            "agent": 3,
+            "prompt_tokens": 775,
+            "ttft_ms": 459.52,
+            "total_ms": 2625.91,
+            "out_tokens": 38
+          },
+          {
+            "seq": 21,
+            "round": 3,
+            "agent": 4,
+            "prompt_tokens": 782,
+            "ttft_ms": 443.47,
+            "total_ms": 2511.87,
+            "out_tokens": 40
+          },
+          {
+            "seq": 22,
+            "round": 3,
+            "agent": 5,
+            "prompt_tokens": 773,
+            "ttft_ms": 464.7,
+            "total_ms": 3169.3,
+            "out_tokens": 38
+          },
+          {
+            "seq": 23,
+            "round": 3,
+            "agent": 6,
+            "prompt_tokens": 773,
+            "ttft_ms": 506.8,
+            "total_ms": 3070.52,
+            "out_tokens": 38
+          },
+          {
+            "seq": 24,
+            "round": 3,
+            "agent": 7,
+            "prompt_tokens": 773,
+            "ttft_ms": 473.57,
+            "total_ms": 2766.67,
+            "out_tokens": 38
+          },
+          {
+            "seq": 25,
+            "round": 4,
+            "agent": 0,
+            "prompt_tokens": 836,
+            "ttft_ms": 339.39,
+            "total_ms": 2157.79,
+            "out_tokens": 32
+          },
+          {
+            "seq": 26,
+            "round": 4,
+            "agent": 1,
+            "prompt_tokens": 833,
+            "ttft_ms": 350.08,
+            "total_ms": 2448.25,
+            "out_tokens": 32
+          },
+          {
+            "seq": 27,
+            "round": 4,
+            "agent": 2,
+            "prompt_tokens": 838,
+            "ttft_ms": 337.39,
+            "total_ms": 2344.22,
+            "out_tokens": 32
+          },
+          {
+            "seq": 28,
+            "round": 4,
+            "agent": 3,
+            "prompt_tokens": 838,
+            "ttft_ms": 476.48,
+            "total_ms": 2293.48,
+            "out_tokens": 32
+          },
+          {
+            "seq": 29,
+            "round": 4,
+            "agent": 4,
+            "prompt_tokens": 848,
+            "ttft_ms": 356.34,
+            "total_ms": 2168.13,
+            "out_tokens": 32
+          },
+          {
+            "seq": 30,
+            "round": 4,
+            "agent": 5,
+            "prompt_tokens": 835,
+            "ttft_ms": 349.6,
+            "total_ms": 2209.43,
+            "out_tokens": 32
+          },
+          {
+            "seq": 31,
+            "round": 4,
+            "agent": 6,
+            "prompt_tokens": 836,
+            "ttft_ms": 333.41,
+            "total_ms": 2223.41,
+            "out_tokens": 32
+          },
+          {
+            "seq": 32,
+            "round": 4,
+            "agent": 7,
+            "prompt_tokens": 835,
+            "ttft_ms": 314.66,
+            "total_ms": 2442.08,
+            "out_tokens": 32
+          }
+        ],
+        "config": "8tenant_sim09",
+        "repeat": 3,
+        "server_args": [
+          "-np",
+          "4",
+          "--slot-prompt-similarity",
+          "0.9"
+        ]
+      },
+      {
+        "schema": "specarm.agentbench/1",
+        "label": "8tenant_sim09_r4",
+        "agents": 8,
+        "turns": 4,
+        "token_count_method": "apply_template+tokenize",
+        "preamble_tokens": 550,
+        "final_prompt_tokens": 835,
+        "cold_ttft_ms": [
+          4965.37,
+          562.87,
+          623.04,
+          631.76,
+          641.28,
+          704.9,
+          671.81,
+          614.44
+        ],
+        "warm_ttft_ms": [
+          5945.57,
+          1298.72,
+          1334.48,
+          1301.96,
+          1320.18,
+          1474.73,
+          1367.76,
+          1376.41,
+          477.05,
+          2308.02,
+          567.93,
+          535.68,
+          536.86,
+          505.76,
+          474.57,
+          478.7,
+          362.14,
+          362.11,
+          461.03,
+          365.42,
+          386.01,
+          336.11,
+          429.28,
+          337.22
+        ],
+        "warm_median_ms": 520.72,
+        "cold_median_ms": 636.52,
+        "rows": [
+          {
+            "seq": 1,
+            "round": 1,
+            "agent": 0,
+            "prompt_tokens": 610,
+            "ttft_ms": 4965.37,
+            "total_ms": 7597.34,
+            "out_tokens": 48
+          },
+          {
+            "seq": 2,
+            "round": 1,
+            "agent": 1,
+            "prompt_tokens": 605,
+            "ttft_ms": 562.87,
+            "total_ms": 3210.45,
+            "out_tokens": 48
+          },
+          {
+            "seq": 3,
+            "round": 1,
+            "agent": 2,
+            "prompt_tokens": 610,
+            "ttft_ms": 623.04,
+            "total_ms": 3276.14,
+            "out_tokens": 48
+          },
+          {
+            "seq": 4,
+            "round": 1,
+            "agent": 3,
+            "prompt_tokens": 610,
+            "ttft_ms": 631.76,
+            "total_ms": 3240.13,
+            "out_tokens": 48
+          },
+          {
+            "seq": 5,
+            "round": 1,
+            "agent": 4,
+            "prompt_tokens": 611,
+            "ttft_ms": 641.28,
+            "total_ms": 3566.98,
+            "out_tokens": 48
+          },
+          {
+            "seq": 6,
+            "round": 1,
+            "agent": 5,
+            "prompt_tokens": 608,
+            "ttft_ms": 704.9,
+            "total_ms": 3737.87,
+            "out_tokens": 48
+          },
+          {
+            "seq": 7,
+            "round": 1,
+            "agent": 6,
+            "prompt_tokens": 609,
+            "ttft_ms": 671.81,
+            "total_ms": 3421.01,
+            "out_tokens": 48
+          },
+          {
+            "seq": 8,
+            "round": 1,
+            "agent": 7,
+            "prompt_tokens": 609,
+            "ttft_ms": 614.44,
+            "total_ms": 3306.87,
+            "out_tokens": 48
+          },
+          {
+            "seq": 9,
+            "round": 2,
+            "agent": 0,
+            "prompt_tokens": 692,
+            "ttft_ms": 5945.57,
+            "total_ms": 8539.86,
+            "out_tokens": 48
+          },
+          {
+            "seq": 10,
+            "round": 2,
+            "agent": 1,
+            "prompt_tokens": 688,
+            "ttft_ms": 1298.72,
+            "total_ms": 4032.16,
+            "out_tokens": 48
+          },
+          {
+            "seq": 11,
+            "round": 2,
+            "agent": 2,
+            "prompt_tokens": 693,
+            "ttft_ms": 1334.48,
+            "total_ms": 3934.13,
+            "out_tokens": 48
+          },
+          {
+            "seq": 12,
+            "round": 2,
+            "agent": 3,
+            "prompt_tokens": 693,
+            "ttft_ms": 1301.96,
+            "total_ms": 3942.68,
+            "out_tokens": 48
+          },
+          {
+            "seq": 13,
+            "round": 2,
+            "agent": 4,
+            "prompt_tokens": 697,
+            "ttft_ms": 1320.18,
+            "total_ms": 4668.1,
+            "out_tokens": 48
+          },
+          {
+            "seq": 14,
+            "round": 2,
+            "agent": 5,
+            "prompt_tokens": 691,
+            "ttft_ms": 1474.73,
+            "total_ms": 5036.37,
+            "out_tokens": 48
+          },
+          {
+            "seq": 15,
+            "round": 2,
+            "agent": 6,
+            "prompt_tokens": 691,
+            "ttft_ms": 1367.76,
+            "total_ms": 4707.52,
+            "out_tokens": 48
+          },
+          {
+            "seq": 16,
+            "round": 2,
+            "agent": 7,
+            "prompt_tokens": 691,
+            "ttft_ms": 1376.41,
+            "total_ms": 4445.5,
+            "out_tokens": 48
+          },
+          {
+            "seq": 17,
+            "round": 3,
+            "agent": 0,
+            "prompt_tokens": 774,
+            "ttft_ms": 477.05,
+            "total_ms": 2977.75,
+            "out_tokens": 37
+          },
+          {
+            "seq": 18,
+            "round": 3,
+            "agent": 1,
+            "prompt_tokens": 770,
+            "ttft_ms": 2308.02,
+            "total_ms": 4806.62,
+            "out_tokens": 38
+          },
+          {
+            "seq": 19,
+            "round": 3,
+            "agent": 2,
+            "prompt_tokens": 775,
+            "ttft_ms": 567.93,
+            "total_ms": 3956.62,
+            "out_tokens": 38
+          },
+          {
+            "seq": 20,
+            "round": 3,
+            "agent": 3,
+            "prompt_tokens": 775,
+            "ttft_ms": 535.68,
+            "total_ms": 3271.94,
+            "out_tokens": 38
+          },
+          {
+            "seq": 21,
+            "round": 3,
+            "agent": 4,
+            "prompt_tokens": 782,
+            "ttft_ms": 536.86,
+            "total_ms": 3144.79,
+            "out_tokens": 40
+          },
+          {
+            "seq": 22,
+            "round": 3,
+            "agent": 5,
+            "prompt_tokens": 773,
+            "ttft_ms": 505.76,
+            "total_ms": 3268.93,
+            "out_tokens": 38
+          },
+          {
+            "seq": 23,
+            "round": 3,
+            "agent": 6,
+            "prompt_tokens": 773,
+            "ttft_ms": 474.57,
+            "total_ms": 3071.9,
+            "out_tokens": 38
+          },
+          {
+            "seq": 24,
+            "round": 3,
+            "agent": 7,
+            "prompt_tokens": 773,
+            "ttft_ms": 478.7,
+            "total_ms": 2963.19,
+            "out_tokens": 38
+          },
+          {
+            "seq": 25,
+            "round": 4,
+            "agent": 0,
+            "prompt_tokens": 836,
+            "ttft_ms": 362.14,
+            "total_ms": 2568.1,
+            "out_tokens": 32
+          },
+          {
+            "seq": 26,
+            "round": 4,
+            "agent": 1,
+            "prompt_tokens": 833,
+            "ttft_ms": 362.11,
+            "total_ms": 2694.68,
+            "out_tokens": 32
+          },
+          {
+            "seq": 27,
+            "round": 4,
+            "agent": 2,
+            "prompt_tokens": 838,
+            "ttft_ms": 461.03,
+            "total_ms": 2557.45,
+            "out_tokens": 32
+          },
+          {
+            "seq": 28,
+            "round": 4,
+            "agent": 3,
+            "prompt_tokens": 838,
+            "ttft_ms": 365.42,
+            "total_ms": 2711.54,
+            "out_tokens": 32
+          },
+          {
+            "seq": 29,
+            "round": 4,
+            "agent": 4,
+            "prompt_tokens": 848,
+            "ttft_ms": 386.01,
+            "total_ms": 2508.82,
+            "out_tokens": 32
+          },
+          {
+            "seq": 30,
+            "round": 4,
+            "agent": 5,
+            "prompt_tokens": 835,
+            "ttft_ms": 336.11,
+            "total_ms": 2673.55,
+            "out_tokens": 32
+          },
+          {
+            "seq": 31,
+            "round": 4,
+            "agent": 6,
+            "prompt_tokens": 836,
+            "ttft_ms": 429.28,
+            "total_ms": 2532.8,
+            "out_tokens": 32
+          },
+          {
+            "seq": 32,
+            "round": 4,
+            "agent": 7,
+            "prompt_tokens": 835,
+            "ttft_ms": 337.22,
+            "total_ms": 2403.59,
+            "out_tokens": 32
+          }
+        ],
+        "config": "8tenant_sim09",
+        "repeat": 4,
+        "server_args": [
+          "-np",
+          "4",
+          "--slot-prompt-similarity",
+          "0.9"
+        ]
+      }
+    ],
+    "8tenant_sim09_np8": [
+      {
+        "schema": "specarm.agentbench/1",
+        "label": "8tenant_sim09_np8_r0",
+        "agents": 8,
+        "turns": 4,
+        "token_count_method": "apply_template+tokenize",
+        "preamble_tokens": 550,
+        "final_prompt_tokens": 834,
+        "cold_ttft_ms": [
+          5473.67,
+          623.7,
+          677.6,
+          755.65,
+          713.88,
+          650.79,
+          662.76,
+          655.52
+        ],
+        "warm_ttft_ms": [
+          6487.22,
+          1353.02,
+          1545.51,
+          1438.04,
+          1415.59,
+          1342.83,
+          1600.06,
+          434.14,
+          524.81,
+          592.16,
+          446.75,
+          465.16,
+          464.09,
+          510.62,
+          435.98,
+          437.61,
+          333.2,
+          350.11,
+          330.51,
+          338.44,
+          357.13,
+          329.27,
+          386.63,
+          310.48
+        ],
+        "warm_median_ms": 455.42,
+        "cold_median_ms": 670.18,
+        "rows": [
+          {
+            "seq": 1,
+            "round": 1,
+            "agent": 0,
+            "prompt_tokens": 610,
+            "ttft_ms": 5473.67,
+            "total_ms": 8470.93,
+            "out_tokens": 48
+          },
+          {
+            "seq": 2,
+            "round": 1,
+            "agent": 1,
+            "prompt_tokens": 605,
+            "ttft_ms": 623.7,
+            "total_ms": 3765.54,
+            "out_tokens": 48
+          },
+          {
+            "seq": 3,
+            "round": 1,
+            "agent": 2,
+            "prompt_tokens": 610,
+            "ttft_ms": 677.6,
+            "total_ms": 4134.56,
+            "out_tokens": 48
+          },
+          {
+            "seq": 4,
+            "round": 1,
+            "agent": 3,
+            "prompt_tokens": 610,
+            "ttft_ms": 755.65,
+            "total_ms": 4116.58,
+            "out_tokens": 48
+          },
+          {
+            "seq": 5,
+            "round": 1,
+            "agent": 4,
+            "prompt_tokens": 611,
+            "ttft_ms": 713.88,
+            "total_ms": 3757.58,
+            "out_tokens": 48
+          },
+          {
+            "seq": 6,
+            "round": 1,
+            "agent": 5,
+            "prompt_tokens": 608,
+            "ttft_ms": 650.79,
+            "total_ms": 3885.78,
+            "out_tokens": 48
+          },
+          {
+            "seq": 7,
+            "round": 1,
+            "agent": 6,
+            "prompt_tokens": 609,
+            "ttft_ms": 662.76,
+            "total_ms": 3773.07,
+            "out_tokens": 48
+          },
+          {
+            "seq": 8,
+            "round": 1,
+            "agent": 7,
+            "prompt_tokens": 609,
+            "ttft_ms": 655.52,
+            "total_ms": 3654.39,
+            "out_tokens": 48
+          },
+          {
+            "seq": 9,
+            "round": 2,
+            "agent": 0,
+            "prompt_tokens": 692,
+            "ttft_ms": 6487.22,
+            "total_ms": 9449.58,
+            "out_tokens": 48
+          },
+          {
+            "seq": 10,
+            "round": 2,
+            "agent": 1,
+            "prompt_tokens": 688,
+            "ttft_ms": 1353.02,
+            "total_ms": 4437.71,
+            "out_tokens": 48
+          },
+          {
+            "seq": 11,
+            "round": 2,
+            "agent": 2,
+            "prompt_tokens": 693,
+            "ttft_ms": 1545.51,
+            "total_ms": 4651.08,
+            "out_tokens": 48
+          },
+          {
+            "seq": 12,
+            "round": 2,
+            "agent": 3,
+            "prompt_tokens": 693,
+            "ttft_ms": 1438.04,
+            "total_ms": 4530.11,
+            "out_tokens": 48
+          },
+          {
+            "seq": 13,
+            "round": 2,
+            "agent": 4,
+            "prompt_tokens": 697,
+            "ttft_ms": 1415.59,
+            "total_ms": 4491.2,
+            "out_tokens": 48
+          },
+          {
+            "seq": 14,
+            "round": 2,
+            "agent": 5,
+            "prompt_tokens": 691,
+            "ttft_ms": 1342.83,
+            "total_ms": 4335.29,
+            "out_tokens": 48
+          },
+          {
+            "seq": 15,
+            "round": 2,
+            "agent": 6,
+            "prompt_tokens": 691,
+            "ttft_ms": 1600.06,
+            "total_ms": 4490.08,
+            "out_tokens": 48
+          },
+          {
+            "seq": 16,
+            "round": 2,
+            "agent": 7,
+            "prompt_tokens": 691,
+            "ttft_ms": 434.14,
+            "total_ms": 3215.49,
+            "out_tokens": 48
+          },
+          {
+            "seq": 17,
+            "round": 3,
+            "agent": 0,
+            "prompt_tokens": 774,
+            "ttft_ms": 524.81,
+            "total_ms": 2928.19,
+            "out_tokens": 37
+          },
+          {
+            "seq": 18,
+            "round": 3,
+            "agent": 1,
+            "prompt_tokens": 770,
+            "ttft_ms": 592.16,
+            "total_ms": 3186.04,
+            "out_tokens": 38
+          },
+          {
+            "seq": 19,
+            "round": 3,
+            "agent": 2,
+            "prompt_tokens": 775,
+            "ttft_ms": 446.75,
+            "total_ms": 2613.19,
+            "out_tokens": 38
+          },
+          {
+            "seq": 20,
+            "round": 3,
+            "agent": 3,
+            "prompt_tokens": 775,
+            "ttft_ms": 465.16,
+            "total_ms": 2805.06,
+            "out_tokens": 38
+          },
+          {
+            "seq": 21,
+            "round": 3,
+            "agent": 4,
+            "prompt_tokens": 782,
+            "ttft_ms": 464.09,
+            "total_ms": 2783.88,
+            "out_tokens": 40
+          },
+          {
+            "seq": 22,
+            "round": 3,
+            "agent": 5,
+            "prompt_tokens": 773,
+            "ttft_ms": 510.62,
+            "total_ms": 2714.66,
+            "out_tokens": 38
+          },
+          {
+            "seq": 23,
+            "round": 3,
+            "agent": 6,
+            "prompt_tokens": 773,
+            "ttft_ms": 435.98,
+            "total_ms": 2690.81,
+            "out_tokens": 38
+          },
+          {
+            "seq": 24,
+            "round": 3,
+            "agent": 7,
+            "prompt_tokens": 773,
+            "ttft_ms": 437.61,
+            "total_ms": 2580.06,
+            "out_tokens": 37
+          },
+          {
+            "seq": 25,
+            "round": 4,
+            "agent": 0,
+            "prompt_tokens": 836,
+            "ttft_ms": 333.2,
+            "total_ms": 2207.16,
+            "out_tokens": 32
+          },
+          {
+            "seq": 26,
+            "round": 4,
+            "agent": 1,
+            "prompt_tokens": 833,
+            "ttft_ms": 350.11,
+            "total_ms": 2224.52,
+            "out_tokens": 32
+          },
+          {
+            "seq": 27,
+            "round": 4,
+            "agent": 2,
+            "prompt_tokens": 838,
+            "ttft_ms": 330.51,
+            "total_ms": 2194.67,
+            "out_tokens": 32
+          },
+          {
+            "seq": 28,
+            "round": 4,
+            "agent": 3,
+            "prompt_tokens": 838,
+            "ttft_ms": 338.44,
+            "total_ms": 2171.79,
+            "out_tokens": 32
+          },
+          {
+            "seq": 29,
+            "round": 4,
+            "agent": 4,
+            "prompt_tokens": 848,
+            "ttft_ms": 357.13,
+            "total_ms": 2210.12,
+            "out_tokens": 32
+          },
+          {
+            "seq": 30,
+            "round": 4,
+            "agent": 5,
+            "prompt_tokens": 835,
+            "ttft_ms": 329.27,
+            "total_ms": 2241.84,
+            "out_tokens": 32
+          },
+          {
+            "seq": 31,
+            "round": 4,
+            "agent": 6,
+            "prompt_tokens": 836,
+            "ttft_ms": 386.63,
+            "total_ms": 2249.71,
+            "out_tokens": 32
+          },
+          {
+            "seq": 32,
+            "round": 4,
+            "agent": 7,
+            "prompt_tokens": 834,
+            "ttft_ms": 310.48,
+            "total_ms": 2221.0,
+            "out_tokens": 32
+          }
+        ],
+        "config": "8tenant_sim09_np8",
+        "repeat": 0,
+        "server_args": [
+          "-np",
+          "8",
+          "--slot-prompt-similarity",
+          "0.9"
+        ]
+      },
+      {
+        "schema": "specarm.agentbench/1",
+        "label": "8tenant_sim09_np8_r1",
+        "agents": 8,
+        "turns": 4,
+        "token_count_method": "apply_template+tokenize",
+        "preamble_tokens": 550,
+        "final_prompt_tokens": 834,
+        "cold_ttft_ms": [
+          5034.73,
+          787.48,
+          673.76,
+          736.18,
+          776.1,
+          637.0,
+          653.91,
+          669.53
+        ],
+        "warm_ttft_ms": [
+          6063.9,
+          1503.01,
+          1461.8,
+          1349.47,
+          1357.51,
+          1525.83,
+          1400.51,
+          468.64,
+          477.37,
+          529.18,
+          769.74,
+          491.29,
+          565.63,
+          516.18,
+          445.16,
+          456.02,
+          406.52,
+          346.98,
+          340.11,
+          337.2,
+          368.77,
+          323.51,
+          362.1,
+          337.22
+        ],
+        "warm_median_ms": 484.33,
+        "cold_median_ms": 704.97,
+        "rows": [
+          {
+            "seq": 1,
+            "round": 1,
+            "agent": 0,
+            "prompt_tokens": 610,
+            "ttft_ms": 5034.73,
+            "total_ms": 7638.2,
+            "out_tokens": 48
+          },
+          {
+            "seq": 2,
+            "round": 1,
+            "agent": 1,
+            "prompt_tokens": 605,
+            "ttft_ms": 787.48,
+            "total_ms": 3857.08,
+            "out_tokens": 48
+          },
+          {
+            "seq": 3,
+            "round": 1,
+            "agent": 2,
+            "prompt_tokens": 610,
+            "ttft_ms": 673.76,
+            "total_ms": 4009.71,
+            "out_tokens": 48
+          },
+          {
+            "seq": 4,
+            "round": 1,
+            "agent": 3,
+            "prompt_tokens": 610,
+            "ttft_ms": 736.18,
+            "total_ms": 3991.37,
+            "out_tokens": 48
+          },
+          {
+            "seq": 5,
+            "round": 1,
+            "agent": 4,
+            "prompt_tokens": 611,
+            "ttft_ms": 776.1,
+            "total_ms": 3739.4,
+            "out_tokens": 48
+          },
+          {
+            "seq": 6,
+            "round": 1,
+            "agent": 5,
+            "prompt_tokens": 608,
+            "ttft_ms": 637.0,
+            "total_ms": 3572.0,
+            "out_tokens": 48
+          },
+          {
+            "seq": 7,
+            "round": 1,
+            "agent": 6,
+            "prompt_tokens": 609,
+            "ttft_ms": 653.91,
+            "total_ms": 3567.03,
+            "out_tokens": 48
+          },
+          {
+            "seq": 8,
+            "round": 1,
+            "agent": 7,
+            "prompt_tokens": 609,
+            "ttft_ms": 669.53,
+            "total_ms": 3481.53,
+            "out_tokens": 48
+          },
+          {
+            "seq": 9,
+            "round": 2,
+            "agent": 0,
+            "prompt_tokens": 692,
+            "ttft_ms": 6063.9,
+            "total_ms": 8845.78,
+            "out_tokens": 48
+          },
+          {
+            "seq": 10,
+            "round": 2,
+            "agent": 1,
+            "prompt_tokens": 688,
+            "ttft_ms": 1503.01,
+            "total_ms": 4329.44,
+            "out_tokens": 48
+          },
+          {
+            "seq": 11,
+            "round": 2,
+            "agent": 2,
+            "prompt_tokens": 693,
+            "ttft_ms": 1461.8,
+            "total_ms": 4343.03,
+            "out_tokens": 48
+          },
+          {
+            "seq": 12,
+            "round": 2,
+            "agent": 3,
+            "prompt_tokens": 693,
+            "ttft_ms": 1349.47,
+            "total_ms": 4183.79,
+            "out_tokens": 48
+          },
+          {
+            "seq": 13,
+            "round": 2,
+            "agent": 4,
+            "prompt_tokens": 697,
+            "ttft_ms": 1357.51,
+            "total_ms": 4390.95,
+            "out_tokens": 48
+          },
+          {
+            "seq": 14,
+            "round": 2,
+            "agent": 5,
+            "prompt_tokens": 691,
+            "ttft_ms": 1525.83,
+            "total_ms": 4406.66,
+            "out_tokens": 48
+          },
+          {
+            "seq": 15,
+            "round": 2,
+            "agent": 6,
+            "prompt_tokens": 691,
+            "ttft_ms": 1400.51,
+            "total_ms": 4221.11,
+            "out_tokens": 48
+          },
+          {
+            "seq": 16,
+            "round": 2,
+            "agent": 7,
+            "prompt_tokens": 691,
+            "ttft_ms": 468.64,
+            "total_ms": 3385.23,
+            "out_tokens": 48
+          },
+          {
+            "seq": 17,
+            "round": 3,
+            "agent": 0,
+            "prompt_tokens": 774,
+            "ttft_ms": 477.37,
+            "total_ms": 2927.41,
+            "out_tokens": 37
+          },
+          {
+            "seq": 18,
+            "round": 3,
+            "agent": 1,
+            "prompt_tokens": 770,
+            "ttft_ms": 529.18,
+            "total_ms": 3026.34,
+            "out_tokens": 38
+          },
+          {
+            "seq": 19,
+            "round": 3,
+            "agent": 2,
+            "prompt_tokens": 775,
+            "ttft_ms": 769.74,
+            "total_ms": 3508.59,
+            "out_tokens": 38
+          },
+          {
+            "seq": 20,
+            "round": 3,
+            "agent": 3,
+            "prompt_tokens": 775,
+            "ttft_ms": 491.29,
+            "total_ms": 2831.24,
+            "out_tokens": 38
+          },
+          {
+            "seq": 21,
+            "round": 3,
+            "agent": 4,
+            "prompt_tokens": 782,
+            "ttft_ms": 565.63,
+            "total_ms": 2938.11,
+            "out_tokens": 40
+          },
+          {
+            "seq": 22,
+            "round": 3,
+            "agent": 5,
+            "prompt_tokens": 773,
+            "ttft_ms": 516.18,
+            "total_ms": 2830.39,
+            "out_tokens": 38
+          },
+          {
+            "seq": 23,
+            "round": 3,
+            "agent": 6,
+            "prompt_tokens": 773,
+            "ttft_ms": 445.16,
+            "total_ms": 2679.37,
+            "out_tokens": 38
+          },
+          {
+            "seq": 24,
+            "round": 3,
+            "agent": 7,
+            "prompt_tokens": 773,
+            "ttft_ms": 456.02,
+            "total_ms": 2704.14,
+            "out_tokens": 37
+          },
+          {
+            "seq": 25,
+            "round": 4,
+            "agent": 0,
+            "prompt_tokens": 836,
+            "ttft_ms": 406.52,
+            "total_ms": 2368.11,
+            "out_tokens": 32
+          },
+          {
+            "seq": 26,
+            "round": 4,
+            "agent": 1,
+            "prompt_tokens": 833,
+            "ttft_ms": 346.98,
+            "total_ms": 2466.43,
+            "out_tokens": 32
+          },
+          {
+            "seq": 27,
+            "round": 4,
+            "agent": 2,
+            "prompt_tokens": 838,
+            "ttft_ms": 340.11,
+            "total_ms": 2305.84,
+            "out_tokens": 32
+          },
+          {
+            "seq": 28,
+            "round": 4,
+            "agent": 3,
+            "prompt_tokens": 838,
+            "ttft_ms": 337.2,
+            "total_ms": 2284.29,
+            "out_tokens": 32
+          },
+          {
+            "seq": 29,
+            "round": 4,
+            "agent": 4,
+            "prompt_tokens": 848,
+            "ttft_ms": 368.77,
+            "total_ms": 2276.44,
+            "out_tokens": 32
+          },
+          {
+            "seq": 30,
+            "round": 4,
+            "agent": 5,
+            "prompt_tokens": 835,
+            "ttft_ms": 323.51,
+            "total_ms": 2426.51,
+            "out_tokens": 32
+          },
+          {
+            "seq": 31,
+            "round": 4,
+            "agent": 6,
+            "prompt_tokens": 836,
+            "ttft_ms": 362.1,
+            "total_ms": 2273.78,
+            "out_tokens": 32
+          },
+          {
+            "seq": 32,
+            "round": 4,
+            "agent": 7,
+            "prompt_tokens": 834,
+            "ttft_ms": 337.22,
+            "total_ms": 2219.6,
+            "out_tokens": 32
+          }
+        ],
+        "config": "8tenant_sim09_np8",
+        "repeat": 1,
+        "server_args": [
+          "-np",
+          "8",
+          "--slot-prompt-similarity",
+          "0.9"
+        ]
+      },
+      {
+        "schema": "specarm.agentbench/1",
+        "label": "8tenant_sim09_np8_r2",
+        "agents": 8,
+        "turns": 4,
+        "token_count_method": "apply_template+tokenize",
+        "preamble_tokens": 550,
+        "final_prompt_tokens": 834,
+        "cold_ttft_ms": [
+          5212.85,
+          611.81,
+          668.44,
+          808.27,
+          698.69,
+          650.04,
+          665.9,
+          655.09
+        ],
+        "warm_ttft_ms": [
+          5937.6,
+          1311.69,
+          1384.1,
+          1332.41,
+          1338.56,
+          1382.48,
+          1281.18,
+          478.63,
+          449.78,
+          430.98,
+          581.36,
+          458.17,
+          497.99,
+          436.6,
+          463.07,
+          457.44,
+          327.48,
+          325.01,
+          327.41,
+          327.8,
+          345.93,
+          311.74,
+          349.88,
+          303.94
+        ],
+        "warm_median_ms": 457.81,
+        "cold_median_ms": 667.17,
+        "rows": [
+          {
+            "seq": 1,
+            "round": 1,
+            "agent": 0,
+            "prompt_tokens": 610,
+            "ttft_ms": 5212.85,
+            "total_ms": 8049.44,
+            "out_tokens": 48
+          },
+          {
+            "seq": 2,
+            "round": 1,
+            "agent": 1,
+            "prompt_tokens": 605,
+            "ttft_ms": 611.81,
+            "total_ms": 3443.82,
+            "out_tokens": 48
+          },
+          {
+            "seq": 3,
+            "round": 1,
+            "agent": 2,
+            "prompt_tokens": 610,
+            "ttft_ms": 668.44,
+            "total_ms": 3571.67,
+            "out_tokens": 48
+          },
+          {
+            "seq": 4,
+            "round": 1,
+            "agent": 3,
+            "prompt_tokens": 610,
+            "ttft_ms": 808.27,
+            "total_ms": 3983.44,
+            "out_tokens": 48
+          },
+          {
+            "seq": 5,
+            "round": 1,
+            "agent": 4,
+            "prompt_tokens": 611,
+            "ttft_ms": 698.69,
+            "total_ms": 3794.7,
+            "out_tokens": 48
+          },
+          {
+            "seq": 6,
+            "round": 1,
+            "agent": 5,
+            "prompt_tokens": 608,
+            "ttft_ms": 650.04,
+            "total_ms": 3468.99,
+            "out_tokens": 48
+          },
+          {
+            "seq": 7,
+            "round": 1,
+            "agent": 6,
+            "prompt_tokens": 609,
+            "ttft_ms": 665.9,
+            "total_ms": 3603.09,
+            "out_tokens": 48
+          },
+          {
+            "seq": 8,
+            "round": 1,
+            "agent": 7,
+            "prompt_tokens": 609,
+            "ttft_ms": 655.09,
+            "total_ms": 3414.45,
+            "out_tokens": 48
+          },
+          {
+            "seq": 9,
+            "round": 2,
+            "agent": 0,
+            "prompt_tokens": 692,
+            "ttft_ms": 5937.6,
+            "total_ms": 8942.54,
+            "out_tokens": 48
+          },
+          {
+            "seq": 10,
+            "round": 2,
+            "agent": 1,
+            "prompt_tokens": 688,
+            "ttft_ms": 1311.69,
+            "total_ms": 4043.67,
+            "out_tokens": 48
+          },
+          {
+            "seq": 11,
+            "round": 2,
+            "agent": 2,
+            "prompt_tokens": 693,
+            "ttft_ms": 1384.1,
+            "total_ms": 4253.97,
+            "out_tokens": 48
+          },
+          {
+            "seq": 12,
+            "round": 2,
+            "agent": 3,
+            "prompt_tokens": 693,
+            "ttft_ms": 1332.41,
+            "total_ms": 4316.87,
+            "out_tokens": 48
+          },
+          {
+            "seq": 13,
+            "round": 2,
+            "agent": 4,
+            "prompt_tokens": 697,
+            "ttft_ms": 1338.56,
+            "total_ms": 3916.86,
+            "out_tokens": 48
+          },
+          {
+            "seq": 14,
+            "round": 2,
+            "agent": 5,
+            "prompt_tokens": 691,
+            "ttft_ms": 1382.48,
+            "total_ms": 4127.09,
+            "out_tokens": 48
+          },
+          {
+            "seq": 15,
+            "round": 2,
+            "agent": 6,
+            "prompt_tokens": 691,
+            "ttft_ms": 1281.18,
+            "total_ms": 3843.7,
+            "out_tokens": 48
+          },
+          {
+            "seq": 16,
+            "round": 2,
+            "agent": 7,
+            "prompt_tokens": 691,
+            "ttft_ms": 478.63,
+            "total_ms": 3482.86,
+            "out_tokens": 48
+          },
+          {
+            "seq": 17,
+            "round": 3,
+            "agent": 0,
+            "prompt_tokens": 774,
+            "ttft_ms": 449.78,
+            "total_ms": 2513.47,
+            "out_tokens": 37
+          },
+          {
+            "seq": 18,
+            "round": 3,
+            "agent": 1,
+            "prompt_tokens": 770,
+            "ttft_ms": 430.98,
+            "total_ms": 2781.8,
+            "out_tokens": 38
+          },
+          {
+            "seq": 19,
+            "round": 3,
+            "agent": 2,
+            "prompt_tokens": 775,
+            "ttft_ms": 581.36,
+            "total_ms": 2792.27,
+            "out_tokens": 38
+          },
+          {
+            "seq": 20,
+            "round": 3,
+            "agent": 3,
+            "prompt_tokens": 775,
+            "ttft_ms": 458.17,
+            "total_ms": 2627.0,
+            "out_tokens": 38
+          },
+          {
+            "seq": 21,
+            "round": 3,
+            "agent": 4,
+            "prompt_tokens": 782,
+            "ttft_ms": 497.99,
+            "total_ms": 2777.38,
+            "out_tokens": 40
+          },
+          {
+            "seq": 22,
+            "round": 3,
+            "agent": 5,
+            "prompt_tokens": 773,
+            "ttft_ms": 436.6,
+            "total_ms": 2636.06,
+            "out_tokens": 38
+          },
+          {
+            "seq": 23,
+            "round": 3,
+            "agent": 6,
+            "prompt_tokens": 773,
+            "ttft_ms": 463.07,
+            "total_ms": 2596.21,
+            "out_tokens": 38
+          },
+          {
+            "seq": 24,
+            "round": 3,
+            "agent": 7,
+            "prompt_tokens": 773,
+            "ttft_ms": 457.44,
+            "total_ms": 2550.81,
+            "out_tokens": 37
+          },
+          {
+            "seq": 25,
+            "round": 4,
+            "agent": 0,
+            "prompt_tokens": 836,
+            "ttft_ms": 327.48,
+            "total_ms": 2155.79,
+            "out_tokens": 32
+          },
+          {
+            "seq": 26,
+            "round": 4,
+            "agent": 1,
+            "prompt_tokens": 833,
+            "ttft_ms": 325.01,
+            "total_ms": 2124.5,
+            "out_tokens": 32
+          },
+          {
+            "seq": 27,
+            "round": 4,
+            "agent": 2,
+            "prompt_tokens": 838,
+            "ttft_ms": 327.41,
+            "total_ms": 2080.62,
+            "out_tokens": 32
+          },
+          {
+            "seq": 28,
+            "round": 4,
+            "agent": 3,
+            "prompt_tokens": 838,
+            "ttft_ms": 327.8,
+            "total_ms": 2205.99,
+            "out_tokens": 32
+          },
+          {
+            "seq": 29,
+            "round": 4,
+            "agent": 4,
+            "prompt_tokens": 848,
+            "ttft_ms": 345.93,
+            "total_ms": 2310.81,
+            "out_tokens": 32
+          },
+          {
+            "seq": 30,
+            "round": 4,
+            "agent": 5,
+            "prompt_tokens": 835,
+            "ttft_ms": 311.74,
+            "total_ms": 2180.27,
+            "out_tokens": 32
+          },
+          {
+            "seq": 31,
+            "round": 4,
+            "agent": 6,
+            "prompt_tokens": 836,
+            "ttft_ms": 349.88,
+            "total_ms": 2108.72,
+            "out_tokens": 32
+          },
+          {
+            "seq": 32,
+            "round": 4,
+            "agent": 7,
+            "prompt_tokens": 834,
+            "ttft_ms": 303.94,
+            "total_ms": 2056.41,
+            "out_tokens": 32
+          }
+        ],
+        "config": "8tenant_sim09_np8",
+        "repeat": 2,
+        "server_args": [
+          "-np",
+          "8",
+          "--slot-prompt-similarity",
+          "0.9"
+        ]
+      },
+      {
+        "schema": "specarm.agentbench/1",
+        "label": "8tenant_sim09_np8_r3",
+        "agents": 8,
+        "turns": 4,
+        "token_count_method": "apply_template+tokenize",
+        "preamble_tokens": 550,
+        "final_prompt_tokens": 834,
+        "cold_ttft_ms": [
+          4876.98,
+          612.87,
+          613.0,
+          639.67,
+          628.5,
+          697.3,
+          686.07,
+          637.8
+        ],
+        "warm_ttft_ms": [
+          5956.62,
+          1232.0,
+          1326.66,
+          1272.73,
+          1284.79,
+          1251.94,
+          1254.89,
+          409.95,
+          463.4,
+          430.18,
+          455.64,
+          465.83,
+          643.33,
+          456.36,
+          456.31,
+          479.01,
+          331.04,
+          342.0,
+          324.1,
+          323.44,
+          347.19,
+          316.81,
+          335.93,
+          485.65
+        ],
+        "warm_median_ms": 459.88,
+        "cold_median_ms": 638.73,
+        "rows": [
+          {
+            "seq": 1,
+            "round": 1,
+            "agent": 0,
+            "prompt_tokens": 610,
+            "ttft_ms": 4876.98,
+            "total_ms": 7570.53,
+            "out_tokens": 48
+          },
+          {
+            "seq": 2,
+            "round": 1,
+            "agent": 1,
+            "prompt_tokens": 605,
+            "ttft_ms": 612.87,
+            "total_ms": 3155.17,
+            "out_tokens": 48
+          },
+          {
+            "seq": 3,
+            "round": 1,
+            "agent": 2,
+            "prompt_tokens": 610,
+            "ttft_ms": 613.0,
+            "total_ms": 3227.24,
+            "out_tokens": 48
+          },
+          {
+            "seq": 4,
+            "round": 1,
+            "agent": 3,
+            "prompt_tokens": 610,
+            "ttft_ms": 639.67,
+            "total_ms": 3243.72,
+            "out_tokens": 48
+          },
+          {
+            "seq": 5,
+            "round": 1,
+            "agent": 4,
+            "prompt_tokens": 611,
+            "ttft_ms": 628.5,
+            "total_ms": 3274.42,
+            "out_tokens": 48
+          },
+          {
+            "seq": 6,
+            "round": 1,
+            "agent": 5,
+            "prompt_tokens": 608,
+            "ttft_ms": 697.3,
+            "total_ms": 3498.58,
+            "out_tokens": 48
+          },
+          {
+            "seq": 7,
+            "round": 1,
+            "agent": 6,
+            "prompt_tokens": 609,
+            "ttft_ms": 686.07,
+            "total_ms": 3470.78,
+            "out_tokens": 48
+          },
+          {
+            "seq": 8,
+            "round": 1,
+            "agent": 7,
+            "prompt_tokens": 609,
+            "ttft_ms": 637.8,
+            "total_ms": 4100.12,
+            "out_tokens": 48
+          },
+          {
+            "seq": 9,
+            "round": 2,
+            "agent": 0,
+            "prompt_tokens": 692,
+            "ttft_ms": 5956.62,
+            "total_ms": 8494.06,
+            "out_tokens": 48
+          },
+          {
+            "seq": 10,
+            "round": 2,
+            "agent": 1,
+            "prompt_tokens": 688,
+            "ttft_ms": 1232.0,
+            "total_ms": 3889.34,
+            "out_tokens": 48
+          },
+          {
+            "seq": 11,
+            "round": 2,
+            "agent": 2,
+            "prompt_tokens": 693,
+            "ttft_ms": 1326.66,
+            "total_ms": 4057.23,
+            "out_tokens": 48
+          },
+          {
+            "seq": 12,
+            "round": 2,
+            "agent": 3,
+            "prompt_tokens": 693,
+            "ttft_ms": 1272.73,
+            "total_ms": 4073.86,
+            "out_tokens": 48
+          },
+          {
+            "seq": 13,
+            "round": 2,
+            "agent": 4,
+            "prompt_tokens": 697,
+            "ttft_ms": 1284.79,
+            "total_ms": 4014.06,
+            "out_tokens": 48
+          },
+          {
+            "seq": 14,
+            "round": 2,
+            "agent": 5,
+            "prompt_tokens": 691,
+            "ttft_ms": 1251.94,
+            "total_ms": 3860.68,
+            "out_tokens": 48
+          },
+          {
+            "seq": 15,
+            "round": 2,
+            "agent": 6,
+            "prompt_tokens": 691,
+            "ttft_ms": 1254.89,
+            "total_ms": 3945.56,
+            "out_tokens": 48
+          },
+          {
+            "seq": 16,
+            "round": 2,
+            "agent": 7,
+            "prompt_tokens": 691,
+            "ttft_ms": 409.95,
+            "total_ms": 3070.0,
+            "out_tokens": 48
+          },
+          {
+            "seq": 17,
+            "round": 3,
+            "agent": 0,
+            "prompt_tokens": 774,
+            "ttft_ms": 463.4,
+            "total_ms": 2607.39,
+            "out_tokens": 37
+          },
+          {
+            "seq": 18,
+            "round": 3,
+            "agent": 1,
+            "prompt_tokens": 770,
+            "ttft_ms": 430.18,
+            "total_ms": 2657.18,
+            "out_tokens": 38
+          },
+          {
+            "seq": 19,
+            "round": 3,
+            "agent": 2,
+            "prompt_tokens": 775,
+            "ttft_ms": 455.64,
+            "total_ms": 2642.74,
+            "out_tokens": 38
+          },
+          {
+            "seq": 20,
+            "round": 3,
+            "agent": 3,
+            "prompt_tokens": 775,
+            "ttft_ms": 465.83,
+            "total_ms": 2851.27,
+            "out_tokens": 38
+          },
+          {
+            "seq": 21,
+            "round": 3,
+            "agent": 4,
+            "prompt_tokens": 782,
+            "ttft_ms": 643.33,
+            "total_ms": 4480.13,
+            "out_tokens": 40
+          },
+          {
+            "seq": 22,
+            "round": 3,
+            "agent": 5,
+            "prompt_tokens": 773,
+            "ttft_ms": 456.36,
+            "total_ms": 2612.17,
+            "out_tokens": 38
+          },
+          {
+            "seq": 23,
+            "round": 3,
+            "agent": 6,
+            "prompt_tokens": 773,
+            "ttft_ms": 456.31,
+            "total_ms": 2685.57,
+            "out_tokens": 38
+          },
+          {
+            "seq": 24,
+            "round": 3,
+            "agent": 7,
+            "prompt_tokens": 773,
+            "ttft_ms": 479.01,
+            "total_ms": 2561.17,
+            "out_tokens": 37
+          },
+          {
+            "seq": 25,
+            "round": 4,
+            "agent": 0,
+            "prompt_tokens": 836,
+            "ttft_ms": 331.04,
+            "total_ms": 2123.62,
+            "out_tokens": 32
+          },
+          {
+            "seq": 26,
+            "round": 4,
+            "agent": 1,
+            "prompt_tokens": 833,
+            "ttft_ms": 342.0,
+            "total_ms": 2260.52,
+            "out_tokens": 32
+          },
+          {
+            "seq": 27,
+            "round": 4,
+            "agent": 2,
+            "prompt_tokens": 838,
+            "ttft_ms": 324.1,
+            "total_ms": 2150.64,
+            "out_tokens": 32
+          },
+          {
+            "seq": 28,
+            "round": 4,
+            "agent": 3,
+            "prompt_tokens": 838,
+            "ttft_ms": 323.44,
+            "total_ms": 2096.05,
+            "out_tokens": 32
+          },
+          {
+            "seq": 29,
+            "round": 4,
+            "agent": 4,
+            "prompt_tokens": 848,
+            "ttft_ms": 347.19,
+            "total_ms": 2323.91,
+            "out_tokens": 32
+          },
+          {
+            "seq": 30,
+            "round": 4,
+            "agent": 5,
+            "prompt_tokens": 835,
+            "ttft_ms": 316.81,
+            "total_ms": 2093.34,
+            "out_tokens": 32
+          },
+          {
+            "seq": 31,
+            "round": 4,
+            "agent": 6,
+            "prompt_tokens": 836,
+            "ttft_ms": 335.93,
+            "total_ms": 2095.37,
+            "out_tokens": 32
+          },
+          {
+            "seq": 32,
+            "round": 4,
+            "agent": 7,
+            "prompt_tokens": 834,
+            "ttft_ms": 485.65,
+            "total_ms": 2268.29,
+            "out_tokens": 32
+          }
+        ],
+        "config": "8tenant_sim09_np8",
+        "repeat": 3,
+        "server_args": [
+          "-np",
+          "8",
+          "--slot-prompt-similarity",
+          "0.9"
+        ]
+      },
+      {
+        "schema": "specarm.agentbench/1",
+        "label": "8tenant_sim09_np8_r4",
+        "agents": 8,
+        "turns": 4,
+        "token_count_method": "apply_template+tokenize",
+        "preamble_tokens": 550,
+        "final_prompt_tokens": 834,
+        "cold_ttft_ms": [
+          4787.84,
+          587.66,
+          617.15,
+          636.56,
+          666.9,
+          616.3,
+          614.55,
+          647.91
+        ],
+        "warm_ttft_ms": [
+          5922.64,
+          1223.35,
+          1291.77,
+          1262.89,
+          1278.32,
+          1248.03,
+          1281.72,
+          472.24,
+          429.35,
+          430.39,
+          495.08,
+          469.34,
+          461.94,
+          452.18,
+          440.15,
+          470.31,
+          342.88,
+          330.96,
+          353.06,
+          473.4,
+          405.23,
+          413.25,
+          325.81,
+          349.43
+        ],
+        "warm_median_ms": 465.64,
+        "cold_median_ms": 626.86,
+        "rows": [
+          {
+            "seq": 1,
+            "round": 1,
+            "agent": 0,
+            "prompt_tokens": 610,
+            "ttft_ms": 4787.84,
+            "total_ms": 7409.02,
+            "out_tokens": 48
+          },
+          {
+            "seq": 2,
+            "round": 1,
+            "agent": 1,
+            "prompt_tokens": 605,
+            "ttft_ms": 587.66,
+            "total_ms": 3279.01,
+            "out_tokens": 48
+          },
+          {
+            "seq": 3,
+            "round": 1,
+            "agent": 2,
+            "prompt_tokens": 610,
+            "ttft_ms": 617.15,
+            "total_ms": 3176.03,
+            "out_tokens": 48
+          },
+          {
+            "seq": 4,
+            "round": 1,
+            "agent": 3,
+            "prompt_tokens": 610,
+            "ttft_ms": 636.56,
+            "total_ms": 3309.28,
+            "out_tokens": 48
+          },
+          {
+            "seq": 5,
+            "round": 1,
+            "agent": 4,
+            "prompt_tokens": 611,
+            "ttft_ms": 666.9,
+            "total_ms": 3295.42,
+            "out_tokens": 48
+          },
+          {
+            "seq": 6,
+            "round": 1,
+            "agent": 5,
+            "prompt_tokens": 608,
+            "ttft_ms": 616.3,
+            "total_ms": 3289.25,
+            "out_tokens": 48
+          },
+          {
+            "seq": 7,
+            "round": 1,
+            "agent": 6,
+            "prompt_tokens": 609,
+            "ttft_ms": 614.55,
+            "total_ms": 3154.61,
+            "out_tokens": 48
+          },
+          {
+            "seq": 8,
+            "round": 1,
+            "agent": 7,
+            "prompt_tokens": 609,
+            "ttft_ms": 647.91,
+            "total_ms": 3577.93,
+            "out_tokens": 48
+          },
+          {
+            "seq": 9,
+            "round": 2,
+            "agent": 0,
+            "prompt_tokens": 692,
+            "ttft_ms": 5922.64,
+            "total_ms": 8787.85,
+            "out_tokens": 48
+          },
+          {
+            "seq": 10,
+            "round": 2,
+            "agent": 1,
+            "prompt_tokens": 688,
+            "ttft_ms": 1223.35,
+            "total_ms": 3809.91,
+            "out_tokens": 48
+          },
+          {
+            "seq": 11,
+            "round": 2,
+            "agent": 2,
+            "prompt_tokens": 693,
+            "ttft_ms": 1291.77,
+            "total_ms": 3878.71,
+            "out_tokens": 48
+          },
+          {
+            "seq": 12,
+            "round": 2,
+            "agent": 3,
+            "prompt_tokens": 693,
+            "ttft_ms": 1262.89,
+            "total_ms": 3872.02,
+            "out_tokens": 48
+          },
+          {
+            "seq": 13,
+            "round": 2,
+            "agent": 4,
+            "prompt_tokens": 697,
+            "ttft_ms": 1278.32,
+            "total_ms": 3883.99,
+            "out_tokens": 48
+          },
+          {
+            "seq": 14,
+            "round": 2,
+            "agent": 5,
+            "prompt_tokens": 691,
+            "ttft_ms": 1248.03,
+            "total_ms": 3791.3,
+            "out_tokens": 48
+          },
+          {
+            "seq": 15,
+            "round": 2,
+            "agent": 6,
+            "prompt_tokens": 691,
+            "ttft_ms": 1281.72,
+            "total_ms": 3833.16,
+            "out_tokens": 48
+          },
+          {
+            "seq": 16,
+            "round": 2,
+            "agent": 7,
+            "prompt_tokens": 691,
+            "ttft_ms": 472.24,
+            "total_ms": 3136.85,
+            "out_tokens": 48
+          },
+          {
+            "seq": 17,
+            "round": 3,
+            "agent": 0,
+            "prompt_tokens": 774,
+            "ttft_ms": 429.35,
+            "total_ms": 2495.83,
+            "out_tokens": 37
+          },
+          {
+            "seq": 18,
+            "round": 3,
+            "agent": 1,
+            "prompt_tokens": 770,
+            "ttft_ms": 430.39,
+            "total_ms": 2571.41,
+            "out_tokens": 38
+          },
+          {
+            "seq": 19,
+            "round": 3,
+            "agent": 2,
+            "prompt_tokens": 775,
+            "ttft_ms": 495.08,
+            "total_ms": 2667.06,
+            "out_tokens": 38
+          },
+          {
+            "seq": 20,
+            "round": 3,
+            "agent": 3,
+            "prompt_tokens": 775,
+            "ttft_ms": 469.34,
+            "total_ms": 2727.26,
+            "out_tokens": 38
+          },
+          {
+            "seq": 21,
+            "round": 3,
+            "agent": 4,
+            "prompt_tokens": 782,
+            "ttft_ms": 461.94,
+            "total_ms": 2773.95,
+            "out_tokens": 40
+          },
+          {
+            "seq": 22,
+            "round": 3,
+            "agent": 5,
+            "prompt_tokens": 773,
+            "ttft_ms": 452.18,
+            "total_ms": 2677.52,
+            "out_tokens": 38
+          },
+          {
+            "seq": 23,
+            "round": 3,
+            "agent": 6,
+            "prompt_tokens": 773,
+            "ttft_ms": 440.15,
+            "total_ms": 2633.95,
+            "out_tokens": 38
+          },
+          {
+            "seq": 24,
+            "round": 3,
+            "agent": 7,
+            "prompt_tokens": 773,
+            "ttft_ms": 470.31,
+            "total_ms": 2577.28,
+            "out_tokens": 37
+          },
+          {
+            "seq": 25,
+            "round": 4,
+            "agent": 0,
+            "prompt_tokens": 836,
+            "ttft_ms": 342.88,
+            "total_ms": 2479.37,
+            "out_tokens": 32
+          },
+          {
+            "seq": 26,
+            "round": 4,
+            "agent": 1,
+            "prompt_tokens": 833,
+            "ttft_ms": 330.96,
+            "total_ms": 2241.01,
+            "out_tokens": 32
+          },
+          {
+            "seq": 27,
+            "round": 4,
+            "agent": 2,
+            "prompt_tokens": 838,
+            "ttft_ms": 353.06,
+            "total_ms": 2235.07,
+            "out_tokens": 32
+          },
+          {
+            "seq": 28,
+            "round": 4,
+            "agent": 3,
+            "prompt_tokens": 838,
+            "ttft_ms": 473.4,
+            "total_ms": 2634.78,
+            "out_tokens": 32
+          },
+          {
+            "seq": 29,
+            "round": 4,
+            "agent": 4,
+            "prompt_tokens": 848,
+            "ttft_ms": 405.23,
+            "total_ms": 2197.15,
+            "out_tokens": 32
+          },
+          {
+            "seq": 30,
+            "round": 4,
+            "agent": 5,
+            "prompt_tokens": 835,
+            "ttft_ms": 413.25,
+            "total_ms": 2287.21,
+            "out_tokens": 32
+          },
+          {
+            "seq": 31,
+            "round": 4,
+            "agent": 6,
+            "prompt_tokens": 836,
+            "ttft_ms": 325.81,
+            "total_ms": 2593.61,
+            "out_tokens": 32
+          },
+          {
+            "seq": 32,
+            "round": 4,
+            "agent": 7,
+            "prompt_tokens": 834,
+            "ttft_ms": 349.43,
+            "total_ms": 2527.87,
+            "out_tokens": 32
+          }
+        ],
+        "config": "8tenant_sim09_np8",
+        "repeat": 4,
+        "server_args": [
+          "-np",
+          "8",
+          "--slot-prompt-similarity",
+          "0.9"
+        ]
+      }
+    ]
+  }
+}
