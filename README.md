@@ -474,7 +474,8 @@ legacy of the project's earlier name; see
 | `SPECARM_MODELS` | `<root>/models` | `lib.sh`, `fetch_model.sh` | Model download directory |
 | `SPECARM_LLAMA_REPO` | `https://github.com/ggml-org/llama.cpp.git` | `lib.sh` | Upstream remote |
 | `SPECARM_LLAMA_REF` | `master` | `lib.sh` | Ref to check out (resolved SHA is recorded) |
-| `SPECARM_MODEL_URL` | Qwen2.5-0.5B-Instruct Q4_0 | `fetch_model.sh` | Override the benchmark model |
+| `SPECARM_MODEL_URL` | pinned Qwen2.5-1.5B-Instruct Q4_K_M | `fetch_model.sh` | Override the benchmark model. Overriding **disables** the pinned hash check unless you also set `SPECARM_MODEL_SHA256` — a digest only applies to the artifact it was computed from. |
+| `SPECARM_MODEL_SHA256` | the pinned digest | `fetch_model.sh` | Expected SHA-256. Required to verify a custom model; a mismatch deletes the file and exits non-zero. |
 
 **No secrets, tokens, or credentials are read anywhere in this project.** There
 is no `.env`, no secret manager integration, and the CI workflow declares
@@ -532,7 +533,8 @@ them decoration rather than thresholds.**
 | | 2 | Request failed |
 | `run_matrix.py` | 2 | Server binary or model not found |
 | `analyze_agent.py` | 1 | No `matrix.json` — run `run_matrix.py` first |
-| `00_env_report.sh` | 3 | `--require-i8mm` was set and the core lacks i8mm |
+| `00_env_report.sh` | 3 | `--require <feature>` was set and the core does not advertise it |
+| `fetch_model.sh` | 1 | SHA-256 mismatch — the artifact was deleted rather than benchmarked |
 
 > ⚠️ `probe_prefill.py` returning **1 on `REUSE_WORKS`** is an inverted
 > convention — the probe succeeded, but its answer is "stop." Do not wire it
@@ -607,7 +609,7 @@ Stated as it is, not as an enterprise template would prefer it.
 | **Statistics** | `statistics` + hand-rolled `t` table | No numpy/scipy |
 | **Process control** | `subprocess`, `signal` | Platform-branched |
 | **System under test** | `llama.cpp` / `llama-server` | Unmodified upstream |
-| **Model** | Qwen2.5-Instruct GGUF (Apache-2.0) | 1.5B locally, 0.5B in CI — **see defect D2** |
+| **Model** | Qwen2.5-1.5B-Instruct **Q4_K_M** (Apache-2.0) | Pinned by SHA-256 — byte-identical locally and in CI |
 | **Build** | CMake ≥ 3.14, C/C++ toolchain | Only for building llama.cpp |
 | **CI/CD** | GitHub Actions | `ubuntu-latest` + `ubuntu-24.04-arm` |
 | **Arm hardware** | Cobalt 100 (Neoverse N2), 4 vCPU | Free on public repos |
@@ -1166,7 +1168,7 @@ erDiagram
         int distinct_slots_used
     }
     ENV {
-        string schema "specarm.env/1"
+        string schema "specarm.env/2"
         string core
         string cpu_implementer
         string cpu_part
@@ -1192,8 +1194,9 @@ erDiagram
 | `specarm.agentbench/1` | `bench_agent.py` | One run |
 | `specarm.agent_analysis/1` | `analyze_agent.py` | Adjudicated comparisons |
 | `specarm.slotlog/1` | `parse_slot_log.py` | Mechanism evidence |
-| `specarm.env/1` | `00_env_report.sh` | Host and ISA identity |
+| `specarm.env/2` | `00_env_report.sh` | Host and ISA identity, incl. `int8_matmul_path` |
 | `specarm.build/2` | `01_build_llama.sh` | Which binary produced the numbers |
+| `specarm.model/1` | `fetch_model.sh` | Which **artifact** produced them — URL, SHA-256, verified flag |
 | `specarm.prefill_probe/1` | `probe_prefill.py` | Opportunity sizing |
 | `specarm.tune/2` | `tune_similarity.py` | Threshold recommendation |
 
@@ -1719,26 +1722,46 @@ listener of its own, and no persisted secrets.
 | **XSS / CSRF** | N/A | No web surface, no browser, no cookies |
 | **SSRF** | Bounded | URLs come from operator CLI args, not untrusted input |
 | **Prompt injection** | Not a threat here | Prompts are fixed synthetic constants; model output is truncated to 300 chars and used only as conversation filler, never executed or parsed as a command |
-| **Supply chain** | ⚠️ **Weak** | Model downloaded with **no hash verification**; llama.cpp built from a mutable ref |
+| **Supply chain** | ⚠️ Partial | Model **pinned and verified by SHA-256** on every run. llama.cpp still built from a mutable ref, with the resolved SHA recorded after the fact |
 | **CI permissions** | ✅ Least privilege | `permissions: contents: read` |
 | **Dependency risk** | ✅ Minimal | Zero third-party packages — nothing to audit, nothing to typosquat |
 | **Rate limiting / DoS** | N/A | No external callers |
 | **Data at rest** | Unencrypted, non-sensitive | Synthetic prompts and timing numbers |
 
-### The real security finding
+### Model integrity
 
-`scripts/fetch_model.sh` fetches over HTTPS with retries and **never verifies a
-checksum**:
+The benchmark model is **pinned by content hash**, not by name:
 
 ```bash
-curl -fL --retry 3 --retry-delay 2 -o "$DEST.part" "$URL" || die "download failed: $URL"
-mv "$DEST.part" "$DEST"
+PINNED_URL="https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct-GGUF/resolve/main/qwen2.5-1.5b-instruct-q4_k_m.gguf"
+PINNED_SHA256="6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e"
+PINNED_BYTES=1117320736
 ```
 
-A compromised or substituted artifact would be silently benchmarked. The `.part`
-→ `mv` pattern correctly prevents *truncated* files from being treated as
-complete, but says nothing about *authentic* content. Fix: pin a SHA-256 and
-verify before `mv`. Tracked as defect D4.
+That digest was taken from the GGUF file which produced every published number
+in this repository, and confirmed identical to the official Qwen artifact via
+HuggingFace's `X-Linked-ETag` — which for LFS objects is the SHA-256 of the file
+itself.
+
+Verification runs on **every invocation, including a cached file**, so a locally
+corrupted or swapped model is caught rather than silently benchmarked. On
+mismatch the script **deletes the artifact and exits non-zero**; it does not
+warn and continue, because a wrong model produces numbers that look entirely
+reasonable and mean nothing.
+
+Two deliberate design points:
+
+- **A digest only applies to the artifact it came from.** Passing a custom
+  `SPECARM_MODEL_URL` clears the pinned expectation rather than "verifying" a
+  different file against it. Without `SPECARM_MODEL_SHA256` the run proceeds but
+  is loudly marked unverified, and `results/model.json` records `verified: false`.
+- **A missing hashing tool is not a passing check.** If none of `sha256sum`,
+  `shasum`, or `python3` is available, the result is *unverified* — never
+  *verified*.
+
+The `.part` → `mv` pattern is retained so an interrupted download is never
+mistaken for a complete one; the hash then covers authenticity, which the
+staging pattern alone cannot.
 
 ### Privacy and compliance
 
@@ -1787,7 +1810,7 @@ flowchart TB
 
 | # | Threat | Likelihood | Impact | Mitigation | Status |
 |--:|:--|:--|:--|:--|:--|
-| T1 | Substituted model artifact | Low | Invalid results; arbitrary GGUF parsed by llama.cpp | Pin and verify SHA-256 | ❌ **open (D4)** |
+| T1 | Substituted model artifact | Low | Invalid results; arbitrary GGUF parsed by llama.cpp | SHA-256 pinned and verified every run, including cached files; mismatch deletes and exits non-zero | ✅ **mitigated** |
 | T2 | Upstream llama.cpp ref moves, silently changing behaviour | **High** | Results describe a different program than claimed | Resolved SHA recorded in `build.latest.json` | ⚠️ recorded, not pinned |
 | T3 | Log-format drift breaks mechanism extraction silently | **High** | Zero matches read as "no evidence" | Tolerant substring regexes | ⚠️ partial — no fixtures (D1) |
 | T4 | Port collision with an unrelated service | Medium | Run fails, or worse, measures the wrong server | Non-default port 8099; existence checks | ⚠️ fails rather than adapts (D7) |
@@ -2032,19 +2055,24 @@ killing hypothesis 2 in 45 minutes and cancelling roughly two weeks of planned w
 Every item here was found by reading this repository's own source. None are
 hypothetical.
 
-### Defects
+### Resolved
+
+| ID | Was | Fix |
+|:--|:--|:--|
+| **D2** | **Model mismatch between CI and published numbers.** `fetch_model.sh` defaulted to Qwen2.5-**0.5B** Q4_0 while every published number came from **1.5B**, so a CI Arm run would not have been comparable to the x86 baseline. | The exact artifact was identified from the GGUF header of the file that produced the published numbers — **Qwen2.5-1.5B-Instruct Q4_K_M, 1,117,320,736 bytes** — and confirmed byte-identical to the official Qwen repo via HuggingFace's `X-Linked-ETag`. It is now **pinned by SHA-256**, not by name. |
+| **D4** | Model downloaded with **no checksum verification**; a substituted or truncated artifact would have been benchmarked silently. | `fetch_model.sh` now verifies SHA-256 on **every** run, including cached files. A mismatch **deletes the artifact and exits non-zero** rather than warning. Hashing falls back `sha256sum` → `shasum` → `python3`; if none exist it reports *unverified* rather than pretending to check. Verified against four cases: correct hash, wrong hash, custom URL without a hash, and a tampered cache under the default invocation. |
+| **D5** | `00_env_report.sh` documented and gated on **dead hypothesis 1** — "SpecArm's thesis is that KleidiAI's i8mm microkernels sit idle during batch=1 decode" — via `crux_role: subject/control` and `--require-i8mm`, contradicting `docs/methodology.md`. | Reframed around the surviving thesis: the core identity matters because a mis-routed slot costs **prefill time**, and prefill throughput depends on the available int8 matmul path. `crux_role` → **`int8_matmul_path`** (`i8mm`\|`dotprod`\|`none`), a statement about hardware rather than about a dead experiment. `--require-i8mm` → general **`--require <feature>`**. Schema bumped to `specarm.env/2`. The MIDR and feature detection — which was never the faulty part — is unchanged. The dead hypothesis is retained as a documented historical note. |
+
+### Open defects
 
 | ID | Severity | Defect | Location | Impact |
 |:--|:--|:--|:--|:--|
 | **D1** | **High** | `parse_slot_log.py` has **no test fixtures**. An upstream log-format change makes it return zero matches silently, which reads as "no evidence" rather than "parser broken." | `tools/parse_slot_log.py` | The mechanism claim rests entirely on this parser |
-| **D2** | **High** | **Model mismatch between CI and published numbers.** `fetch_model.sh` defaults to Qwen2.5-**0.5B** Q4_0; every published number used **1.5B**. A CI Arm run is therefore **not comparable** to the x86 baseline. | `scripts/fetch_model.sh:14` | Arm-vs-x86 comparison invalid unless the model is pinned to match |
 | **D3** | **High** | The `bench` workflow **has never executed.** Untested CI. | `.github/workflows/bench.yml` | Unknown whether the Arm path works at all |
-| **D4** | Medium | Model downloaded with **no checksum verification**. | `scripts/fetch_model.sh:26` | Substituted artifact silently benchmarked |
-| **D5** | Medium | `00_env_report.sh` still documents and gates on **dead hypothesis 1** — "SpecArm's thesis is that KleidiAI's i8mm microkernels sit idle during batch=1 decode," with `crux_role: subject/control` and `--require-i8mm`. | `scripts/00_env_report.sh:6-9,107-112` | Contradicts `docs/methodology.md`, which records H1 as killed |
 | **D6** | Medium | Tests are `__main__` scripts, not pytest. No collection, no coverage, no CI matrix. | `tools/test_*.py` | Coverage is unmeasured and unmeasurable |
 | **D7** | Low | Hardcoded default ports, inconsistent across tools: 8080 (`probe_prefill`), 8081 (`bench_agent`, `tune_similarity --url`), 8099 (`run_matrix`, `tune_similarity --port`). A busy port fails rather than adapting. | multiple | Confusing; has already caused two failed runs |
 | **D8** | Low | `probe_prefill.one_turn` type annotation says `tuple[float, float, int, int]` but it returns `((f,f,i,i), str)`. Callers unpack correctly; the annotation is wrong. | `tools/probe_prefill.py:101,151` | Misleading to readers and type checkers |
-| **D9** | Low | `SPECARM_*` env vars, `specarm.*` schemas, and `[specarm]` log prefixes persist from the project's former name. | `scripts/lib.sh`, all schemas | Inconsistent identity |
+| **D9** | Low | `SPECARM_*` env vars, `specarm.*` schemas, and `[specarm]` log prefixes persist from the project's former name. **Deliberately not renamed** — the schema strings appear in every committed result under `results/`, and changing them would make the existing evidence unreadable by its own tooling for a cosmetic gain. Documented in `scripts/lib.sh`. | `scripts/lib.sh`, all schemas | Inconsistent identity; accepted |
 | **D10** | Low | `tune_similarity.analytic` builds its curve from `probe_prefill.TURNS`, not `bench_agent.tenant_turn` — so the analytic model describes a **different workload** than the benchmark measures. | `tools/tune_similarity.py:81` | Model/measurement mismatch beyond the already-labelled formula guess |
 | **D11** | Low | `probe_prefill` exits **1 on `REUSE_WORKS`** — success of the probe, but a non-zero code. | `tools/probe_prefill.py:287` | Cannot be wired into CI expecting 0 = healthy |
 | **D12** | Low | No end-to-end pipeline test; `test_pipeline.py` was deleted during the prune. | — | Stage wiring is unverified |
@@ -2102,11 +2130,10 @@ Ordered by value to the central claim.
 2. **Concurrent load generator** — closes the largest methodological gap.
 3. **Preamble-size sweep** — the claim is about preamble size; test more than one.
 4. **Fixtures for `parse_slot_log.py`** — the mechanism claim's single point of failure (D1).
-5. **Pin the CI model to match published numbers** (D2).
-6. **Per-core cost model** — ms-per-recomputed-token measured per Neoverse generation, turning the threshold into a derived quantity.
-7. **Upstream patch** — adaptive threshold scaled by observed prefix ratio, so the default stops being a constant.
-8. **SHA-256 verification of the model** (D4).
-9. **Statistical treatment of tokens-recomputed** — CIs on the headline metric.
+5. **Per-core cost model** — ms-per-recomputed-token measured per Neoverse generation, turning the threshold into a derived quantity. `int8_matmul_path` from the env report is the axis.
+6. **Upstream patch** — adaptive threshold scaled by observed prefix ratio, so the default stops being a constant.
+7. **Pin llama.cpp by SHA** rather than recording it after the fact (T2).
+8. **Statistical treatment of tokens-recomputed** — CIs on the headline metric.
 10. **pytest migration + coverage** (D6).
 11. **Packaging** — `pyproject.toml`, entry points, `pip install neoverse-tune`.
 12. **Smoke mode** — a 3-minute path so the feedback loop is not 47 minutes.

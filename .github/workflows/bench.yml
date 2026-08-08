@@ -61,7 +61,10 @@ jobs:
       - name: Build llama-server
         run: bash scripts/01_build_llama.sh
 
-      - name: Fetch model
+      # Pinned by SHA-256. If the artifact does not match the file that produced
+      # the published x86 numbers, this step fails rather than producing an Arm
+      # number that cannot be placed beside them.
+      - name: Fetch and verify model
         run: bash scripts/fetch_model.sh
 
       - name: Run config matrix
@@ -94,9 +97,19 @@ jobs:
               echo "## No report produced — check the logs above"
             fi
             echo ""; echo "---"; echo ""
-            echo "<details><summary>Environment</summary>"
+            echo "<details><summary>Environment — core, ISA features, int8 matmul path</summary>"
             echo ""; echo '```json'
             cat results/env.latest.json 2>/dev/null || echo "{}"
+            echo '```'; echo "</details>"
+            echo ""
+            echo "<details><summary>Model identity — must match the x86 baseline to be comparable</summary>"
+            echo ""; echo '```json'
+            cat results/model.json 2>/dev/null || echo "{}"
+            echo '```'; echo "</details>"
+            echo ""
+            echo "<details><summary>Build — resolved llama.cpp SHA</summary>"
+            echo ""; echo '```json'
+            cat results/build.latest.json 2>/dev/null || echo "{}"
             echo '```'; echo "</details>"
           } >> "$GITHUB_STEP_SUMMARY"
 

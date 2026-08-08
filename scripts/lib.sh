@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
-# Shared helpers for SpecArm scripts. Source this, don't execute it.
+# Shared helpers. Source this, don't execute it.
+#
+# The SPECARM_ prefix and the "specarm.*" schema strings are a legacy of the
+# project's former name. They are deliberately NOT renamed: the schema strings
+# appear in every committed result under results/, and changing them would make
+# the existing evidence unreadable by its own tooling for a purely cosmetic
+# gain. New schemas may use a new prefix; these stay.
 
 set -euo pipefail
 
@@ -47,7 +53,9 @@ require_aarch64() {
   local m
   m="$(uname -m)"
   [ "$m" = "aarch64" ] || [ "$m" = "arm64" ] \
-    || die "SpecArm measures Arm kernel selection; this host is '$m'. Run on an arm64 Linux target."
+    || die "This reads Arm core identity from /proc/cpuinfo; this host is '$m'.
+     Run it on an arm64 Linux target. The Python tools under tools/ are
+     platform-independent and do not need this — only the core report does."
 }
 
 mkdir -p "$RESULTS_DIR"

@@ -1,23 +1,49 @@
 #!/usr/bin/env bash
 #
-# 00_env_report.sh — capture exactly which Arm core we are standing on.
+# 00_env_report.sh — identify the Arm core this run is standing on.
 #
-# This is the gate for the whole project. SpecArm's thesis is that KleidiAI's
-# i8mm (SMMLA) matmul microkernels sit idle during batch=1 decode. On a core
-# with no i8mm at all (Neoverse N1 / AWS Graviton2) that experiment is not
-# "negative", it is *meaningless* — there is no i8mm kernel to wake up. Such a
-# host is only useful as a control group.
+# WHY THE CORE IDENTITY MATTERS TO THIS PROJECT
+# ---------------------------------------------
+# The finding in this repository is about slot *selection*: llama-server routes
+# a request to a slot by longest-common-prefix similarity, and against the 0.10
+# default every tenant of an agent matches every slot. A mis-routed request pays
+# to re-prefill ~220 tokens it had already processed.
+#
+# That mechanism is scheduler behaviour and is architecture-independent. What is
+# NOT architecture-independent is what those 220 tokens *cost*. Prefill is
+# matrix multiplication, and which int8 matmul path llama.cpp and KleidiAI can
+# select depends on the core: Neoverse N1 offers dotprod (SDOT) only, while N2
+# and V2 add i8mm (SMMLA). A report that quotes a millisecond figure without
+# naming the core it came from is not reproducible.
+#
+# Whether that difference is large enough to change the *optimal threshold* per
+# core is an open question. This script produces the input to that comparison.
+# It does not answer it, and nothing here should be read as claiming an answer.
+#
+# HISTORICAL NOTE
+# ---------------
+# An earlier hypothesis held that KleidiAI's i8mm microkernels sat idle during
+# batch-1 decode, and this script classified hosts as "subject" or "control" for
+# that experiment. The hypothesis was wrong — KleidiAI ships an mr=1 dotprod
+# kernel precisely for batch-1 decode — and the classification died with it. See
+# docs/methodology.md §1. The detection below is unchanged and was never the
+# faulty part.
 #
 # Usage:
-#   scripts/00_env_report.sh                 # report, always exit 0
-#   scripts/00_env_report.sh --require-i8mm  # exit 3 if this core lacks i8mm
+#   scripts/00_env_report.sh                  # report, exit 0
+#   scripts/00_env_report.sh --require i8mm   # exit 3 unless the core has i8mm
 #
 # Writes: results/env_<hostname>_<timestamp>.json  (and results/env.latest.json)
 
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 
-REQUIRE_I8MM=0
-[ "${1:-}" = "--require-i8mm" ] && REQUIRE_I8MM=1
+REQUIRE_FEAT=""
+case "${1:-}" in
+  "")           ;;
+  --require)    REQUIRE_FEAT="${2:?--require needs a feature name, e.g. --require i8mm}" ;;
+  --require=*)  REQUIRE_FEAT="${1#--require=}" ;;
+  *)            die "unknown argument '$1' (expected: --require <feature>)" ;;
+esac
 
 require_aarch64
 
@@ -30,22 +56,27 @@ IMPLEMENTER="$(cpuinfo_field 'CPU implementer')"
 PART="$(cpuinfo_field 'CPU part')"
 
 # Arm Ltd (0x41) Neoverse part numbers. Anything unrecognised is reported as
-# unknown with its raw ID rather than guessed at.
+# unknown with its raw ID rather than guessed at — a wrong core name would
+# silently mislabel every number in the run.
 CORE_NAME="unknown"
-if [ "$IMPLEMENTER" = "0x41" ]; then
-  case "$PART" in
-    0xd0c) CORE_NAME="Neoverse-N1" ;;
-    0xd40) CORE_NAME="Neoverse-V1" ;;
-    0xd49) CORE_NAME="Neoverse-N2" ;;
-    0xd4f) CORE_NAME="Neoverse-V2" ;;
-    *)     CORE_NAME="Arm-unknown($PART)" ;;
-  esac
-elif [ -n "$PART" ]; then
-  CORE_NAME="impl${IMPLEMENTER}-part${PART}"
-fi
+case "$IMPLEMENTER" in
+  0x41)
+    case "$PART" in
+      0xd0c) CORE_NAME="Neoverse-N1" ;;
+      0xd40) CORE_NAME="Neoverse-V1" ;;
+      0xd49) CORE_NAME="Neoverse-N2" ;;
+      0xd4f) CORE_NAME="Neoverse-V2" ;;
+      *)     CORE_NAME="Arm-unknown($PART)" ;;
+    esac
+    ;;
+  *)
+    [ -n "$PART" ] && CORE_NAME="impl${IMPLEMENTER}-part${PART}"
+    ;;
+esac
 
 # ---------------------------------------------------------------- ISA features
-# These are the features that decide which KleidiAI microkernel can be selected.
+# These decide which GGML / KleidiAI microkernel can be selected, and therefore
+# how fast a re-prefill actually is on this host.
 FEATURES=(asimd asimddp i8mm bf16 sve sve2 sme sme2 fphp asimdhp)
 feat_lines=()
 for f in "${FEATURES[@]}"; do
@@ -53,10 +84,19 @@ for f in "${FEATURES[@]}"; do
   feat_lines+=("    $(json_escape "$f"): $v")
 done
 
-HAS_I8MM=false;  cpu_has i8mm  && HAS_I8MM=true
-HAS_SVE2=false;  cpu_has sve2  && HAS_SVE2=true
-HAS_BF16=false;  cpu_has bf16  && HAS_BF16=true
+HAS_I8MM=false;  cpu_has i8mm    && HAS_I8MM=true
+HAS_SVE2=false;  cpu_has sve2    && HAS_SVE2=true
+HAS_BF16=false;  cpu_has bf16    && HAS_BF16=true
 HAS_DOTP=false;  cpu_has asimddp && HAS_DOTP=true
+
+# The best int8 matmul path this core can offer. This is a statement about the
+# HARDWARE, not about which kernel llama.cpp actually selected for a given
+# tensor — that depends on the build, the quantization format and the batch
+# shape. Reported so a per-core prefill comparison has a factual axis.
+if   [ "$HAS_I8MM" = true ]; then INT8_PATH="i8mm"
+elif [ "$HAS_DOTP" = true ]; then INT8_PATH="dotprod"
+else                             INT8_PATH="none"
+fi
 
 # SVE vector length in bits, if SVE is present. On Neoverse N2 this is 128 —
 # the same width as NEON — so any SVE2 win must come from predication, not
@@ -65,7 +105,7 @@ SVE_BITS="null"
 if [ "$HAS_SVE2" = true ] || cpu_has sve; then
   if have python3; then
     v="$(python3 - <<'PY' 2>/dev/null || true
-import ctypes, os
+import ctypes
 try:
     libc = ctypes.CDLL("libc.so.6", use_errno=True)
     PR_SVE_GET_VL = 51
@@ -89,7 +129,6 @@ STAMP="$(date -u +%Y%m%dT%H%M%SZ)"
 CC_VER="$( (cc --version 2>/dev/null || gcc --version 2>/dev/null) | head -n1 || echo unknown)"
 CMAKE_VER="$(cmake --version 2>/dev/null | head -n1 || echo 'not installed')"
 
-# perf availability decides whether kernel-symbol attribution (03) can run.
 PARANOID="$(cat /proc/sys/kernel/perf_event_paranoid 2>/dev/null || echo unavailable)"
 PERF_OK=false
 have perf && [ "$PARANOID" != unavailable ] && [ "$PARANOID" -le 2 ] 2>/dev/null && PERF_OK=true
@@ -101,26 +140,21 @@ if [ -d "$VENDOR_DIR/llama.cpp/.git" ]; then
 fi
 
 # Burstable instances (AWS t4g) silently throttle mid-benchmark and quietly
-# corrupt results. Flag the shape so the Skeptic can reject runs from one.
+# corrupt results. Flag the shape so a noisy run can be explained rather than
+# rationalised. MAX_RSD_PCT in the adjudicator is the backstop.
 VIRT="$(systemd-detect-virt 2>/dev/null || echo unknown)"
-
-# ---------------------------------------------------------------- crux verdict
-if [ "$HAS_I8MM" = true ]; then
-  CRUX_ROLE="subject"       # i8mm exists -> the wake-up experiment is meaningful
-else
-  CRUX_ROLE="control"       # no i8mm    -> useful only as a contrast row
-fi
 
 OUT="$RESULTS_DIR/env_${HOSTN}_${STAMP}.json"
 {
   echo "{"
-  echo "  \"schema\": \"specarm.env/1\","
+  echo "  \"schema\": \"specarm.env/2\","
   echo "  \"timestamp_utc\": $(json_escape "$TS"),"
   echo "  \"hostname\": $(json_escape "$HOSTN"),"
   echo "  \"core\": $(json_escape "$CORE_NAME"),"
   echo "  \"cpu_implementer\": $(json_escape "$IMPLEMENTER"),"
   echo "  \"cpu_part\": $(json_escape "$PART"),"
   echo "  \"nproc\": $NPROC,"
+  echo "  \"int8_matmul_path\": $(json_escape "$INT8_PATH"),"
   echo "  \"sve_vector_bits\": $SVE_BITS,"
   echo "  \"virtualization\": $(json_escape "$VIRT"),"
   echo "  \"kernel\": $(json_escape "$KERNEL"),"
@@ -130,7 +164,6 @@ OUT="$RESULTS_DIR/env_${HOSTN}_${STAMP}.json"
   echo "  \"perf_event_paranoid\": $(json_escape "$PARANOID"),"
   echo "  \"perf_usable\": $PERF_OK,"
   echo "  \"llama_cpp_sha\": $LLAMA_SHA,"
-  echo "  \"crux_role\": $(json_escape "$CRUX_ROLE"),"
   echo "  \"features\": {"
   # Join with commas: every line but the last gets a trailing comma.
   for i in "${!feat_lines[@]}"; do
@@ -149,26 +182,42 @@ cp "$OUT" "$RESULTS_DIR/env.latest.json"
 # ---------------------------------------------------------------- human summary
 echo
 echo "  core ................ $CORE_NAME  (${NPROC} threads, virt=$VIRT)"
+echo "  int8 matmul path .... $INT8_PATH"
 echo "  i8mm (SMMLA) ........ $HAS_I8MM"
+echo "  dotprod (SDOT) ...... $HAS_DOTP"
 echo "  bf16 ................ $HAS_BF16"
 echo "  sve2 ................ $HAS_SVE2  (vector bits: $SVE_BITS)"
-echo "  dotprod (SDOT) ...... $HAS_DOTP"
 echo "  perf usable ......... $PERF_OK  (paranoid=$PARANOID)"
 echo "  report .............. $OUT"
 echo
 
-if [ "$CRUX_ROLE" = "subject" ]; then
-  log "CRUX ROLE: SUBJECT — this core has i8mm. The wake-up experiment is valid here."
-else
-  warn "CRUX ROLE: CONTROL — no i8mm on this core."
-  warn "There is no SMMLA kernel to wake up, so a null result here proves nothing"
-  warn "about the thesis. Use this host only as the N1-class contrast row."
-  if [ "$REQUIRE_I8MM" = 1 ]; then
-    die "--require-i8mm was set and this core lacks i8mm. Refusing to produce misleading data."
-  fi
-fi
+case "$INT8_PATH" in
+  i8mm)
+    log "This core can reach i8mm (SMMLA) kernels."
+    log "Pair it with a dotprod-only core (Neoverse N1 / Graviton2) to compare"
+    log "what a mis-routed slot costs on each. That comparison is not yet made."
+    ;;
+  dotprod)
+    log "This core offers dotprod (SDOT) but NOT i8mm — this is the N1 class."
+    log "Useful as the contrast host: same scheduler bug, different prefill cost."
+    ;;
+  none)
+    warn "No int8 dot-product or matmul extension detected. Prefill will use a"
+    warn "generic path, and timings here will not be comparable to a Neoverse host."
+    ;;
+esac
 
 if [ "$VIRT" != "none" ] && [ "$VIRT" != "unknown" ]; then
   warn "Virtualized host ($VIRT): PMU counters are typically restricted, and"
   warn "burstable instance types throttle mid-run. Treat wall-clock as primary."
+fi
+
+if [ -n "$REQUIRE_FEAT" ]; then
+  if cpu_has "$REQUIRE_FEAT"; then
+    log "required feature '$REQUIRE_FEAT': present"
+  else
+    printf '\033[1;31m[specarm:error]\033[0m %s\n' \
+      "--require $REQUIRE_FEAT: this core does not advertise it. Refusing to continue." >&2
+    exit 3
+  fi
 fi
