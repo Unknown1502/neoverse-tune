@@ -1,0 +1,33 @@
+Fixture for test_parse_slot_log.py — real llama-server line formats, hand-checked values.
+Captured from llama.cpp 030ebb55 on Neoverse N2, trimmed to four requests.
+Anything that is not a slot line is noise the parser must ignore, including this header.
+
+0.00.002.357 I cmn  common_param: common_params_print_info: verbosity = 3 (adjust with the `-lv N` CLI arg)
+0.00.004.079 I srv    load_model: loading model '/home/runner/work/neoverse-tune/models/qwen2.5-1.5b-instruct-q4_k_m.gguf'
+0.01.676.969 I srv    load_model: initializing, n_slots = 4, n_ctx_slot = 8192, kv_unified = 'false'
+0.01.681.432 I srv  llama_server: model loaded
+
+REQUEST 1 — cold start, no slot holds anything yet, so selection falls back to LRU.
+0.02.039.935 I slot get_availabl: id  3 | task -1 | selected slot by LRU, t_last = -1
+0.02.040.005 I slot launch_slot_: id  3 | task 0 | processing task, is_child = 0
+0.11.617.716 I slot print_timing: id  3 | task 0 | prompt eval time =    8006.13 ms /   610 tokens (   13.12 ms per token,    76.19 tokens per second)
+0.11.617.725 I slot print_timing: id  3 | task 0 |        eval time =    1571.53 ms /    48 tokens (   32.74 ms per token,    30.54 tokens per second)
+0.11.617.798 I slot      release: id  3 | task 0 | stop processing: n_tokens = 657, truncated = 0
+
+REQUEST 2 — same tenant, own slot, high similarity, cheap prefill. This is the healthy case.
+0.11.630.093 I slot get_availabl: id  3 | task -1 | selected slot by LCP similarity, f_sim_best = 0.949 (> 0.100 thold), f_keep = 1.000
+0.11.630.180 I slot launch_slot_: id  3 | task 1 | processing task, is_child = 0
+0.13.599.475 I slot print_timing: id  3 | task 1 | prompt eval time =     378.83 ms /    35 tokens (   10.82 ms per token,    92.39 tokens per second)
+0.13.599.714 I slot      release: id  3 | task 1 | stop processing: n_tokens = 739, truncated = 0
+
+REQUEST 3 — a DIFFERENT tenant lands on a foreign slot at 0.716, clearing the 0.100 default.
+0.13.700.001 I slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, f_sim_best = 0.716 (> 0.100 thold), f_keep = 1.000
+0.13.700.100 I slot launch_slot_: id  0 | task 2 | processing task, is_child = 0
+0.17.940.512 I slot print_timing: id  0 | task 2 | prompt eval time =    4238.90 ms /   220 tokens (   19.27 ms per token,    51.90 tokens per second)
+0.17.940.900 I slot      release: id  0 | task 2 | stop processing: n_tokens = 836, truncated = 0
+
+REQUEST 4 — and again, on yet another slot. This is the thrash.
+0.18.010.004 I slot get_availabl: id  1 | task -1 | selected slot by LCP similarity, f_sim_best = 0.716 (> 0.100 thold), f_keep = 1.000
+0.18.010.090 I slot launch_slot_: id  1 | task 3 | processing task, is_child = 0
+0.22.249.301 I slot print_timing: id  1 | task 3 | prompt eval time =    4238.90 ms /   220 tokens (   19.27 ms per token,    51.90 tokens per second)
+0.22.249.700 I slot      release: id  1 | task 3 | stop processing: n_tokens = 836, truncated = 0

@@ -39,6 +39,9 @@ jobs:
       - run: python3 tools/test_skeptic.py
       - run: python3 tools/test_probe_prefill.py
       - run: python3 tools/test_agent_tools.py
+      # Guards the mechanism claim: if llama.cpp's log format drifts, the
+      # regexes stop matching and every causal number silently becomes zero.
+      - run: python3 tools/test_parse_slot_log.py
 
   bench:
     name: Multi-tenant bench on Neoverse N2
