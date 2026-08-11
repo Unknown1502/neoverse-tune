@@ -1,0 +1,31 @@
+{
+  "schema": "specarm.env/2",
+  "timestamp_utc": "2026-08-10T20:57:27Z",
+  "hostname": "runnervma9114",
+  "core": "Neoverse-N2",
+  "cpu_implementer": "0x41",
+  "cpu_part": "0xd49",
+  "nproc": 4,
+  "int8_matmul_path": "i8mm",
+  "sve_vector_bits": 128,
+  "virtualization": "microsoft",
+  "kernel": "Linux 6.17.0-1020-azure",
+  "distro": "Ubuntu 24.04.4 LTS",
+  "compiler": "cc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "cmake": "cmake version 3.31.6",
+  "perf_event_paranoid": "4",
+  "perf_usable": false,
+  "llama_cpp_sha": null,
+  "features": {
+    "asimd": true,
+    "asimddp": true,
+    "i8mm": true,
+    "bf16": true,
+    "sve": true,
+    "sve2": true,
+    "sme": false,
+    "sme2": false,
+    "fphp": true,
+    "asimdhp": true
+  }
+}

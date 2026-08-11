@@ -1,0 +1,11 @@
+{
+  "schema": "specarm.model/1",
+  "path": "/home/runner/work/neoverse-tune/neoverse-tune/models/qwen2.5-1.5b-instruct-q4_k_m.gguf",
+  "name": "qwen2.5-1.5b-instruct-q4_k_m.gguf",
+  "url": "https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct-GGUF/resolve/main/qwen2.5-1.5b-instruct-q4_k_m.gguf",
+  "sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+  "sha256_expected": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+  "verified": true,
+  "bytes": 1117320736,
+  "is_pinned_default": true
+}

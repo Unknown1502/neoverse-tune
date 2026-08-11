@@ -21,8 +21,17 @@ tenant, tenants scatter across slots, and each recomputes its own conversation
 history on every turn.
 
 Measured: 4 tenants, 550-token shared preamble, 836-token conversations.
-**220 tokens recomputed per request at the default, 36 at `0.9`.** Time to first
-token 2313 ms versus 458 ms.
+**220 tokens recomputed per request at the default, 36 at `0.9`.**
+
+| | Neoverse N2 (4 vCPU) | x86 (8 threads) |
+|:--|--:|--:|
+| 1 tenant | 386 ms | 503 ms |
+| 4 tenants, default | **4204 ms** (10.9x) | 2313 ms (4.6x) |
+| 4 tenants, `0.9` | 399 ms | 458 ms |
+| tokens recomputed at default | **220** | **220** |
+
+The token counts are byte-identical across architectures. The scheduler makes
+the same decision on both; only the price differs.
 
 ## Three things that are easy to get wrong
 

@@ -20,25 +20,33 @@
 
 > **Four users of the same agent make `llama.cpp` recompute 6x more tokens per
 > request than one user does — because of a default that is right for chat and
-> wrong for agents.**
+> wrong for agents. On Neoverse N2 that costs 10.9x time-to-first-token.**
 
 ```
 550-token system prompt + tool schemas, shared byte-identically by every tenant
 836-token conversations, 4 turns each, requests issued sequentially
 
-                          slot chosen at    tokens recomputed    time to
-                          similarity        per request          first token
-  1 tenant                0.955                  35                 503 ms
-  4 tenants (default)     0.716                 220                2313 ms   4.6x
-  4 tenants (fixed)       0.955                  36                 458 ms
+                        slot chosen   tokens        TTFT            TTFT
+                        at similarity recomputed    Neoverse N2     x86 8-thread
+  1 tenant                 0.955          35          386 ms          503 ms
+  4 tenants (default)      0.716         220         4204 ms 10.9x   2313 ms 4.6x
+  4 tenants (fixed)        0.955          36          399 ms          458 ms
 ```
 
 **One flag.** `--slot-prompt-similarity 0.9`
 
+**The scheduler makes byte-identical decisions on both machines** — same 0.716
+similarity, same 220 tokens recomputed. Only the *price* of those decisions
+differs. The mechanism is architecture-independent; the cost is not.
+
 n=5 independent repeats per configuration, fresh server each time, 95%
-confidence intervals disjoint, every relative standard deviation under 10%.
-Adjudication thresholds were registered in commit `20a6031`, before any data
-existed.
+confidence intervals disjoint. Adjudication thresholds were registered in commit
+`20a6031`, before any data existed. Both machines ran the same GGUF, verified
+byte-identical by SHA-256, against llama.cpp `030ebb55`.
+
+Reproduce the Arm column with one click: fork this repo, dispatch the
+[`bench` workflow](.github/workflows/bench.yml), wait 47 minutes. The Arm runner
+is free on public repositories.
 
 ---
 
@@ -163,11 +171,17 @@ contributions are:
    with shared context, inverting the intuition that more sharing helps.
 3. **An adjudication harness** that publishes UNCERTAIN and REJECTED verdicts
    alongside VERIFIED ones, with thresholds committed before data collection.
-4. **A per-core cost framing** (in progress): the same mis-routing costs
-   different wall-clock on different Neoverse generations, because the penalty is
-   prefill time and prefill throughput is microarchitecture-dependent.
+4. **Separation of mechanism from cost**, measured on two machines: the scheduler
+   reaches byte-identical decisions on Neoverse N2 and x86 — same 0.716
+   similarity, same 220 tokens recomputed — while the wall-clock penalty differs
+   by more than 2x. A scheduling defect and the price of that defect are
+   different quantities, and only the second is hardware-dependent.
 
-Point 4 is **not yet measured**. It is stated as the next step, not as a result.
+**What point 4 does not yet establish:** the two hosts differ in architecture
+*and* core count (N2/4 vCPU vs x86/8 threads), so the 10.9x-versus-4.6x gap
+cannot be attributed to microarchitecture. Establishing that requires a
+same-core-count comparison across Neoverse generations — N1 has no `i8mm` where
+N2 does — and that experiment has not been run.
 
 ### Competitive Advantages
 
@@ -180,36 +194,54 @@ Point 4 is **not yet measured**. It is stated as the next step, not as a result.
 
 ## The Finding
 
-### Configurations Measured
+### Configurations Measured — two machines, one workload
 
-| Config | Tenants | `-np` | Similarity | Warm TTFT (mean ± 95% CI) | RSD | n |
-|:--|--:|--:|--:|--:|--:|--:|
-| `solo_baseline` | 1 | 4 | 0.1 | **503.2 ± 43.3 ms** | 6.9% | 5 |
-| `4tenant_default` | 4 | 4 | 0.1 | **2312.7 ± 251.9 ms** | 8.8% | 5 |
-| `8tenant_default` | 8 | 4 | 0.1 | **2101.5 ± 127.5 ms** | 4.9% | 5 |
-| `4tenant_sim09` | 4 | 4 | 0.9 | **458.2 ± 26.1 ms** | 4.6% | 5 |
-| `8tenant_sim09` | 8 | 4 | 0.9 | **495.6 ± 21.8 ms** | 3.5% | 5 |
-| `8tenant_sim09_np8` | 8 | 8 | 0.9 | **464.6 ± 14.5 ms** | 2.5% | 5 |
+Both columns ran the same GGUF (SHA-256 verified identical) against llama.cpp
+`030ebb55`, 5 repeats per config, fresh server each time.
 
-Host: 8-thread x86 (Windows), Qwen2.5-1.5B-Instruct, ctx 32768, 30 runs, 46.9
-minutes. **No Arm measurement exists yet** — see
-[Known Limitations](#known-limitations-and-open-defects).
+| Config | Tenants | `-np` | Sim | **Neoverse N2** (4 vCPU) | RSD | **x86** (8 threads) | RSD |
+|:--|--:|--:|--:|--:|--:|--:|--:|
+| `solo_baseline` | 1 | 4 | 0.1 | **385.9 ± 2.5 ms** | 0.5% | 503.2 ± 43.3 ms | 6.9% |
+| `4tenant_default` | 4 | 4 | 0.1 | **4203.7 ± 4.8 ms** | 0.1% | 2312.7 ± 251.9 ms | 8.8% |
+| `8tenant_default` | 8 | 4 | 0.1 | **4204.2 ± 3.9 ms** | 0.1% | 2101.5 ± 127.5 ms | 4.9% |
+| `4tenant_sim09` | 4 | 4 | 0.9 | **399.0 ± 1.0 ms** | 0.2% | 458.2 ± 26.1 ms | 4.6% |
+| `8tenant_sim09` | 8 | 4 | 0.9 | **401.9 ± 1.9 ms** | 0.4% | 495.6 ± 21.8 ms | 3.5% |
+| `8tenant_sim09_np8` | 8 | 8 | 0.9 | **398.2 ± 2.2 ms** | 0.4% | 464.6 ± 14.5 ms | 2.5% |
+
+- **Arm**: Neoverse N2 (Cobalt 100, `0x41`/`0xd49`), 4 vCPU, `i8mm`+`bf16`+`sve2`@128-bit, Ubuntu 24.04, free GitHub-hosted runner. 47 minutes.
+- **x86**: 8-thread Windows laptop. 46.9 minutes.
+- Raw data: [`results/arm-neoverse-n2/`](results/arm-neoverse-n2/) and [`results/`](results/).
+
+**The Arm intervals are an order of magnitude tighter** — median RSD 0.4% versus
+4.9%. A dedicated cloud instance is a far quieter measurement environment than a
+laptop with a desktop session on it, and it shows.
 
 ### Adjudicated Comparisons
 
-| Question | Reference | Candidate | Ratio | Verdict |
-|:--|:--|:--|--:|:--|
-| Does adding tenants break prefix caching? | `solo_baseline` | `4tenant_default` | 4.60x | 🔴 **REGRESSION CONFIRMED** |
-| Does it get worse with more tenants? | `solo_baseline` | `8tenant_default` | 4.18x | 🔴 **REGRESSION CONFIRMED** |
-| Does raising the threshold fix it? | `4tenant_default` | `4tenant_sim09` | 0.20x | ✅ **VERIFIED** |
-| Does the fix hold when tenants exceed slots? | `8tenant_default` | `8tenant_sim09` | 0.24x | ✅ **VERIFIED** |
-| Is multi-tenant back at single-tenant parity? | `solo_baseline` | `8tenant_sim09` | 0.99x | ⚠️ UNCERTAIN |
-| Do extra slots help once the threshold is right? | `8tenant_sim09` | `8tenant_sim09_np8` | 0.94x | ⚠️ UNCERTAIN |
+| Question | Reference | Candidate | **N2** | **x86** |
+|:--|:--|:--|:--|:--|
+| Does adding tenants break prefix caching? | `solo_baseline` | `4tenant_default` | 🔴 **10.89x REGRESSION** | 🔴 4.60x REGRESSION |
+| Does it get worse with more tenants? | `solo_baseline` | `8tenant_default` | 🔴 **10.89x REGRESSION** | 🔴 4.18x REGRESSION |
+| Does raising the threshold fix it? | `4tenant_default` | `4tenant_sim09` | ✅ **VERIFIED** 0.09x | ✅ VERIFIED 0.20x |
+| Does the fix hold when tenants exceed slots? | `8tenant_default` | `8tenant_sim09` | ✅ **VERIFIED** 0.10x | ✅ VERIFIED 0.24x |
+| Is multi-tenant back at single-tenant parity? | `solo_baseline` | `8tenant_sim09` | ❌ **REJECTED** (−4.0%) | ⚠️ UNCERTAIN |
+| Do extra slots help once the threshold is right? | `8tenant_sim09` | `8tenant_sim09_np8` | ⚠️ UNCERTAIN | ⚠️ UNCERTAIN |
 
-**The two UNCERTAIN rows are published deliberately.** Parity is *plausible* but
-the intervals overlap, so the honest verdict is "we cannot distinguish these,"
-not "they are equal." A harness that reports only its wins is a harness nobody
-should believe, including its author.
+**Three results here cost us something, and all three are published.**
+
+**Parity is REJECTED on Arm.** On x86 the intervals overlapped and the honest
+answer was "we cannot tell." On Arm, at 0.4% RSD, the measurement is precise
+enough to resolve a **real residual 4% gap**: raising the threshold recovers
+almost all of the regression, but *not quite* single-tenant performance. Better
+instruments produced a worse-sounding and more truthful answer.
+
+**Extra slots still do nothing.** `-np 8` for 8 tenants is indistinguishable from
+`-np 4` once the threshold is right — which is what rules out slot *capacity* as
+the explanation.
+
+**8 tenants and 4 tenants are the same number.** 4203.7 ms versus 4204.2 ms, at
+0.1% RSD. Half a millisecond apart. See
+[why that is expected](#the-apparent-anomaly-and-why-it-is-not-one).
 
 ### Runtime Composition
 
@@ -1529,6 +1561,23 @@ saturated at four tenants against four slots — every tenant already matches ev
 slot at 0.716 against a 0.10 threshold, and adding more tenants cannot make an
 already-total failure more total.
 
+### The Arm run settled this decisively
+
+That saturation argument was written from noisy x86 data, where the two configs
+differed by 211 ms and the intervals overlapped. The Neoverse N2 run, at **0.1%
+RSD**, is precise enough to test it directly:
+
+| config | Neoverse N2 | 95% CI |
+|:--|--:|:--|
+| `4tenant_default` | **4203.7 ms** | [4198.9, 4208.5] |
+| `8tenant_default` | **4204.2 ms** | [4200.3, 4208.1] |
+
+**Half a millisecond apart — 0.01%.** Doubling the tenants changes nothing,
+measured on an instrument two orders of magnitude more precise than the one that
+raised the question. Saturation is not a rationalisation for a noisy result; it
+is the correct model, and a better measurement confirmed it rather than
+dissolving it.
+
 This is the adjudicator working as intended in the direction that costs us a
 tidier story: it is as unwilling to certify an interesting anomaly as it is to
 certify a win.
@@ -1622,13 +1671,13 @@ Stated in advance so they cannot be quietly retired.
 
 1. **If tokens-recomputed is the same at 1 tenant and 4**, there is no scattering and the mechanism is wrong.
 2. **If raising the threshold does not reduce tokens-recomputed**, the threshold is not the lever.
-3. **If the effect vanishes on Arm**, the finding is x86-specific and must be reported as such. It is scheduler behaviour, so this would be surprising — but it is **not yet measured.**
+3. ~~**If the effect vanishes on Arm**, the finding is x86-specific and must be reported as such.~~ **TESTED.** It does not vanish. On Neoverse N2 the regression is **10.89x**, larger than x86's 4.60x, with byte-identical mechanism evidence (0.716 similarity, 220 tokens recomputed on both). The falsification attempt failed and is recorded here rather than removed.
 
 ### Claims deliberately not made
 
 - **Not** that llama.cpp is poorly engineered. The 0.10 default is reasonable for chat, where the shared prefix is small.
 - **Not** a throughput claim. TTFT only.
-- **Not** an Arm claim. The Arm numbers are owed.
+- **Not** a claim that the *mechanism* is Arm-specific. It is a scheduler heuristic and reproduces identically on x86. What differs by machine is the **cost**, and the two hosts measured differ in both architecture and core count (N2/4 vCPU vs x86/8 threads), so the 10.9x-versus-4.6x gap **cannot be attributed to architecture alone**. Isolating that needs a same-core-count comparison, which has not been run.
 - **Not** that more tenants monotonically worsens the regression — our own data contradicts that.
 - No number without the machine it came from in the same table.
 
@@ -2025,7 +2074,7 @@ gantt
 
 ### Next
 
-1. **First Arm measurement** — blocking. Zero Arm data exists.
+1. ~~First Arm measurement~~ — **done.** Neoverse N2, 47 minutes, 10.89x regression, mechanism identical to x86.
 2. **`detect`** — reframe `00_env_report.sh` from the dead i8mm hypothesis to per-core config selection. The MIDR and feature detection already work.
 3. **`profile`** — prefill throughput per quantization format, on N2 and N1. This is where the per-core claim either becomes real or dies.
 4. **Derived threshold** — run `--sweep` for real; stop asserting 0.9.
@@ -2044,6 +2093,21 @@ gantt
 ## Changelog
 
 Versions are commit-identified; no tags are cut yet.
+
+### 2026-08-11 — **First Arm measurement**
+Full 30-run matrix on Neoverse N2 (Cobalt 100, 4 vCPU) via the free GitHub Arm
+runner, 47 minutes. **10.89x regression**, 10.5x recovery, median RSD 0.4%.
+Mechanism evidence byte-identical to x86 (0.716 similarity, 220 tokens). Model
+SHA-256 verified identical to the x86 baseline; llama.cpp `030ebb55`.
+Falsification test 3 attempted and failed — the effect did not vanish on Arm, it
+more than doubled. Parity moved from UNCERTAIN to **REJECTED**: the tighter
+instrument resolved a real residual 4% gap the laptop could not see.
+
+### 2026-08-11 — Model pinned by hash; env report reframed
+`fetch_model.sh` pins Qwen2.5-1.5B-Instruct Q4_K_M by SHA-256 and verifies on
+every run (D2, D4). `00_env_report.sh` reframed off the dead i8mm hypothesis onto
+`int8_matmul_path` (D5). The 8-tenant ordering resolved as noise, then confirmed
+as saturation by the 0.1%-RSD Arm data.
 
 ### `3ad56b5` — 2026-07-30
 Added `docs/architecture.md` and `docs/flows.md`: 21 Mermaid diagrams covering
@@ -2090,6 +2154,7 @@ hypothetical.
 |:--|:--|:--|
 | **D2** | **Model mismatch between CI and published numbers.** `fetch_model.sh` defaulted to Qwen2.5-**0.5B** Q4_0 while every published number came from **1.5B**, so a CI Arm run would not have been comparable to the x86 baseline. | The exact artifact was identified from the GGUF header of the file that produced the published numbers — **Qwen2.5-1.5B-Instruct Q4_K_M, 1,117,320,736 bytes** — and confirmed byte-identical to the official Qwen repo via HuggingFace's `X-Linked-ETag`. It is now **pinned by SHA-256**, not by name. |
 | **D4** | Model downloaded with **no checksum verification**; a substituted or truncated artifact would have been benchmarked silently. | `fetch_model.sh` now verifies SHA-256 on **every** run, including cached files. A mismatch **deletes the artifact and exits non-zero** rather than warning. Hashing falls back `sha256sum` → `shasum` → `python3`; if none exist it reports *unverified* rather than pretending to check. Verified against four cases: correct hash, wrong hash, custom URL without a hash, and a tampered cache under the default invocation. |
+| **D3** | The `bench` workflow **had never executed** — untested CI, and no Arm data anywhere in a project entered in an Arm competition. | Executed 2026-08-10 on `ubuntu-24.04-arm`. All 11 steps green in 47 minutes: env report, build, hash-verified model fetch, 30-run matrix, adjudication, evidence extraction, artifact upload. Results committed to `results/arm-neoverse-n2/`. The badge at the top of this README reports the real state. |
 | **D5** | `00_env_report.sh` documented and gated on **dead hypothesis 1** — "SpecArm's thesis is that KleidiAI's i8mm microkernels sit idle during batch=1 decode" — via `crux_role: subject/control` and `--require-i8mm`, contradicting `docs/methodology.md`. | Reframed around the surviving thesis: the core identity matters because a mis-routed slot costs **prefill time**, and prefill throughput depends on the available int8 matmul path. `crux_role` → **`int8_matmul_path`** (`i8mm`\|`dotprod`\|`none`), a statement about hardware rather than about a dead experiment. `--require-i8mm` → general **`--require <feature>`**. Schema bumped to `specarm.env/2`. The MIDR and feature detection — which was never the faulty part — is unchanged. The dead hypothesis is retained as a documented historical note. |
 
 ### Open defects
@@ -2097,7 +2162,7 @@ hypothetical.
 | ID | Severity | Defect | Location | Impact |
 |:--|:--|:--|:--|:--|
 | **D1** | **High** | `parse_slot_log.py` has **no test fixtures**. An upstream log-format change makes it return zero matches silently, which reads as "no evidence" rather than "parser broken." | `tools/parse_slot_log.py` | The mechanism claim rests entirely on this parser |
-| **D3** | **High** | The `bench` workflow **has never executed.** Untested CI. | `.github/workflows/bench.yml` | Unknown whether the Arm path works at all |
+| **D13** | Low | `00_env_report.sh` runs *before* `01_build_llama.sh` in CI, so `llama_cpp_sha` is `null` in `env.latest.json`. The SHA is recorded in `build.latest.json`, so nothing is lost — but the env report advertises a field it cannot populate in the CI ordering. | `.github/workflows/bench.yml` | Cosmetic; provenance is intact elsewhere |
 | **D6** | Medium | Tests are `__main__` scripts, not pytest. No collection, no coverage, no CI matrix. | `tools/test_*.py` | Coverage is unmeasured and unmeasurable |
 | **D7** | Low | Hardcoded default ports, inconsistent across tools: 8080 (`probe_prefill`), 8081 (`bench_agent`, `tune_similarity --url`), 8099 (`run_matrix`, `tune_similarity --port`). A busy port fails rather than adapting. | multiple | Confusing; has already caused two failed runs |
 | **D8** | Low | `probe_prefill.one_turn` type annotation says `tuple[float, float, int, int]` but it returns `((f,f,i,i), str)`. Callers unpack correctly; the annotation is wrong. | `tools/probe_prefill.py:101,151` | Misleading to readers and type checkers |
@@ -2108,7 +2173,7 @@ hypothetical.
 
 ### Measurement limitations
 
-1. **Zero Arm measurements.** Every number came from one 8-thread Windows x86 laptop.
+1. **Two machines, and they differ in two variables at once.** Neoverse N2 at 4 vCPU and x86 at 8 threads. The regression is 10.89x on the former and 4.60x on the latter, but architecture and core count are confounded, so neither can be credited. A same-core-count comparison is the missing experiment.
 2. **Scattering saturates at 4 tenants.** 8 tenants and 4 tenants at the default are statistically indistinguishable (overlapping CIs, identical 0.716 similarity and 220-token prefill). The data therefore cannot speak to how the regression scales *beyond* total failure — testing that needs more slots, not more tenants.
 3. **One model, one quantization, one preamble size, one turn count.** The central claim is *about* preamble size, and exactly one value (550 tokens) was tested.
 4. **`n=5` is the self-imposed minimum.** No margin.

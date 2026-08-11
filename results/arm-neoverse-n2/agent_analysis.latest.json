@@ -1,0 +1,191 @@
+{
+  "schema": "specarm.agent_analysis/1",
+  "configs": {
+    "solo_baseline": {
+      "n": 5,
+      "mean": 385.886,
+      "median": 385.78,
+      "stdev": 2.0389,
+      "ci95_lo": 383.3548,
+      "ci95_hi": 388.4172,
+      "rsd_pct": 0.528
+    },
+    "4tenant_default": {
+      "n": 5,
+      "mean": 4203.726,
+      "median": 4202.09,
+      "stdev": 3.8401,
+      "ci95_lo": 4198.9587,
+      "ci95_hi": 4208.4933,
+      "rsd_pct": 0.091
+    },
+    "8tenant_default": {
+      "n": 5,
+      "mean": 4204.21,
+      "median": 4205.33,
+      "stdev": 3.1487,
+      "ci95_lo": 4200.301,
+      "ci95_hi": 4208.119,
+      "rsd_pct": 0.075
+    },
+    "4tenant_sim09": {
+      "n": 5,
+      "mean": 398.996,
+      "median": 398.73,
+      "stdev": 0.7995,
+      "ci95_lo": 398.0035,
+      "ci95_hi": 399.9885,
+      "rsd_pct": 0.2
+    },
+    "8tenant_sim09": {
+      "n": 5,
+      "mean": 401.922,
+      "median": 401.63,
+      "stdev": 1.5348,
+      "ci95_lo": 400.0166,
+      "ci95_hi": 403.8274,
+      "rsd_pct": 0.382
+    },
+    "8tenant_sim09_np8": {
+      "n": 5,
+      "mean": 398.22,
+      "median": 397.34,
+      "stdev": 1.7503,
+      "ci95_lo": 396.047,
+      "ci95_hi": 400.393,
+      "rsd_pct": 0.44
+    }
+  },
+  "meta": {
+    "solo_baseline": {
+      "agents": 1,
+      "preamble_tokens": 550,
+      "final_prompt_tokens": 836,
+      "token_method": "apply_template+tokenize",
+      "samples_ms": [
+        384.52,
+        387.82,
+        385.78,
+        383.32,
+        387.99
+      ]
+    },
+    "4tenant_default": {
+      "agents": 4,
+      "preamble_tokens": 550,
+      "final_prompt_tokens": 838,
+      "token_method": "apply_template+tokenize",
+      "samples_ms": [
+        4203.61,
+        4202.09,
+        4201.32,
+        4201.23,
+        4210.38
+      ]
+    },
+    "8tenant_default": {
+      "agents": 8,
+      "preamble_tokens": 550,
+      "final_prompt_tokens": 835,
+      "token_method": "apply_template+tokenize",
+      "samples_ms": [
+        4203.75,
+        4205.33,
+        4199.02,
+        4205.77,
+        4207.18
+      ]
+    },
+    "4tenant_sim09": {
+      "agents": 4,
+      "preamble_tokens": 550,
+      "final_prompt_tokens": 838,
+      "token_method": "apply_template+tokenize",
+      "samples_ms": [
+        398.73,
+        398.26,
+        399.4,
+        398.4,
+        400.19
+      ]
+    },
+    "8tenant_sim09": {
+      "agents": 8,
+      "preamble_tokens": 550,
+      "final_prompt_tokens": 835,
+      "token_method": "apply_template+tokenize",
+      "samples_ms": [
+        400.8,
+        400.88,
+        401.74,
+        404.56,
+        401.63
+      ]
+    },
+    "8tenant_sim09_np8": {
+      "agents": 8,
+      "preamble_tokens": 550,
+      "final_prompt_tokens": 835,
+      "token_method": "apply_template+tokenize",
+      "samples_ms": [
+        396.32,
+        399.68,
+        397.32,
+        400.44,
+        397.34
+      ]
+    }
+  },
+  "comparisons": {
+    "solo_baseline__vs__4tenant_default": {
+      "question": "Does adding tenants break prefix caching?",
+      "expectation": "regression_expected",
+      "ratio": 10.8937,
+      "verdict": "REJECTED",
+      "shown": "REGRESSION CONFIRMED",
+      "reason": "10.89x slower than reference"
+    },
+    "solo_baseline__vs__8tenant_default": {
+      "question": "Does it get worse with more tenants?",
+      "expectation": "regression_expected",
+      "ratio": 10.895,
+      "verdict": "REJECTED",
+      "shown": "REGRESSION CONFIRMED",
+      "reason": "10.89x slower than reference"
+    },
+    "4tenant_default__vs__4tenant_sim09": {
+      "question": "Does raising the similarity threshold fix it?",
+      "expectation": "improvement_expected",
+      "ratio": 0.0949,
+      "verdict": "VERIFIED",
+      "shown": "VERIFIED",
+      "reason": "+953.6%, CIs disjoint"
+    },
+    "8tenant_default__vs__8tenant_sim09": {
+      "question": "Does the fix hold when tenants exceed slots?",
+      "expectation": "improvement_expected",
+      "ratio": 0.0956,
+      "verdict": "VERIFIED",
+      "shown": "VERIFIED",
+      "reason": "+946.0%, CIs disjoint"
+    },
+    "solo_baseline__vs__8tenant_sim09": {
+      "question": "With the fix, is multi-tenant back at single-tenant parity?",
+      "expectation": "parity_expected",
+      "ratio": 1.0416,
+      "verdict": "REJECTED",
+      "shown": "REJECTED",
+      "reason": "no improvement (-4.0%)"
+    },
+    "8tenant_sim09__vs__8tenant_sim09_np8": {
+      "question": "Do extra slots add anything once the threshold is right?",
+      "expectation": "improvement_expected",
+      "ratio": 0.9908,
+      "verdict": "UNCERTAIN",
+      "shown": "UNCERTAIN",
+      "reason": "+0.9% but 95% CIs overlap"
+    }
+  },
+  "regression_x": 10.894,
+  "improvement_x": 10.536
+}

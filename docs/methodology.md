@@ -87,13 +87,39 @@ Stated in advance so it cannot be quietly retired:
 2. If raising the threshold does not reduce tokens-recomputed, the threshold is
    not the lever.
 3. If the effect vanishes on Arm, the finding is x86-specific and must be
-   reported as such — it is scheduler behaviour, so this would be surprising,
-   but it is not yet measured.
+   reported as such — it is scheduler behaviour, so this would be surprising.
+
+### Outcome of test 3 — the attempt failed
+
+Run on 2026-08-10, Neoverse N2 (Cobalt 100, 4 vCPU), same GGUF verified
+byte-identical by SHA-256, llama.cpp `030ebb55`. Raw data in
+`results/arm-neoverse-n2/`.
+
+| | Neoverse N2 | x86 8-thread |
+|:--|--:|--:|
+| Regression, 1 → 4 tenants | **10.89x** | 4.60x |
+| Recovery at `0.9` | **10.5x** | 5.0x |
+| Median LCP similarity at default | **0.716** | 0.716 |
+| Median tokens recomputed at default | **220** | 220 |
+| Median RSD across configs | **0.4%** | 4.9% |
+
+The effect did not vanish; it is more than twice as large. The mechanism
+evidence is **byte-identical** across the two architectures, which is what a
+deterministic scheduler should produce and is the strongest available evidence
+that the finding is about slot selection rather than about arithmetic.
+
+Tests 1 and 2 also hold on Arm: tokens-recomputed goes 35 → 220 from 1 tenant to
+4, and raising the threshold returns it to 36.
 
 ## 7. Claims deliberately not made
 
 - Not a claim that llama.cpp is poorly engineered. The default is reasonable for
   chat, where the shared prefix is small.
 - Not a throughput claim. TTFT only.
-- Not an Arm claim yet. The Arm numbers are owed.
+- Not a claim that the *mechanism* is Arm-specific — it reproduces identically on
+  x86. What differs by machine is the **cost**.
+- Not an attribution of the 10.9x-vs-4.6x gap to microarchitecture. The two hosts
+  differ in architecture *and* core count, so that comparison is confounded. A
+  same-core-count run across Neoverse generations would be needed, and has not
+  been done.
 - No number without the machine it came from in the same table.

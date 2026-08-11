@@ -39,3 +39,6 @@ Thumbs.db
 *.dll
 *.exe
 *.so.*
+
+# Downloaded CI artifacts — extract, do not commit the archive
+*.zip

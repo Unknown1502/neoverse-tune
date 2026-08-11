@@ -332,7 +332,7 @@ rather than averaged in.
 ```mermaid
 flowchart LR
     subgraph local["Local — development"]
-        w["Windows x86, 8 threads<br/><i>where every current number came from</i>"]
+        w["Windows x86, 8 threads<br/><i>the x86 column</i>"]
     end
     subgraph gha["GitHub Actions — free on public repos"]
         j1["skeptic gate<br/>ubuntu-latest<br/><small>3 test suites</small>"]
@@ -346,10 +346,15 @@ flowchart LR
     w -.->|"push"| j1
     j2 --> sum["job summary + artifact<br/>30 day retention"]
 
-    style j2 fill:#1a365d,color:#fff
+    style j2 fill:#22543d,color:#fff
     style g2 fill:#744210,color:#fff
-    style w fill:#742a2a,color:#fff
+    style w fill:#1a365d,color:#fff
 ```
+
+**Status:** the N2 runner has produced a full 30-run matrix
+(`results/arm-neoverse-n2/`, 2026-08-10). The N1 host is the outstanding
+experiment — it is the only way to separate microarchitecture from core count in
+the cost comparison.
 
 **The gate is the point.** If the adjudicator is broken there is no reason to
 spend an Arm runner on measurements it would misjudge, so `skeptic` runs the

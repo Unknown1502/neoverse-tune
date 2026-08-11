@@ -1,0 +1,72 @@
+{
+  "schema": "specarm.prefill_probe/1",
+  "label": "default",
+  "turns": [
+    {
+      "turn": 1,
+      "prompt_tokens": 539,
+      "new_tokens": 539,
+      "ttft_ms": 6957.6,
+      "total_ms": 10834.29,
+      "out_tokens": 64,
+      "ms_per_total_token": 12.9084,
+      "ms_per_new_token": 12.9084
+    },
+    {
+      "turn": 2,
+      "prompt_tokens": 597,
+      "new_tokens": 58,
+      "ttft_ms": 529.2,
+      "total_ms": 4166.22,
+      "out_tokens": 64,
+      "ms_per_total_token": 0.8864,
+      "ms_per_new_token": 9.1241
+    },
+    {
+      "turn": 3,
+      "prompt_tokens": 642,
+      "new_tokens": 45,
+      "ttft_ms": 341.32,
+      "total_ms": 2700.46,
+      "out_tokens": 38,
+      "ms_per_total_token": 0.5317,
+      "ms_per_new_token": 7.585
+    },
+    {
+      "turn": 4,
+      "prompt_tokens": 676,
+      "new_tokens": 34,
+      "ttft_ms": 377.08,
+      "total_ms": 2199.15,
+      "out_tokens": 32,
+      "ms_per_total_token": 0.5578,
+      "ms_per_new_token": 11.0905
+    },
+    {
+      "turn": 5,
+      "prompt_tokens": 713,
+      "new_tokens": 37,
+      "ttft_ms": 385.22,
+      "total_ms": 3636.49,
+      "out_tokens": 64,
+      "ms_per_total_token": 0.5403,
+      "ms_per_new_token": 10.4113
+    },
+    {
+      "turn": 6,
+      "prompt_tokens": 758,
+      "new_tokens": 45,
+      "ttft_ms": 342.05,
+      "total_ms": 4434.04,
+      "out_tokens": 64,
+      "ms_per_total_token": 0.4512,
+      "ms_per_new_token": 7.601
+    }
+  ],
+  "turn1_ttft_ms": 6957.6,
+  "later_median_ttft_ms": 377.08,
+  "later_over_first_ratio": 0.0542,
+  "redundant_prefix_fraction": 0.9406,
+  "verdict": "REUSE_WORKS",
+  "note": "Later turns cost 5% of the first. The server already reuses the cached prefix. DO NOT build a prefix cache \u2014 pick a different optimization."
+}

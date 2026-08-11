@@ -1,0 +1,7 @@
+{
+  "schema": "specarm.build/2",
+  "llama_cpp_sha": "030ebb558a5820b444a8f836ed5cdd46c9b4bd7a",
+  "llama_cpp_ref": "master",
+  "server": "/home/runner/work/neoverse-tune/neoverse-tune/vendor/llama.cpp/build/bin/llama-server",
+  "jobs": 4
+}

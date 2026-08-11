@@ -1,0 +1,815 @@
+{
+  "schema": "specarm.slotlog/1",
+  "logs": [
+    {
+      "file": "server_4tenant_default_r0.log",
+      "requests": 16,
+      "lcp_selections": 15,
+      "lru_fallbacks": 1,
+      "threshold": 0.1,
+      "similarity": {
+        "n": 15,
+        "min": 0.656,
+        "median": 0.716,
+        "max": 0.911
+      },
+      "prefill_tokens": {
+        "n": 16,
+        "min": 54,
+        "median": 220.0,
+        "max": 610,
+        "over_100_count": 13,
+        "over_100_pct": 81.2
+      },
+      "cache_reuse_fraction": {
+        "n": 16,
+        "median": 0.7282,
+        "min": 0.0715
+      },
+      "distinct_slots_used": 1
+    },
+    {
+      "file": "server_4tenant_default_r1.log",
+      "requests": 16,
+      "lcp_selections": 15,
+      "lru_fallbacks": 1,
+      "threshold": 0.1,
+      "similarity": {
+        "n": 15,
+        "min": 0.656,
+        "median": 0.716,
+        "max": 0.911
+      },
+      "prefill_tokens": {
+        "n": 16,
+        "min": 54,
+        "median": 220.0,
+        "max": 610,
+        "over_100_count": 13,
+        "over_100_pct": 81.2
+      },
+      "cache_reuse_fraction": {
+        "n": 16,
+        "median": 0.7282,
+        "min": 0.0715
+      },
+      "distinct_slots_used": 1
+    },
+    {
+      "file": "server_4tenant_default_r2.log",
+      "requests": 16,
+      "lcp_selections": 15,
+      "lru_fallbacks": 1,
+      "threshold": 0.1,
+      "similarity": {
+        "n": 15,
+        "min": 0.656,
+        "median": 0.716,
+        "max": 0.911
+      },
+      "prefill_tokens": {
+        "n": 16,
+        "min": 54,
+        "median": 220.0,
+        "max": 610,
+        "over_100_count": 13,
+        "over_100_pct": 81.2
+      },
+      "cache_reuse_fraction": {
+        "n": 16,
+        "median": 0.7282,
+        "min": 0.0715
+      },
+      "distinct_slots_used": 1
+    },
+    {
+      "file": "server_4tenant_default_r3.log",
+      "requests": 16,
+      "lcp_selections": 15,
+      "lru_fallbacks": 1,
+      "threshold": 0.1,
+      "similarity": {
+        "n": 15,
+        "min": 0.656,
+        "median": 0.716,
+        "max": 0.911
+      },
+      "prefill_tokens": {
+        "n": 16,
+        "min": 54,
+        "median": 220.0,
+        "max": 610,
+        "over_100_count": 13,
+        "over_100_pct": 81.2
+      },
+      "cache_reuse_fraction": {
+        "n": 16,
+        "median": 0.7282,
+        "min": 0.0715
+      },
+      "distinct_slots_used": 1
+    },
+    {
+      "file": "server_4tenant_default_r4.log",
+      "requests": 16,
+      "lcp_selections": 15,
+      "lru_fallbacks": 1,
+      "threshold": 0.1,
+      "similarity": {
+        "n": 15,
+        "min": 0.656,
+        "median": 0.716,
+        "max": 0.911
+      },
+      "prefill_tokens": {
+        "n": 16,
+        "min": 54,
+        "median": 220.0,
+        "max": 610,
+        "over_100_count": 13,
+        "over_100_pct": 81.2
+      },
+      "cache_reuse_fraction": {
+        "n": 16,
+        "median": 0.7282,
+        "min": 0.0715
+      },
+      "distinct_slots_used": 1
+    },
+    {
+      "file": "server_4tenant_sim09_r0.log",
+      "requests": 16,
+      "lcp_selections": 12,
+      "lru_fallbacks": 4,
+      "threshold": 0.9,
+      "similarity": {
+        "n": 12,
+        "min": 0.902,
+        "median": 0.955,
+        "max": 0.97
+      },
+      "prefill_tokens": {
+        "n": 16,
+        "min": 25,
+        "median": 35.5,
+        "max": 692,
+        "over_100_count": 4,
+        "over_100_pct": 25.0
+      },
+      "cache_reuse_fraction": {
+        "n": 16,
+        "median": 0.954,
+        "min": 0.0636
+      },
+      "distinct_slots_used": 4
+    },
+    {
+      "file": "server_4tenant_sim09_r1.log",
+      "requests": 16,
+      "lcp_selections": 12,
+      "lru_fallbacks": 4,
+      "threshold": 0.9,
+      "similarity": {
+        "n": 12,
+        "min": 0.902,
+        "median": 0.955,
+        "max": 0.97
+      },
+      "prefill_tokens": {
+        "n": 16,
+        "min": 25,
+        "median": 35.5,
+        "max": 692,
+        "over_100_count": 4,
+        "over_100_pct": 25.0
+      },
+      "cache_reuse_fraction": {
+        "n": 16,
+        "median": 0.954,
+        "min": 0.0636
+      },
+      "distinct_slots_used": 4
+    },
+    {
+      "file": "server_4tenant_sim09_r2.log",
+      "requests": 16,
+      "lcp_selections": 12,
+      "lru_fallbacks": 4,
+      "threshold": 0.9,
+      "similarity": {
+        "n": 12,
+        "min": 0.902,
+        "median": 0.955,
+        "max": 0.97
+      },
+      "prefill_tokens": {
+        "n": 16,
+        "min": 25,
+        "median": 35.5,
+        "max": 692,
+        "over_100_count": 4,
+        "over_100_pct": 25.0
+      },
+      "cache_reuse_fraction": {
+        "n": 16,
+        "median": 0.954,
+        "min": 0.0636
+      },
+      "distinct_slots_used": 4
+    },
+    {
+      "file": "server_4tenant_sim09_r3.log",
+      "requests": 16,
+      "lcp_selections": 12,
+      "lru_fallbacks": 4,
+      "threshold": 0.9,
+      "similarity": {
+        "n": 12,
+        "min": 0.902,
+        "median": 0.955,
+        "max": 0.97
+      },
+      "prefill_tokens": {
+        "n": 16,
+        "min": 25,
+        "median": 35.5,
+        "max": 692,
+        "over_100_count": 4,
+        "over_100_pct": 25.0
+      },
+      "cache_reuse_fraction": {
+        "n": 16,
+        "median": 0.954,
+        "min": 0.0636
+      },
+      "distinct_slots_used": 4
+    },
+    {
+      "file": "server_4tenant_sim09_r4.log",
+      "requests": 16,
+      "lcp_selections": 12,
+      "lru_fallbacks": 4,
+      "threshold": 0.9,
+      "similarity": {
+        "n": 12,
+        "min": 0.902,
+        "median": 0.955,
+        "max": 0.97
+      },
+      "prefill_tokens": {
+        "n": 16,
+        "min": 25,
+        "median": 35.5,
+        "max": 692,
+        "over_100_count": 4,
+        "over_100_pct": 25.0
+      },
+      "cache_reuse_fraction": {
+        "n": 16,
+        "median": 0.954,
+        "min": 0.0636
+      },
+      "distinct_slots_used": 4
+    },
+    {
+      "file": "server_8tenant_default_r0.log",
+      "requests": 32,
+      "lcp_selections": 31,
+      "lru_fallbacks": 1,
+      "threshold": 0.1,
+      "similarity": {
+        "n": 31,
+        "min": 0.651,
+        "median": 0.716,
+        "max": 0.911
+      },
+      "prefill_tokens": {
+        "n": 32,
+        "min": 54,
+        "median": 220.0,
+        "max": 610,
+        "over_100_count": 25,
+        "over_100_pct": 78.1
+      },
+      "cache_reuse_fraction": {
+        "n": 32,
+        "median": 0.7282,
+        "min": 0.0715
+      },
+      "distinct_slots_used": 1
+    },
+    {
+      "file": "server_8tenant_default_r1.log",
+      "requests": 32,
+      "lcp_selections": 31,
+      "lru_fallbacks": 1,
+      "threshold": 0.1,
+      "similarity": {
+        "n": 31,
+        "min": 0.651,
+        "median": 0.716,
+        "max": 0.911
+      },
+      "prefill_tokens": {
+        "n": 32,
+        "min": 54,
+        "median": 220.0,
+        "max": 610,
+        "over_100_count": 25,
+        "over_100_pct": 78.1
+      },
+      "cache_reuse_fraction": {
+        "n": 32,
+        "median": 0.7282,
+        "min": 0.0715
+      },
+      "distinct_slots_used": 1
+    },
+    {
+      "file": "server_8tenant_default_r2.log",
+      "requests": 32,
+      "lcp_selections": 31,
+      "lru_fallbacks": 1,
+      "threshold": 0.1,
+      "similarity": {
+        "n": 31,
+        "min": 0.651,
+        "median": 0.716,
+        "max": 0.911
+      },
+      "prefill_tokens": {
+        "n": 32,
+        "min": 54,
+        "median": 220.0,
+        "max": 610,
+        "over_100_count": 25,
+        "over_100_pct": 78.1
+      },
+      "cache_reuse_fraction": {
+        "n": 32,
+        "median": 0.7282,
+        "min": 0.0715
+      },
+      "distinct_slots_used": 1
+    },
+    {
+      "file": "server_8tenant_default_r3.log",
+      "requests": 32,
+      "lcp_selections": 31,
+      "lru_fallbacks": 1,
+      "threshold": 0.1,
+      "similarity": {
+        "n": 31,
+        "min": 0.651,
+        "median": 0.716,
+        "max": 0.911
+      },
+      "prefill_tokens": {
+        "n": 32,
+        "min": 54,
+        "median": 220.0,
+        "max": 610,
+        "over_100_count": 25,
+        "over_100_pct": 78.1
+      },
+      "cache_reuse_fraction": {
+        "n": 32,
+        "median": 0.7282,
+        "min": 0.0715
+      },
+      "distinct_slots_used": 1
+    },
+    {
+      "file": "server_8tenant_default_r4.log",
+      "requests": 32,
+      "lcp_selections": 31,
+      "lru_fallbacks": 1,
+      "threshold": 0.1,
+      "similarity": {
+        "n": 31,
+        "min": 0.651,
+        "median": 0.716,
+        "max": 0.911
+      },
+      "prefill_tokens": {
+        "n": 32,
+        "min": 54,
+        "median": 220.0,
+        "max": 610,
+        "over_100_count": 25,
+        "over_100_pct": 78.1
+      },
+      "cache_reuse_fraction": {
+        "n": 32,
+        "median": 0.7282,
+        "min": 0.0715
+      },
+      "distinct_slots_used": 1
+    },
+    {
+      "file": "server_8tenant_sim09_np8_r0.log",
+      "requests": 32,
+      "lcp_selections": 24,
+      "lru_fallbacks": 8,
+      "threshold": 0.9,
+      "similarity": {
+        "n": 24,
+        "min": 0.902,
+        "median": 0.955,
+        "max": 0.971
+      },
+      "prefill_tokens": {
+        "n": 32,
+        "min": 24,
+        "median": 36.5,
+        "max": 692,
+        "over_100_count": 8,
+        "over_100_pct": 25.0
+      },
+      "cache_reuse_fraction": {
+        "n": 32,
+        "median": 0.9532,
+        "min": 0.0636
+      },
+      "distinct_slots_used": 8
+    },
+    {
+      "file": "server_8tenant_sim09_np8_r1.log",
+      "requests": 32,
+      "lcp_selections": 24,
+      "lru_fallbacks": 8,
+      "threshold": 0.9,
+      "similarity": {
+        "n": 24,
+        "min": 0.902,
+        "median": 0.955,
+        "max": 0.971
+      },
+      "prefill_tokens": {
+        "n": 32,
+        "min": 24,
+        "median": 36.5,
+        "max": 692,
+        "over_100_count": 8,
+        "over_100_pct": 25.0
+      },
+      "cache_reuse_fraction": {
+        "n": 32,
+        "median": 0.9532,
+        "min": 0.0636
+      },
+      "distinct_slots_used": 8
+    },
+    {
+      "file": "server_8tenant_sim09_np8_r2.log",
+      "requests": 32,
+      "lcp_selections": 24,
+      "lru_fallbacks": 8,
+      "threshold": 0.9,
+      "similarity": {
+        "n": 24,
+        "min": 0.902,
+        "median": 0.955,
+        "max": 0.971
+      },
+      "prefill_tokens": {
+        "n": 32,
+        "min": 24,
+        "median": 36.5,
+        "max": 692,
+        "over_100_count": 8,
+        "over_100_pct": 25.0
+      },
+      "cache_reuse_fraction": {
+        "n": 32,
+        "median": 0.9532,
+        "min": 0.0636
+      },
+      "distinct_slots_used": 8
+    },
+    {
+      "file": "server_8tenant_sim09_np8_r3.log",
+      "requests": 32,
+      "lcp_selections": 24,
+      "lru_fallbacks": 8,
+      "threshold": 0.9,
+      "similarity": {
+        "n": 24,
+        "min": 0.902,
+        "median": 0.955,
+        "max": 0.971
+      },
+      "prefill_tokens": {
+        "n": 32,
+        "min": 24,
+        "median": 36.5,
+        "max": 692,
+        "over_100_count": 8,
+        "over_100_pct": 25.0
+      },
+      "cache_reuse_fraction": {
+        "n": 32,
+        "median": 0.9532,
+        "min": 0.0636
+      },
+      "distinct_slots_used": 8
+    },
+    {
+      "file": "server_8tenant_sim09_np8_r4.log",
+      "requests": 32,
+      "lcp_selections": 24,
+      "lru_fallbacks": 8,
+      "threshold": 0.9,
+      "similarity": {
+        "n": 24,
+        "min": 0.902,
+        "median": 0.955,
+        "max": 0.971
+      },
+      "prefill_tokens": {
+        "n": 32,
+        "min": 24,
+        "median": 36.5,
+        "max": 692,
+        "over_100_count": 8,
+        "over_100_pct": 25.0
+      },
+      "cache_reuse_fraction": {
+        "n": 32,
+        "median": 0.9532,
+        "min": 0.0636
+      },
+      "distinct_slots_used": 8
+    },
+    {
+      "file": "server_8tenant_sim09_r0.log",
+      "requests": 32,
+      "lcp_selections": 7,
+      "lru_fallbacks": 25,
+      "threshold": 0.9,
+      "similarity": {
+        "n": 7,
+        "min": 0.902,
+        "median": 0.905,
+        "max": 0.911
+      },
+      "prefill_tokens": {
+        "n": 32,
+        "min": 24,
+        "median": 55.5,
+        "max": 692,
+        "over_100_count": 10,
+        "over_100_pct": 31.2
+      },
+      "cache_reuse_fraction": {
+        "n": 32,
+        "median": 0.9151,
+        "min": 0.0636
+      },
+      "distinct_slots_used": 4
+    },
+    {
+      "file": "server_8tenant_sim09_r1.log",
+      "requests": 32,
+      "lcp_selections": 7,
+      "lru_fallbacks": 25,
+      "threshold": 0.9,
+      "similarity": {
+        "n": 7,
+        "min": 0.902,
+        "median": 0.905,
+        "max": 0.911
+      },
+      "prefill_tokens": {
+        "n": 32,
+        "min": 24,
+        "median": 55.5,
+        "max": 692,
+        "over_100_count": 10,
+        "over_100_pct": 31.2
+      },
+      "cache_reuse_fraction": {
+        "n": 32,
+        "median": 0.9151,
+        "min": 0.0636
+      },
+      "distinct_slots_used": 4
+    },
+    {
+      "file": "server_8tenant_sim09_r2.log",
+      "requests": 32,
+      "lcp_selections": 7,
+      "lru_fallbacks": 25,
+      "threshold": 0.9,
+      "similarity": {
+        "n": 7,
+        "min": 0.902,
+        "median": 0.905,
+        "max": 0.911
+      },
+      "prefill_tokens": {
+        "n": 32,
+        "min": 24,
+        "median": 55.5,
+        "max": 692,
+        "over_100_count": 10,
+        "over_100_pct": 31.2
+      },
+      "cache_reuse_fraction": {
+        "n": 32,
+        "median": 0.9151,
+        "min": 0.0636
+      },
+      "distinct_slots_used": 4
+    },
+    {
+      "file": "server_8tenant_sim09_r3.log",
+      "requests": 32,
+      "lcp_selections": 7,
+      "lru_fallbacks": 25,
+      "threshold": 0.9,
+      "similarity": {
+        "n": 7,
+        "min": 0.902,
+        "median": 0.905,
+        "max": 0.911
+      },
+      "prefill_tokens": {
+        "n": 32,
+        "min": 24,
+        "median": 55.5,
+        "max": 692,
+        "over_100_count": 10,
+        "over_100_pct": 31.2
+      },
+      "cache_reuse_fraction": {
+        "n": 32,
+        "median": 0.9151,
+        "min": 0.0636
+      },
+      "distinct_slots_used": 4
+    },
+    {
+      "file": "server_8tenant_sim09_r4.log",
+      "requests": 32,
+      "lcp_selections": 7,
+      "lru_fallbacks": 25,
+      "threshold": 0.9,
+      "similarity": {
+        "n": 7,
+        "min": 0.902,
+        "median": 0.905,
+        "max": 0.911
+      },
+      "prefill_tokens": {
+        "n": 32,
+        "min": 24,
+        "median": 55.5,
+        "max": 692,
+        "over_100_count": 10,
+        "over_100_pct": 31.2
+      },
+      "cache_reuse_fraction": {
+        "n": 32,
+        "median": 0.9151,
+        "min": 0.0636
+      },
+      "distinct_slots_used": 4
+    },
+    {
+      "file": "server_solo_baseline_r0.log",
+      "requests": 4,
+      "lcp_selections": 3,
+      "lru_fallbacks": 1,
+      "threshold": 0.1,
+      "similarity": {
+        "n": 3,
+        "min": 0.949,
+        "median": 0.955,
+        "max": 0.97
+      },
+      "prefill_tokens": {
+        "n": 4,
+        "min": 25,
+        "median": 35.0,
+        "max": 610,
+        "over_100_count": 1,
+        "over_100_pct": 25.0
+      },
+      "cache_reuse_fraction": {
+        "n": 4,
+        "median": 0.9547,
+        "min": 0.0715
+      },
+      "distinct_slots_used": 1
+    },
+    {
+      "file": "server_solo_baseline_r1.log",
+      "requests": 4,
+      "lcp_selections": 3,
+      "lru_fallbacks": 1,
+      "threshold": 0.1,
+      "similarity": {
+        "n": 3,
+        "min": 0.949,
+        "median": 0.955,
+        "max": 0.97
+      },
+      "prefill_tokens": {
+        "n": 4,
+        "min": 25,
+        "median": 35.0,
+        "max": 610,
+        "over_100_count": 1,
+        "over_100_pct": 25.0
+      },
+      "cache_reuse_fraction": {
+        "n": 4,
+        "median": 0.9547,
+        "min": 0.0715
+      },
+      "distinct_slots_used": 1
+    },
+    {
+      "file": "server_solo_baseline_r2.log",
+      "requests": 4,
+      "lcp_selections": 3,
+      "lru_fallbacks": 1,
+      "threshold": 0.1,
+      "similarity": {
+        "n": 3,
+        "min": 0.949,
+        "median": 0.955,
+        "max": 0.97
+      },
+      "prefill_tokens": {
+        "n": 4,
+        "min": 25,
+        "median": 35.0,
+        "max": 610,
+        "over_100_count": 1,
+        "over_100_pct": 25.0
+      },
+      "cache_reuse_fraction": {
+        "n": 4,
+        "median": 0.9547,
+        "min": 0.0715
+      },
+      "distinct_slots_used": 1
+    },
+    {
+      "file": "server_solo_baseline_r3.log",
+      "requests": 4,
+      "lcp_selections": 3,
+      "lru_fallbacks": 1,
+      "threshold": 0.1,
+      "similarity": {
+        "n": 3,
+        "min": 0.949,
+        "median": 0.955,
+        "max": 0.97
+      },
+      "prefill_tokens": {
+        "n": 4,
+        "min": 25,
+        "median": 35.0,
+        "max": 610,
+        "over_100_count": 1,
+        "over_100_pct": 25.0
+      },
+      "cache_reuse_fraction": {
+        "n": 4,
+        "median": 0.9547,
+        "min": 0.0715
+      },
+      "distinct_slots_used": 1
+    },
+    {
+      "file": "server_solo_baseline_r4.log",
+      "requests": 4,
+      "lcp_selections": 3,
+      "lru_fallbacks": 1,
+      "threshold": 0.1,
+      "similarity": {
+        "n": 3,
+        "min": 0.949,
+        "median": 0.955,
+        "max": 0.97
+      },
+      "prefill_tokens": {
+        "n": 4,
+        "min": 25,
+        "median": 35.0,
+        "max": 610,
+        "over_100_count": 1,
+        "over_100_pct": 25.0
+      },
+      "cache_reuse_fraction": {
+        "n": 4,
+        "median": 0.9547,
+        "min": 0.0715
+      },
+      "distinct_slots_used": 1
+    }
+  ]
+}
