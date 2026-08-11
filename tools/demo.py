@@ -151,7 +151,12 @@ def main() -> int:
     ap.add_argument("--server", required=True)
     ap.add_argument("--model", required=True)
     ap.add_argument("--tenants", type=int, default=4)
-    ap.add_argument("--turns", type=int, default=3)
+    # 4 to match run_matrix.py. Fewer is tempting for a short demo and it
+    # understates the effect: warm round 2 is still settling on the fixed
+    # config, so a 3-turn run reports a median inflated by transients and
+    # shows ~2.6x where the adjudicated matrix shows ~5x. The demo must be the
+    # same experiment as the evidence, not a faster one.
+    ap.add_argument("--turns", type=int, default=4)
     ap.add_argument("--port", type=int, default=8099)
     ap.add_argument("--ctx", type=int, default=32768)
     ap.add_argument("--threads", type=int, default=os.cpu_count() or 4)
@@ -193,13 +198,25 @@ def main() -> int:
           f"{str(good['similarity']):>14}")
     print(f"  {'tokens recomputed':22}{str(bad['tokens']):>11}   "
           f"{str(good['tokens']):>14}")
+    # Lead with tokens, not milliseconds. The token count comes from the
+    # server's own accounting and cannot be moved by a scheduling hiccup; the
+    # latency can. On a single run the token ratio is the more honest headline
+    # AND usually the larger number, which is a rare combination.
+    if good["tokens"] and bad["tokens"]:
+        print(f"\n  {C.B}{bad['tokens'] / good['tokens']:.1f}x fewer tokens "
+              f"recomputed{C.X}  {C.DIM}(from the server's own log — noise-free){C.X}")
     if good["warm_median_ms"]:
-        print(f"\n  {C.B}{bad['warm_median_ms'] / good['warm_median_ms']:.1f}x "
-              f"faster. One flag.{C.X}")
+        print(f"  {C.B}{bad['warm_median_ms'] / good['warm_median_ms']:.1f}x "
+              f"faster{C.X}  {C.DIM}(wall clock, n=1){C.X}")
+    print(f"\n  {C.B}One flag.{C.X}")
     print(f"{C.B}  " + "=" * 64 + f"{C.X}")
     print(f"\n{C.DIM}  n=1 per configuration — this is the demo, not the evidence."
-          f"\n  The adjudicated result is 5 repeats per config with a fresh server"
-          f"\n  each time: python3 tools/run_matrix.py{C.X}\n")
+          f"\n  Expect one slow outlier on the first warm turn: the server is still"
+          f"\n  settling after four cold prefills. It inflates the median and is left"
+          f"\n  in rather than trimmed."
+          f"\n"
+          f"\n  The adjudicated result is 5 repeats per config, fresh server each"
+          f"\n  time, with confidence intervals:  python3 tools/run_matrix.py{C.X}\n")
     return 0
 
 

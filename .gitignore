@@ -42,3 +42,6 @@ Thumbs.db
 
 # Downloaded CI artifacts — extract, do not commit the archive
 *.zip
+
+# Devpost submission draft — local only
+/SUBMISSION.md
