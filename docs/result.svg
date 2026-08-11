@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 430" width="940" height="430" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" role="img" aria-label="Multi-tenant slot selection: latency differs by machine, tokens recomputed do not">
+<style>.h{font-size:19px;font-weight:700;fill:#c9d1d9}.h2{font-size:12.5px;fill:#8b949e}.t{font-size:13.5px;font-weight:700;fill:#c9d1d9}.s{font-size:11px;fill:#8b949e}.a{font-size:10px;fill:#8b949e}.v{font-size:11px;font-weight:700;fill:#c9d1d9}.x{font-size:10px;fill:#8b949e}.k{font-size:11px;fill:#8b949e}.g{stroke:#8b949e;stroke-opacity:.22;stroke-width:1}.e{stroke:#c9d1d9;stroke-opacity:.75;stroke-width:1.5}@media(prefers-color-scheme:light){.h,.t,.v{fill:#1f2328}.h2,.s,.a,.x,.k{fill:#59636e}.g{stroke:#59636e}.e{stroke:#1f2328}}</style>
+<rect width="940" height="430" fill="none"/>
+<text x="40" y="38" class="h">Four users of one agent, on two Arm64 and x86 hosts</text>
+<text x="40" y="58" class="h2">The scheduler makes the identical decision on both machines. Only the price differs.</text>
+<text x="78" y="82" class="t">Time to first token</text>
+<text x="78" y="100" class="s">warm median, 95% CI · the COST</text>
+<line x1="78" y1="348.0" x2="458" y2="348.0" class="g"/>
+<text x="70" y="352.0" class="a" text-anchor="end">0</text>
+<line x1="78" y1="288.0" x2="458" y2="288.0" class="g"/>
+<text x="70" y="292.0" class="a" text-anchor="end">1,240</text>
+<line x1="78" y1="228.0" x2="458" y2="228.0" class="g"/>
+<text x="70" y="232.0" class="a" text-anchor="end">2,480</text>
+<line x1="78" y1="168.0" x2="458" y2="168.0" class="g"/>
+<text x="70" y="172.0" class="a" text-anchor="end">3,720</text>
+<line x1="78" y1="108.0" x2="458" y2="108.0" class="g"/>
+<text x="70" y="112.0" class="a" text-anchor="end">4,960</text>
+<rect x="91.9" y="329.3" width="35.5" height="18.7" rx="2" fill="#3b6ea5"/>
+<text x="109.7" y="322.3" class="v" text-anchor="middle">386 ms</text>
+<rect x="155.3" y="144.6" width="35.5" height="203.4" rx="2" fill="#d1414a"/>
+<text x="173.0" y="137.6" class="v" text-anchor="middle">4,204 ms</text>
+<rect x="218.6" y="328.7" width="35.5" height="19.3" rx="2" fill="#2f9e5f"/>
+<text x="236.3" y="321.7" class="v" text-anchor="middle">399 ms</text>
+<rect x="281.9" y="323.7" width="35.5" height="24.3" rx="2" fill="#3b6ea5"/>
+<line x1="299.7" y1="321.6" x2="299.7" y2="325.7" class="e"/>
+<text x="299.7" y="316.7" class="v" text-anchor="middle">503 ms</text>
+<rect x="345.3" y="236.1" width="35.5" height="111.9" rx="2" fill="#d1414a"/>
+<line x1="363.0" y1="223.9" x2="363.0" y2="248.3" class="e"/>
+<text x="363.0" y="229.1" class="v" text-anchor="middle">2,313 ms</text>
+<rect x="408.6" y="325.8" width="35.5" height="22.2" rx="2" fill="#2f9e5f"/>
+<line x1="426.3" y1="324.6" x2="426.3" y2="327.1" class="e"/>
+<text x="426.3" y="318.8" class="v" text-anchor="middle">458 ms</text>
+<text x="540" y="82" class="t">Tokens recomputed per request</text>
+<text x="540" y="100" class="s">from the server's own log · the CAUSE</text>
+<line x1="540" y1="348.0" x2="920" y2="348.0" class="g"/>
+<text x="532" y="352.0" class="a" text-anchor="end">0</text>
+<line x1="540" y1="288.0" x2="920" y2="288.0" class="g"/>
+<text x="532" y="292.0" class="a" text-anchor="end">65</text>
+<line x1="540" y1="228.0" x2="920" y2="228.0" class="g"/>
+<text x="532" y="232.0" class="a" text-anchor="end">130</text>
+<line x1="540" y1="168.0" x2="920" y2="168.0" class="g"/>
+<text x="532" y="172.0" class="a" text-anchor="end">195</text>
+<line x1="540" y1="108.0" x2="920" y2="108.0" class="g"/>
+<text x="532" y="112.0" class="a" text-anchor="end">260</text>
+<rect x="553.9" y="315.6" width="35.5" height="32.4" rx="2" fill="#3b6ea5"/>
+<text x="571.7" y="308.6" class="v" text-anchor="middle">35</text>
+<rect x="617.3" y="144.6" width="35.5" height="203.4" rx="2" fill="#d1414a"/>
+<text x="635.0" y="137.6" class="v" text-anchor="middle">220</text>
+<rect x="680.6" y="315.6" width="35.5" height="32.4" rx="2" fill="#2f9e5f"/>
+<text x="698.3" y="308.6" class="v" text-anchor="middle">35</text>
+<rect x="743.9" y="315.6" width="35.5" height="32.4" rx="2" fill="#3b6ea5"/>
+<text x="761.7" y="308.6" class="v" text-anchor="middle">35</text>
+<rect x="807.3" y="144.6" width="35.5" height="203.4" rx="2" fill="#d1414a"/>
+<text x="825.0" y="137.6" class="v" text-anchor="middle">220</text>
+<rect x="870.6" y="315.6" width="35.5" height="32.4" rx="2" fill="#2f9e5f"/>
+<text x="888.3" y="308.6" class="v" text-anchor="middle">35</text>
+<text x="109.7" y="363.0" class="x" text-anchor="middle">1 tenant</text>
+<text x="173.0" y="363.0" class="x" text-anchor="middle">4 tenants</text>
+<text x="173.0" y="375.0" class="x" text-anchor="middle">default 0.10</text>
+<text x="236.3" y="363.0" class="x" text-anchor="middle">4 tenants</text>
+<text x="236.3" y="375.0" class="x" text-anchor="middle">fixed 0.90</text>
+<text x="299.7" y="363.0" class="x" text-anchor="middle">1 tenant</text>
+<text x="363.0" y="363.0" class="x" text-anchor="middle">4 tenants</text>
+<text x="363.0" y="375.0" class="x" text-anchor="middle">default 0.10</text>
+<text x="426.3" y="363.0" class="x" text-anchor="middle">4 tenants</text>
+<text x="426.3" y="375.0" class="x" text-anchor="middle">fixed 0.90</text>
+<text x="173.0" y="394.0" class="k" text-anchor="middle" font-weight="700">Neoverse N2</text>
+<line x1="268.0" y1="108" x2="268.0" y2="380" class="g"/>
+<text x="363.0" y="394.0" class="k" text-anchor="middle" font-weight="700">x86</text>
+<text x="571.7" y="363.0" class="x" text-anchor="middle">1 tenant</text>
+<text x="635.0" y="363.0" class="x" text-anchor="middle">4 tenants</text>
+<text x="635.0" y="375.0" class="x" text-anchor="middle">default 0.10</text>
+<text x="698.3" y="363.0" class="x" text-anchor="middle">4 tenants</text>
+<text x="698.3" y="375.0" class="x" text-anchor="middle">fixed 0.90</text>
+<text x="761.7" y="363.0" class="x" text-anchor="middle">1 tenant</text>
+<text x="825.0" y="363.0" class="x" text-anchor="middle">4 tenants</text>
+<text x="825.0" y="375.0" class="x" text-anchor="middle">default 0.10</text>
+<text x="888.3" y="363.0" class="x" text-anchor="middle">4 tenants</text>
+<text x="888.3" y="375.0" class="x" text-anchor="middle">fixed 0.90</text>
+<text x="635.0" y="394.0" class="k" text-anchor="middle" font-weight="700">Neoverse N2</text>
+<line x1="730.0" y1="108" x2="730.0" y2="380" class="g"/>
+<text x="825.0" y="394.0" class="k" text-anchor="middle" font-weight="700">x86</text>
+<text x="40" y="416" class="k">Identical bars on the right, different bars on the left: the mechanism is architecture-independent, the cost is not. Qwen2.5-1.5B-Instruct Q4_K_M, n=5, fresh server per repeat.</text>
+</svg>

@@ -48,6 +48,12 @@ Reproduce the Arm column with one click: fork this repo, dispatch the
 [`bench` workflow](.github/workflows/bench.yml), wait 47 minutes. The Arm runner
 is free on public repositories.
 
+![Time to first token differs by machine; tokens recomputed do not](docs/result.svg)
+
+*Right panel identical, left panel not. Regenerate it from the committed data
+with `python3 tools/make_chart.py` — it reads `results/` so it cannot drift from
+the tables.*
+
 ---
 
 ## Table of Contents
