@@ -1631,6 +1631,54 @@ Patterns key on **stable substrings rather than column layout**, because
 llama.cpp log formatting has changed across releases. This is still the most
 fragile component in the project — see defect D1.
 
+### The cost model — separating what the scheduler did from what it cost
+
+`llama-server` reports prefill throughput on every request, so the harness reads
+the rate as well as the token count:
+
+```
+prompt eval time = 8006.13 ms / 610 tokens (13.12 ms per token, 76.19 tokens per second)
+```
+
+That gives a two-term model with a clean division of responsibility:
+
+```
+    latency lost  =  tokens recomputed  ÷  prefill throughput
+                     └── the scheduler ──┘   └── the hardware ──┘
+                        architecture-           machine-
+                        independent             dependent
+```
+
+Measured on both hosts, at the default threshold:
+
+| | tokens recomputed | prefill rate | **modelled** | **measured TTFT** | error |
+|:--|--:|--:|--:|--:|--:|
+| **Neoverse N2**, 4 vCPU | 220 | 51.9 tok/s | **4332 ms** | 4204 ms | 3.0% |
+| **x86**, 8 threads | 220 | 98.6 tok/s | **2282 ms** | 2313 ms | 1.4% |
+
+**The model predicts the measured latency to within 3% on both machines from two
+numbers read out of the server's own log.** The regression is not a mystery to
+be characterised empirically per host — it is arithmetic, and the only
+host-dependent term is prefill throughput.
+
+It also explains the headline gap without appeal to anything exotic: the
+regression is 10.9x on N2 and 4.6x on x86, a ratio of 2.37; the prefill rates
+differ by 1.90x. Most of the difference in how bad the bug *feels* is simply how
+fast the machine can re-prefill.
+
+**What this does not establish.** The N2 host has 4 vCPU and the x86 host has 8
+threads, so its lower prefill rate is confounded between microarchitecture and
+core count. This model says the *cost* tracks prefill throughput — it does not
+say why one host prefills faster. Separating that needs two Neoverse generations
+at equal thread count, N1 (no `i8mm`) against N2 (`i8mm`), which is the
+outstanding experiment.
+
+**Read `heavy ms` per configuration, not across kinds.** Where the threshold is
+wrong, heavy prefills *are* the mis-routes and the number is the cost of the
+bug. Where the threshold is right, the only heavy prefill is the unavoidable
+cold turn 1 and the number is start-up cost. The tool prints that caveat with
+the table rather than leaving it to be inferred.
+
 ---
 
 ## Testing

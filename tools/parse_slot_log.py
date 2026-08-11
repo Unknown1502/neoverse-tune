@@ -50,9 +50,15 @@ RE_LRU = re.compile(
     r"slot\s+get_availabl:\s*id\s+(?P<slot>\d+).*?selected slot by LRU")
 RE_LAUNCH = re.compile(
     r"slot\s+launch_slot_:\s*id\s+(?P<slot>\d+)\s*\|\s*task\s+(?P<task>\d+)")
+# The trailing parenthetical carries the prefill RATE, which is what converts
+# "tokens recomputed" into "milliseconds lost" on a given host. It is optional in
+# the pattern because older llama.cpp releases omit it; a log without it still
+# yields token counts, just no cost model.
 RE_PROMPT = re.compile(
     r"slot\s+print_timing:\s*id\s+(?P<slot>\d+)\s*\|\s*task\s+(?P<task>\d+)\s*\|"
-    r"\s*prompt eval time\s*=\s*(?P<ms>[0-9.]+)\s*ms\s*/\s*(?P<tokens>\d+)\s*tokens")
+    r"\s*prompt eval time\s*=\s*(?P<ms>[0-9.]+)\s*ms\s*/\s*(?P<tokens>\d+)\s*tokens"
+    r"(?:\s*\(\s*(?P<ms_per_tok>[0-9.]+)\s*ms per token,\s*"
+    r"(?P<tps>[0-9.]+)\s*tokens per second\s*\))?")
 RE_RELEASE = re.compile(
     r"slot\s+release:\s*id\s+(?P<slot>\d+)\s*\|\s*task\s+(?P<task>\d+)\s*\|"
     r".*?n_tokens\s*=\s*(?P<n>\d+)")
@@ -88,7 +94,8 @@ def parse(path: str) -> dict:
                     prefill.append({"task": int(m.group("task")),
                                     "slot": int(m.group("slot")),
                                     "tokens": int(m.group("tokens")),
-                                    "ms": float(m.group("ms"))})
+                                    "ms": float(m.group("ms")),
+                                    "tps": float(m.group("tps")) if m.group("tps") else None})
                     continue
                 m = RE_RELEASE.search(line)
                 if m:
@@ -108,6 +115,13 @@ def parse(path: str) -> dict:
     # A request that prefills more than 100 tokens on a warm conversation is
     # recomputing history, not just the new user turn.
     heavy = [t for t in tokens if t > 100]
+
+    # Prefill RATE on the heavy requests only. Short top-ups are dominated by
+    # fixed per-request overhead and understate the throughput that actually
+    # governs the cost of a mis-route. This rate is the denominator of the cost
+    # model: ms_lost = tokens_recomputed / rate.
+    heavy_tps = [p["tps"] for p in prefill if p["tps"] and p["tokens"] > 100]
+    rate_med = statistics.median(heavy_tps) if heavy_tps else None
 
     return {
         "file": os.path.basename(path),
@@ -133,6 +147,22 @@ def parse(path: str) -> dict:
             "n": len(reuse),
             "median": round(statistics.median(reuse), 4) if reuse else None,
             "min": round(min(reuse), 4) if reuse else None,
+        },
+        # The cost model. Tokens recomputed is what the scheduler decided;
+        # dividing by this host's prefill rate is what that decision costs here.
+        #
+        # NOTE ON INTERPRETATION: this is the modelled time for the median HEAVY
+        # prefill, which is not the same thing in every configuration. Where the
+        # threshold is wrong, heavy prefills are mis-routes and this is the cost
+        # of the bug. Where the threshold is right, the only heavy prefill is the
+        # unavoidable cold turn 1 and this is just start-up cost. Compare it
+        # across configs on one host, not across configs of different kinds.
+        "prefill_rate": {
+            "n": len(heavy_tps),
+            "median_tok_per_s": round(rate_med, 2) if rate_med else None,
+            "median_heavy_tokens": int(statistics.median(heavy)) if heavy else None,
+            "modelled_ms_heavy_prefill": (round(1000.0 * statistics.median(heavy) / rate_med, 1)
+                                          if rate_med and heavy else None),
         },
         "distinct_slots_used": len(set(p["slot"] for p in prefill)),
     }
@@ -165,8 +195,8 @@ def main() -> int:
 
     print()
     print(f"  {'log':<34} {'reqs':>5} {'sim med':>8} {'prefill med':>12} "
-          f"{'>100tok':>8} {'LRU':>5}")
-    print("  " + "-" * 78)
+          f"{'>100tok':>8} {'LRU':>5} {'tok/s':>8} {'heavy ms':>10}")
+    print("  " + "-" * 97)
     for r in reports:
         if r.get("error"):
             print(f"  {r['file']:<34} ERROR {r['error']}")
@@ -174,10 +204,14 @@ def main() -> int:
         sim = r["similarity"]["median"]
         pf = r["prefill_tokens"]["median"]
         pct = r["prefill_tokens"]["over_100_pct"]
+        rate = r["prefill_rate"]["median_tok_per_s"]
+        cost = r["prefill_rate"]["modelled_ms_heavy_prefill"]
         print(f"  {r['file']:<34} {r['requests']:>5} "
               f"{(f'{sim:.3f}' if sim is not None else '-'):>8} "
               f"{(f'{pf:.0f}' if pf is not None else '-'):>12} "
-              f"{pct:>7.0f}% {r['lru_fallbacks']:>5}")
+              f"{pct:>7.0f}% {r['lru_fallbacks']:>5} "
+              f"{(f'{rate:.1f}' if rate else '-'):>8} "
+              f"{(f'{cost:.0f} ms' if cost else '-'):>10}")
 
     print()
     print("  sim med ....... median LCP similarity of the slot the server chose")
@@ -185,6 +219,15 @@ def main() -> int:
     print("  >100tok ....... share of requests that recomputed >100 tokens,")
     print("                  i.e. reprocessed history rather than just the new turn")
     print("  LRU ........... selections where NO slot matched and it fell back")
+    print("  tok/s ......... prefill throughput on THIS host, heavy prefills only")
+    print("  heavy ms ...... modelled time for the median >100-token prefill:")
+    print("                  tokens / tok-per-s. The scheduler picks the tokens,")
+    print("                  the CPU sets the price; only the second is hardware.")
+    print()
+    print("  Read 'heavy ms' per configuration, not across kinds. Where the")
+    print("  threshold is WRONG the heavy prefills are mis-routes, so this is the")
+    print("  cost of the bug. Where the threshold is RIGHT the only heavy prefill")
+    print("  is the unavoidable cold turn 1, so this is just start-up.")
     print()
 
     payload = {"schema": "specarm.slotlog/1", "logs": reports}
