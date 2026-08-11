@@ -45,3 +45,6 @@ Thumbs.db
 
 # Devpost submission draft — local only
 /SUBMISSION.md
+
+# Upstream issue draft — local only
+/UPSTREAM-ISSUE.md
