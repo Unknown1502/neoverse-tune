@@ -375,15 +375,22 @@ journey
       Confirm UNCERTAIN rows published: 5: Reviewer
       Find pre-registration commit in git log: 5: Reviewer
     section Challenge
-      Look for the 8-tenant anomaly: 2: Reviewer
-      Check for Arm data: 1: Reviewer
+      Spot the 8-tenant ordering: 3: Reviewer
+      Find it already adjudicated UNCERTAIN: 5: Reviewer
       Read Known Limitations: 4: Reviewer
     section Reproduce
       Fork and dispatch the workflow: 4: Reviewer
 ```
 
-The two dips are deliberate and honest: the 8-tenant non-monotonicity and the
-absence of Arm data are both real weaknesses, documented rather than hidden.
+The dip in **Challenge** is the honest part. A careful reviewer notices that
+8 tenants appears faster than 4 at the default and reaches for it as a hole in
+the mechanism story. What they find is that the project's own adjudicator
+already returned UNCERTAIN on that pair, with overlapping intervals and
+identical mechanism evidence
+([why](#the-apparent-anomaly-and-why-it-is-not-one)).
+
+A repository that answers its sharpest objection before it is raised is making a
+different claim than one that simply reports its wins.
 
 ---
 
@@ -1485,24 +1492,46 @@ flowchart LR
     style fixed fill:#22543d,color:#fff
 ```
 
-### The anomaly in our own data
+### The apparent anomaly, and why it is not one
 
-**8 tenants at the default (2101 ms) is *faster* than 4 tenants (2313 ms).** If
-scattering causes the regression, more tenants should scatter worse.
+At a glance the table looks wrong: **8 tenants at the default (2101 ms) appears
+*faster* than 4 tenants (2313 ms).** If scattering causes the regression, surely
+more tenants should scatter worse.
 
-This is **unexplained**. Candidate hypotheses, none yet tested:
+Run it through this project's own adjudicator and the apparent effect disappears:
 
-1. With 8 tenants against 4 slots, LRU fallback fires more often, and LRU may
-   land on a *more* useful slot than a marginal LCP match would.
-2. The 8-tenant run cycles all 8 `TENANT_TRIPS` entries while the 4-tenant run
-   uses only the first 4 — so content diversity and tenant count are confounded.
-3. Turn cadence per tenant differs: with more tenants, more wall-clock elapses
-   between one tenant's consecutive turns, changing which slot is least-recently-used.
+| config | mean | 95% CI | RSD | n |
+|:--|--:|:--|--:|--:|
+| `4tenant_default` | 2312.7 ms | [2060.8, 2564.5] | 8.8% | 5 |
+| `8tenant_default` | 2101.5 ms | [1973.9, 2229.0] | 4.9% | 5 |
 
-It is recorded here rather than omitted. It does not undermine the primary
-comparison (4 tenants default vs 4 tenants fixed changes **only** the threshold),
-but it does mean the monotonic "more tenants is worse" story is not supported by
-this data and is not claimed.
+**The intervals overlap across a 168 ms band.** `verdict()` returns
+`UNCERTAIN — +9.6% but 95% CIs overlap` in one direction and `REJECTED — no
+improvement (-8.7%)` in the other. By the thresholds registered in `20a6031`,
+these two configurations are **not distinguishable**. There is no ordering to
+explain.
+
+The mechanism evidence settles it independently of the timing:
+
+| config | requests | median LCP similarity | median tokens recomputed | >100 tok | LRU fallbacks |
+|:--|--:|--:|--:|--:|--:|
+| `4tenant_default` | 16 | **0.716** | **220** | 81% | 1 |
+| `8tenant_default` | 32 | **0.716** | **220** | 78% | 1 |
+
+Identical similarity, identical prefill cost per request. The server is doing
+precisely the same wrong thing in both cases; only wall-clock noise separates
+them, and the noise is larger than the gap.
+
+**What this does mean:** the data supports "multi-tenant is far worse than
+single-tenant" and does **not** support "more tenants is monotonically worse."
+The second claim is not made anywhere in this repository. Scattering is already
+saturated at four tenants against four slots — every tenant already matches every
+slot at 0.716 against a 0.10 threshold, and adding more tenants cannot make an
+already-total failure more total.
+
+This is the adjudicator working as intended in the direction that costs us a
+tidier story: it is as unwilling to certify an interesting anomaly as it is to
+certify a win.
 
 ---
 
@@ -2080,7 +2109,7 @@ hypothetical.
 ### Measurement limitations
 
 1. **Zero Arm measurements.** Every number came from one 8-thread Windows x86 laptop.
-2. **Non-monotonicity unexplained** — 8 tenants (2101 ms) beats 4 (2313 ms) at the default. Three candidate hypotheses, none tested.
+2. **Scattering saturates at 4 tenants.** 8 tenants and 4 tenants at the default are statistically indistinguishable (overlapping CIs, identical 0.716 similarity and 220-token prefill). The data therefore cannot speak to how the regression scales *beyond* total failure — testing that needs more slots, not more tenants.
 3. **One model, one quantization, one preamble size, one turn count.** The central claim is *about* preamble size, and exactly one value (550 tokens) was tested.
 4. **`n=5` is the self-imposed minimum.** No margin.
 5. **Prefill token counts are byte-identical across repeats**, so the headline token metric carries n=1 of independent information.
@@ -2177,7 +2206,7 @@ blocks the Arm bench.
 | A test fixture for `parse_slot_log.py` | Reformatting |
 | A measurement on a Neoverse generation not yet covered | Adding a dependency to replace 20 lines of stdlib |
 | A falsification attempt — data contradicting the claim | A dashboard |
-| An explanation for the 8-tenant non-monotonicity | Renaming for style |
+| A measurement of how the regression scales past slot saturation | Renaming for style |
 | Concurrent load generation | Type annotations without a type checker in CI |
 
 **Negative results are first-class.** A PR that shows the effect vanishing under
