@@ -2,10 +2,16 @@
 
 | Document | Answers |
 |:--|:--|
+| [reproducing.md](reproducing.md) | **How to run it and check the numbers** — four routes, expected values, troubleshooting, how to prove it wrong |
+| [results.md](results.md) | **Every number, with its machine** — both hosts, all comparisons, mechanism, cost model, sweep, and the failed hypotheses |
 | [architecture.md](architecture.md) | What the pieces are — system context, module map, internals, data model, deployment |
 | [flows.md](flows.md) | How it runs — the mechanism, one turn, the matrix, adjudication, CI |
 | [methodology.md](methodology.md) | What is being tested, how, and what would prove it wrong |
 | [../README.md](../README.md) | The finding and how to reproduce it |
+
+**Reviewing this for the first time?** [reproducing.md](reproducing.md) is the
+one to read — it states what you should see, and how to tell a real difference
+from a broken run.
 
 All diagrams are Mermaid and render inline on GitHub. Start with
 [flows.md §1](flows.md#1-the-mechanism--how-a-slot-gets-chosen-wrong) — it is the

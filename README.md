@@ -430,6 +430,18 @@ identical mechanism evidence
 A repository that answers its sharpest objection before it is raised is making a
 different claim than one that simply reports its wins.
 
+### Documentation
+
+This README is the overview. The depth is in `docs/`.
+
+| Document | Answers |
+|:--|:--|
+| **[docs/reproducing.md](docs/reproducing.md)** | **Run it and check the numbers.** Four routes from one-click to five-minute, the values you should see, how to tell a real difference from a broken run, troubleshooting, and how to prove this wrong |
+| **[docs/results.md](docs/results.md)** | **Every number, with its machine.** Both hosts, all six configs, all comparisons on both, mechanism evidence, the cost model, the threshold sweep, and the three hypotheses that died |
+| [docs/flows.md](docs/flows.md) | Every flow, diagrammed — 13 diagrams. **Start with §1**: how a slot gets chosen wrong |
+| [docs/architecture.md](docs/architecture.md) | System context, module map, internals, data model, deployment — 8 diagrams |
+| [docs/methodology.md](docs/methodology.md) | What is tested, how, and what would falsify it — including the falsification that was attempted and failed |
+
 ---
 
 ## Installation
