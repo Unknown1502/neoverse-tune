@@ -1,0 +1,73 @@
+{
+  "schema": "specarm.tune/2",
+  "mode": "measured",
+  "sweep": [
+    {
+      "threshold": 0.1,
+      "warm_median_ms": 2359.54,
+      "samples": [
+        2359.54,
+        2446.38,
+        2027.2
+      ]
+    },
+    {
+      "threshold": 0.3,
+      "warm_median_ms": 1995.09,
+      "samples": [
+        1995.09,
+        2129.45,
+        1982.59
+      ]
+    },
+    {
+      "threshold": 0.5,
+      "warm_median_ms": 1989.78,
+      "samples": [
+        2055.3,
+        1989.78,
+        1895.32
+      ]
+    },
+    {
+      "threshold": 0.7,
+      "warm_median_ms": 1933.55,
+      "samples": [
+        2031.32,
+        1933.55,
+        1910.01
+      ]
+    },
+    {
+      "threshold": 0.8,
+      "warm_median_ms": 399.02,
+      "samples": [
+        418.64,
+        399.02,
+        395.48
+      ]
+    },
+    {
+      "threshold": 0.9,
+      "warm_median_ms": 484.64,
+      "samples": [
+        415.5,
+        484.64,
+        484.85
+      ]
+    },
+    {
+      "threshold": 0.95,
+      "warm_median_ms": 447.56,
+      "samples": [
+        462.0,
+        447.56,
+        432.35
+      ]
+    }
+  ],
+  "recommended_slot_prompt_similarity": 0.8,
+  "best_warm_median_ms": 399.02,
+  "worst_warm_median_ms": 2359.54,
+  "speedup_vs_worst": 5.91
+}

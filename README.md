@@ -1530,6 +1530,44 @@ flowchart LR
     style fixed fill:#22543d,color:#fff
 ```
 
+### The threshold sweep — `0.9` is measured, not chosen
+
+An earlier version of this README recommended `0.9` because it worked. That is
+not a derivation, and "why 0.9?" is the obvious question. So it was swept:
+7 thresholds, 3 repeats each, fresh server every run, 4 tenants on x86.
+
+| threshold | 0.1 | 0.3 | 0.5 | 0.7 | **0.8** | 0.9 | 0.95 |
+|:--|--:|--:|--:|--:|--:|--:|--:|
+| warm median TTFT | 2360 ms | 1995 ms | 1990 ms | 1934 ms | **399 ms** | 485 ms | 448 ms |
+
+```
+  0.1   ████████████████████████████████████████████  2360 ms
+  0.3   ██████████████████████████████████████        1995 ms
+  0.5   ██████████████████████████████████████        1990 ms
+  0.7   █████████████████████████████████████         1934 ms
+        ─────────────────────── cliff ───────────────────────
+  0.8   ███████                                        399 ms
+  0.9   █████████                                      485 ms
+  0.95  ████████                                       448 ms
+```
+
+**The cliff falls between 0.7 and 0.8 — and the measured inter-tenant similarity
+is 0.716.** The mechanism predicts exactly this: a threshold at or below 0.716
+admits foreign slots, a threshold above it rejects them. The sweep was not
+designed to test that prediction and confirms it anyway.
+
+Two honest qualifications:
+
+- **`0.8`, `0.9` and `0.95` are not distinguishable.** 399, 485 and 448 ms at n=3 with no confidence intervals is a ranking, not a result. `--sweep` reports the lowest median and calls it "measured best"; do not read that as "0.8 beats 0.9."
+- **n=3 is below the adjudicator's `MIN_REPS` of 5.** The sweep is a search tool, not evidence. It is deliberately not run through `verdict()` — every comparison here would return UNCERTAIN, correctly.
+
+What the sweep *does* establish is the shape: **a cliff, not a gradient.** Any
+threshold above your inter-tenant similarity works; any threshold below it fails
+completely. That makes the tuning problem far easier than a continuous
+optimisation — you need to clear a number you can measure, not find an optimum.
+
+Raw data: [`results/sweep/`](results/sweep/).
+
 ### The apparent anomaly, and why it is not one
 
 At a glance the table looks wrong: **8 tenants at the default (2101 ms) appears
