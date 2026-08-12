@@ -48,3 +48,6 @@ Thumbs.db
 
 # Upstream issue draft — local only
 /UPSTREAM-ISSUE.md
+
+# Demo recording script — local only
+/DEMO-SCRIPT.md
