@@ -81,6 +81,20 @@ SHAPES = {
     },
 }
 
+# The parametrised family. These hold TOTAL prompt length constant and vary only
+# the shared fraction, so unlike the two shapes above they are not confounded by
+# absolute length. Registered by discovery rather than by hand so a new shape
+# appears here as soon as its sweep exists.
+for _p in sorted(glob.glob(os.path.join(RESULTS, "tune_prefix*.json"))):
+    _name = os.path.basename(_p)[len("tune_"):-len(".json")]
+    SHAPES[_name] = {
+        "aka": _name,
+        "logs": [os.path.join(RESULTS, "prefix", f"sweep_{_name}_sim*_r*.log"),
+                 os.path.join(RESULTS, f"sweep_{_name}_sim*_r*.log")],
+        "tune": _p,
+        "desc": f"constant total length, shared fraction ~0.{_name[6:]}",
+    }
+
 RE_SIM = re.compile(r"f_sim_best\s*=\s*([0-9.]+)")
 RE_PROMPT = re.compile(r"prompt eval time\s*=\s*([0-9.]+)\s*ms\s*/\s*(\d+)\s*tokens")
 RE_NAME = re.compile(r"sim([0-9.]+)_r(\d+)\.log$")
@@ -137,9 +151,12 @@ def collect(shape: str, spec: dict) -> list[dict]:
     paths: list[str] = []
     for pattern in spec["logs"]:
         paths.extend(glob.glob(pattern))
-    # The RAG logs live beside the agent ones; keep them apart by name.
+    # Log families share a directory, so exclude anything that belongs to a
+    # different shape rather than relying on glob specificity alone.
     if shape == "high_prefix_reuse":
-        paths = [p for p in paths if "_rag_" not in os.path.basename(p)]
+        paths = [p for p in paths
+                 if "_rag_" not in os.path.basename(p)
+                 and "_prefix" not in os.path.basename(p)]
 
     # ttft_ms is client-side timing and is NOT in the server log, so it is
     # joined to each log by POSITION: samples[repetition]. sweep() appends a
@@ -423,15 +440,48 @@ def main() -> int:
         json.dump(summary, fh, indent=2)
 
     chosen = {s: decisions[s]["chosen"] for s in shapes_present}
+
+    # A shape only HAS an optimum if the threshold changes the work done.
+    # Ranking latency medians on a shape whose recomputation never moves is
+    # ranking machine noise -- and several shapes in this family do exactly
+    # that, with 3 of 5 thresholds failing the noise gate while recomputation
+    # sits at a single value across the entire sweep. Sensitivity is therefore
+    # decided on recomputation, which is deterministic, and latency is reported
+    # beside it rather than being the basis of the verdict.
+    sens = {}
+    for s in shapes_present:
+        rc = [a["recomputed_tokens_median"] for a in agg
+              if a["workload_shape"] == s and a["recomputed_tokens_median"]]
+        sens[s] = (max(rc) / min(rc)) if rc and min(rc) else None
+    SENS_X = 2.0    # recomputation must at least double to count as sensitive
+
     print("  " + "=" * 72)
-    if len(shapes_present) < 2:
-        print("  Only one shape measured — the central question needs two.")
-    elif len(set(v for v in chosen.values() if v is not None)) > 1:
-        print(f"  Optimal threshold DIFFERED across shapes: {chosen}")
-        print("  -> evidence that prompt shape influences the optimum.")
+    print("  SENSITIVITY — decided on recomputation, not latency")
+    print("  %-20s %13s %11s   %s" % ("shape", "recomp swing", "latency", "verdict"))
+    print("  " + "-" * 72)
+    for s in shapes_present:
+        lat, sw = decisions[s].get("spread_x"), sens[s]
+        v = ("SENSITIVE" if sw and sw >= SENS_X else
+             "flat — threshold changes routing but not work" if sw else "no data")
+        print("  %-20s %12s %10s   %s" % (
+            s, ("%.2fx" % sw) if sw else "-", ("%.2fx" % lat) if lat else "-", v))
+
+    hot = [s for s in shapes_present if sens[s] and sens[s] >= SENS_X]
+    cold = [s for s in shapes_present if sens[s] and sens[s] < SENS_X]
+    print()
+    if hot and cold:
+        print("  %d of %d shapes are threshold-sensitive: %s"
+              % (len(hot), len(shapes_present), hot))
+        print("  %d are flat: %s" % (len(cold), cold))
+        print("  -> sensitivity IS workload-dependent.")
+        print("     Optimum comparisons are meaningful only within the sensitive")
+        print("     shapes; for the flat ones there is no optimum to compare.")
+        print("     Chosen thresholds (sensitive shapes only): %s"
+              % {s: chosen[s] for s in hot})
+    elif hot:
+        print("  every shape is threshold-sensitive: %s" % chosen)
     else:
-        print(f"  Optimal threshold was the SAME for both shapes: {chosen}")
-        print("  -> the evaluated shapes did not shift the optimum. Null result.")
+        print("  no shape showed a recomputation change. Null result.")
     print("  " + "=" * 72)
     print(f"\n  raw: {os.path.join(rawdir,'threshold_sweep.jsonl')}  ({len(raw)} rows)")
     print(f"  agg: {os.path.join(aggdir,'threshold_summary.csv')}")

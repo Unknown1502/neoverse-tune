@@ -1,0 +1,14 @@
+
+  Measuring 7 thresholds x 3 repeats, fresh server each run
+
+    sim=0.05  warm median    514.5 ms   (n=3)
+    sim=0.1   warm median    706.8 ms   (n=3)
+    sim=0.2   warm median    831.5 ms   (n=3)
+    sim=0.3   warm median    521.8 ms   (n=3)
+    sim=0.5   warm median    992.0 ms   (n=3)
+    sim=0.7   warm median    475.8 ms   (n=3)
+    sim=0.9   warm median    439.6 ms   (n=3)
+
+  MEASURED BEST: --slot-prompt-similarity 0.9
+  992 ms (worst) -> 440 ms (best) = 2.26x
+

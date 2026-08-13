@@ -1,0 +1,66 @@
+{
+  "schema": "specarm.correctness/1",
+  "verdict": "PASS",
+  "detail": "all 4 thresholds produced byte-identical output (sha256 6cdd292a39a33d60...)",
+  "workload": "agent",
+  "normalisation": "trailing whitespace per line; nothing else",
+  "decoding": "greedy, temperature 0",
+  "max_tokens": 24,
+  "probes": [
+    "Name the largest planet in the Solar System. Answer with one word.",
+    "What is 17 multiplied by 23? Answer with the number only.",
+    "Complete exactly: the capital of Japan is",
+    "List the first four prime numbers, comma separated, nothing else.",
+    "In one word, what colour is a ripe banana?"
+  ],
+  "thresholds": [
+    {
+      "threshold": 0.1,
+      "status": "OK",
+      "output_sha256": "6cdd292a39a33d608805085a642e285792d69b43a566f08530e29781bd71df9e",
+      "outputs": [
+        "Jupiter",
+        "391",
+        "{\"tool\": \"get_weather\", \"arguments\": {\"city\": \"Tokyo\", \"date\": \"202",
+        "{\"tool\": \"search_flights\", \"arguments\": {\"origin\": \"IATA\", \"destination\": \"IATA",
+        "yellow"
+      ]
+    },
+    {
+      "threshold": 0.5,
+      "status": "OK",
+      "output_sha256": "6cdd292a39a33d608805085a642e285792d69b43a566f08530e29781bd71df9e",
+      "outputs": [
+        "Jupiter",
+        "391",
+        "{\"tool\": \"get_weather\", \"arguments\": {\"city\": \"Tokyo\", \"date\": \"202",
+        "{\"tool\": \"search_flights\", \"arguments\": {\"origin\": \"IATA\", \"destination\": \"IATA",
+        "yellow"
+      ]
+    },
+    {
+      "threshold": 0.8,
+      "status": "OK",
+      "output_sha256": "6cdd292a39a33d608805085a642e285792d69b43a566f08530e29781bd71df9e",
+      "outputs": [
+        "Jupiter",
+        "391",
+        "{\"tool\": \"get_weather\", \"arguments\": {\"city\": \"Tokyo\", \"date\": \"202",
+        "{\"tool\": \"search_flights\", \"arguments\": {\"origin\": \"IATA\", \"destination\": \"IATA",
+        "yellow"
+      ]
+    },
+    {
+      "threshold": 0.9,
+      "status": "OK",
+      "output_sha256": "6cdd292a39a33d608805085a642e285792d69b43a566f08530e29781bd71df9e",
+      "outputs": [
+        "Jupiter",
+        "391",
+        "{\"tool\": \"get_weather\", \"arguments\": {\"city\": \"Tokyo\", \"date\": \"202",
+        "{\"tool\": \"search_flights\", \"arguments\": {\"origin\": \"IATA\", \"destination\": \"IATA",
+        "yellow"
+      ]
+    }
+  ]
+}

@@ -263,6 +263,105 @@ def get(name: str) -> Workload:
     return WORKLOADS[name]
 
 
+# --------------------------------------------------------------------------- #
+# C · parametrised shapes — the intermediate-prefix experiment
+# --------------------------------------------------------------------------- #
+#
+# The two shapes above differ in shared-prefix fraction (0.94 vs 0.12 by
+# character count) but ALSO in total prompt length: the RAG prompts are roughly
+# 2.5x longer because each carries a document. Shared fraction and absolute
+# length therefore moved together, and absolute length independently changes
+# prefill cost. That is a confounder in the two-shape comparison and it is
+# recorded as a limitation of it.
+#
+# These shapes remove it. Total prompt length is held ~constant and only the
+# SHARED FRACTION varies:
+#
+#     shared preamble  = f      x TOTAL
+#     private content  = (1 - f) x TOTAL
+#
+# So a difference in threshold sensitivity across these shapes cannot be
+# explained by one workload simply having more tokens to prefill.
+#
+# Prediction, recorded before measuring: sensitivity should appear once the
+# shared fraction is large enough that two tenants clear llama.cpp's 0.10
+# default on their shared preamble alone — and the cliff should sit near the
+# shared fraction itself, since that is the inter-tenant similarity. Where
+# exactly sensitivity becomes practically significant is the open question.
+#
+# Falsifier: if sensitivity does NOT vary with shared fraction across these
+# shapes, then the two-shape result was driven by something other than prefix
+# sharing — most likely the length confounder above — and the mechanism story
+# is wrong.
+
+_LOREM_SHARED = (
+    "You answer strictly from the material provided in this session. Cite the "
+    "section you used before answering. Never speculate beyond the material. "
+    "If a question cannot be answered from it, say so in one sentence. Keep "
+    "answers under four sentences. Do not repeat the question back. Prefer "
+    "precise figures over adjectives. When a range is given, quote both ends. "
+    "Treat all dates as ISO-8601. Never invent citations or section numbers. "
+)
+
+_LOREM_PRIVATE = (
+    "Section {n}. Measurements for unit {tag}-{n:03d} were collected over "
+    "{yr} across {k} independent trials. The observed mean was {a}.{b} with a "
+    "dispersion of {c}.{d}, and the instrument was recalibrated between every "
+    "trial. Anomalies in trial {k} were traced to a loose thermal coupling and "
+    "that trial is retained but flagged. No correction was applied to the "
+    "recorded values. "
+)
+
+
+def _repeat_to(text: str, target_chars: int, **fmt) -> str:
+    """Grow `text` by repetition until it reaches roughly target_chars."""
+    out, n = [], 1
+    while sum(len(x) for x in out) < target_chars:
+        out.append(text.format(n=n, **fmt) if "{" in text else text)
+        n += 1
+    return "".join(out)[:target_chars]
+
+
+_TAGS = ["AX", "BK", "CN", "DR", "EM", "FT", "GL", "HS"]
+
+
+def make_shape(frac: float, total_chars: int = 2600) -> Workload:
+    """A workload whose shared fraction is `frac` at roughly constant length."""
+    shared_chars = max(200, int(total_chars * frac))
+    private_chars = max(200, total_chars - shared_chars)
+    system = _repeat_to(_LOREM_SHARED, shared_chars)
+
+    def seed(t: int) -> str:
+        tag = _TAGS[t % len(_TAGS)]
+        body = _repeat_to(_LOREM_PRIVATE, private_chars, tag=tag,
+                          yr=2019 + t, k=6 + t, a=10 + t, b=t * 7 % 100,
+                          c=t + 2, d=t * 3 % 100)
+        return f"Reference material for unit {tag}:\n\n{body}"
+
+    def turn(t: int, k: int) -> str:
+        qs = ["Which section reports the dispersion?",
+              "How many independent trials were run?",
+              "Was any correction applied to the recorded values?",
+              "Which trial was flagged, and why?",
+              "Quote the sentence describing recalibration.",
+              "State the observed mean exactly as written."]
+        return qs[k % len(qs)]
+
+    name = f"prefix{int(round(frac * 100)):02d}"
+    return Workload(
+        name, system, turn, seed, ["Session start."] * 8,
+        f"Shared fraction ~{frac:.2f} at ~{total_chars} chars total. Total "
+        f"length held constant across this family so only prefix sharing "
+        f"varies. Expect sensitivity to rise with the shared fraction.",
+    )
+
+
+# Fills the gap between the two measured anchors (~0.12 and ~0.72).
+for _f in (0.20, 0.35, 0.50, 0.65):
+    _w = make_shape(_f)
+    WORKLOADS[_w.name] = _w
+
+
 if __name__ == "__main__":
     import sys
     # Every entry point in this project reconfigures stdio: the default Windows
