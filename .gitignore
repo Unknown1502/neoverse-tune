@@ -21,10 +21,6 @@ __pycache__/
 *.pyc
 .venv/
 
-# Internal adversarial review. Concludes the submission would lose in its
-# current form — a judge browsing this repo must not find it.
-/REVIEW-BOARD.md
-
 # Editor / OS
 .vscode/
 .idea/
@@ -42,12 +38,3 @@ Thumbs.db
 
 # Downloaded CI artifacts — extract, do not commit the archive
 *.zip
-
-# Devpost submission draft — local only
-/SUBMISSION.md
-
-# Upstream issue draft — local only
-/UPSTREAM-ISSUE.md
-
-# Demo recording script — local only
-/DEMO-SCRIPT.md
