@@ -1,0 +1,182 @@
+{
+  "schema": "specarm.threshold_sweep/1",
+  "min_reps": 3,
+  "tie_pct": 10.0,
+  "selection_rule": "lowest median warm TTFT; ties within 10% broken toward the LOWER threshold; correctness-FAILED thresholds excluded",
+  "shapes": {
+    "high_prefix_reuse": "system prompt + tool schemas shared by every tenant",
+    "low_prefix_reuse": "short shared instruction, large per-tenant retrieved document"
+  },
+  "decisions": {
+    "high_prefix_reuse": {
+      "shape": "high_prefix_reuse",
+      "chosen": 0.8,
+      "chosen_ttft_median": 399.0,
+      "lowest_median_threshold": 0.8,
+      "lowest_median": 399.0,
+      "tied_within_10%": [
+        0.8
+      ],
+      "worst_threshold": 0.1,
+      "worst_ttft_median": 2359.5,
+      "spread_x": 5.91,
+      "recomputed_at_chosen": 45,
+      "recomputed_at_worst": 220,
+      "excluded_for_correctness": [],
+      "reason": "lowest median TTFT, no tie"
+    },
+    "low_prefix_reuse": {
+      "shape": "low_prefix_reuse",
+      "chosen": null,
+      "reason": "no threshold reached 3 repetitions",
+      "excluded_for_correctness": []
+    }
+  },
+  "aggregated": [
+    {
+      "workload_shape": "high_prefix_reuse",
+      "threshold": 0.1,
+      "n": 3,
+      "n_failed": 0,
+      "ttft_median": 2359.5,
+      "ttft_mean": 2277.7,
+      "ttft_sd": 221.2,
+      "ttft_p95": 2437.7,
+      "ttft_min": 2027.2,
+      "ttft_max": 2446.4,
+      "recomputed_tokens_median": 220,
+      "chosen_similarity_median": 0.716
+    },
+    {
+      "workload_shape": "high_prefix_reuse",
+      "threshold": 0.3,
+      "n": 3,
+      "n_failed": 0,
+      "ttft_median": 1995.1,
+      "ttft_mean": 2035.7,
+      "ttft_sd": 81.4,
+      "ttft_p95": 2116.0,
+      "ttft_min": 1982.6,
+      "ttft_max": 2129.4,
+      "recomputed_tokens_median": 220,
+      "chosen_similarity_median": 0.716
+    },
+    {
+      "workload_shape": "high_prefix_reuse",
+      "threshold": 0.5,
+      "n": 3,
+      "n_failed": 0,
+      "ttft_median": 1989.8,
+      "ttft_mean": 1980.1,
+      "ttft_sd": 80.4,
+      "ttft_p95": 2048.7,
+      "ttft_min": 1895.3,
+      "ttft_max": 2055.3,
+      "recomputed_tokens_median": 220,
+      "chosen_similarity_median": 0.716
+    },
+    {
+      "workload_shape": "high_prefix_reuse",
+      "threshold": 0.7,
+      "n": 3,
+      "n_failed": 0,
+      "ttft_median": 1933.5,
+      "ttft_mean": 1958.3,
+      "ttft_sd": 64.3,
+      "ttft_p95": 2021.5,
+      "ttft_min": 1910.0,
+      "ttft_max": 2031.3,
+      "recomputed_tokens_median": 181,
+      "chosen_similarity_median": 0.7965
+    },
+    {
+      "workload_shape": "high_prefix_reuse",
+      "threshold": 0.8,
+      "n": 3,
+      "n_failed": 0,
+      "ttft_median": 399.0,
+      "ttft_mean": 404.4,
+      "ttft_sd": 12.5,
+      "ttft_p95": 416.7,
+      "ttft_min": 395.5,
+      "ttft_max": 418.6,
+      "recomputed_tokens_median": 45,
+      "chosen_similarity_median": 0.955
+    },
+    {
+      "workload_shape": "high_prefix_reuse",
+      "threshold": 0.9,
+      "n": 3,
+      "n_failed": 0,
+      "ttft_median": 484.6,
+      "ttft_mean": 461.7,
+      "ttft_sd": 40.0,
+      "ttft_p95": 484.8,
+      "ttft_min": 415.5,
+      "ttft_max": 484.9,
+      "recomputed_tokens_median": 35,
+      "chosen_similarity_median": 0.955
+    },
+    {
+      "workload_shape": "high_prefix_reuse",
+      "threshold": 0.95,
+      "n": 3,
+      "n_failed": 0,
+      "ttft_median": 447.6,
+      "ttft_mean": 447.3,
+      "ttft_sd": 14.8,
+      "ttft_p95": 460.6,
+      "ttft_min": 432.4,
+      "ttft_max": 462.0,
+      "recomputed_tokens_median": 35,
+      "chosen_similarity_median": 0.9625
+    },
+    {
+      "workload_shape": "low_prefix_reuse",
+      "threshold": 0.05,
+      "n": 0,
+      "n_failed": 0,
+      "ttft_median": null,
+      "ttft_mean": null,
+      "ttft_sd": null,
+      "ttft_p95": null,
+      "ttft_min": null,
+      "ttft_max": null,
+      "recomputed_tokens_median": 25,
+      "chosen_similarity_median": 0.121
+    },
+    {
+      "workload_shape": "low_prefix_reuse",
+      "threshold": 0.1,
+      "n": 0,
+      "n_failed": 0,
+      "ttft_median": null,
+      "ttft_mean": null,
+      "ttft_sd": null,
+      "ttft_p95": null,
+      "ttft_min": null,
+      "ttft_max": null,
+      "recomputed_tokens_median": 25,
+      "chosen_similarity_median": 0.121
+    },
+    {
+      "workload_shape": "low_prefix_reuse",
+      "threshold": 0.2,
+      "n": 0,
+      "n_failed": 0,
+      "ttft_median": null,
+      "ttft_mean": null,
+      "ttft_sd": null,
+      "ttft_p95": null,
+      "ttft_min": null,
+      "ttft_max": null,
+      "recomputed_tokens_median": 25,
+      "chosen_similarity_median": 0.953
+    }
+  ],
+  "correctness_measured": false,
+  "figures": [
+    "fig_ttft_vs_threshold.svg",
+    "fig_tokens_vs_threshold.svg"
+  ]
+}
