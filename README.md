@@ -380,20 +380,47 @@ standard library only.
 git clone https://github.com/Unknown1502/neoverse-tune.git
 cd neoverse-tune
 
-# 1. Is there an opportunity at all? (~2 min)
-python3 tools/probe_prefill.py --url http://127.0.0.1:8080
+# What am I on, and is there an opportunity here?     (~2 min)
+python3 tools/neotune.py profile --url http://127.0.0.1:8080
 
-# 2. The full matrix — 6 configs x 5 repeats, fresh server each (~47 min)
-python3 tools/run_matrix.py --server <llama-server> --model <model.gguf> --repeats 5
+# Measure the matrix: 6 configs x 5 repeats, fresh server each  (~47 min)
+python3 tools/neotune.py bench --server <llama-server> --model <model.gguf>
 
-# 3. Adjudicated table with confidence intervals
-python3 tools/analyze_agent.py
+# Find the right threshold for THIS workload          (~35 min)
+python3 tools/neotune.py optimize --server <llama-server> --model <model.gguf>
 
-# 4. Mechanism: tokens actually recomputed, from the server's own log
-python3 tools/parse_slot_log.py
+# Adjudicate, and fail if anything regressed against a baseline
+python3 tools/neotune.py verify --baseline results/agent_analysis.latest.json
 
-# 5. The right threshold for YOUR agent (authoritative, slow)
-python3 tools/tune_similarity.py --sweep --server <llama-server> --model <model.gguf>
+# Regenerate tables, mechanism evidence and the chart
+python3 tools/neotune.py report
+
+# The five-minute version
+python3 tools/neotune.py demo --server <llama-server> --model <model.gguf>
+```
+
+`neotune` is a dispatcher — it adds no measurement of its own and delegates to
+the tools below, which remain usable directly. `neotune <command> --help` for
+options.
+
+| `neotune` | delegates to |
+|:--|:--|
+| `profile` | `scripts/00_env_report.sh` + `tools/probe_prefill.py` |
+| `bench` | `tools/run_matrix.py` |
+| `optimize` | `tools/tune_similarity.py --sweep` |
+| `verify` | `tools/analyze_agent.py` + regression gate |
+| `report` | `analyze_agent` + `parse_slot_log` + `make_chart` |
+| `demo` | `tools/demo.py` |
+
+**`verify` exits non-zero** when any configuration is more than 10% slower than
+the saved baseline, so it gates CI:
+
+```
+config                    baseline     current    change  status
+4tenant_sim09              399.0ms     458.2ms    +14.8%  REGRESSED
+
+PERFORMANCE REGRESSION DETECTED
+Status: REJECTED
 ```
 
 Or **fork the repo and run the `bench` workflow** — it executes on
