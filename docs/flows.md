@@ -35,8 +35,8 @@ flowchart TB
 
     score --> s0["slot 0 — holds tenant A<br/>similarity 0.716"]
     score --> s1["slot 1 — holds tenant B<br/>similarity 0.955 ✓ correct"]
-    score --> s2["slot 2 — holds tenant C<br/>similarity 0.702"]
-    score --> s3["slot 3 — holds tenant D<br/>similarity 0.698"]
+    score --> s2["slot 2 — holds tenant C<br/>similarity 0.710"]
+    score --> s3["slot 3 — holds tenant D<br/>similarity 0.661"]
 
     s0 --> gate{"similarity ><br/>threshold?"}
     s1 --> gate
@@ -54,6 +54,14 @@ flowchart TB
 Because every tenant carries the same 550-token preamble, **any two tenants are
 already 0.6–0.9 similar to each other.** Against 0.10, every slot looks like a
 valid match for every tenant.
+
+> **How to read the four scores.** llama-server logs only `f_sim_best` — the
+> *winning* slot — never all four scores at once, so the diagram is a
+> reconstruction rather than a single observed frame. Every value in it is a
+> similarity the server actually reported at some point in the run: 0.716, 0.710
+> and 0.661 all appear in the `4tenant_default` logs, and 0.955 in
+> `4tenant_sim09`. The full set observed at the default threshold is 0.656,
+> 0.661, 0.710, 0.714, 0.716, 0.794, 0.799, 0.801, 0.902, 0.911.
 
 The server states the decision itself, which is why this is evidence rather than
 inference:

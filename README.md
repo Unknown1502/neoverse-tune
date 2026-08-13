@@ -308,8 +308,8 @@ flowchart LR
     req["Tenant B, turn 3<br/>836 tokens<br/><small>550 of them shared</small>"] --> score["score every slot by<br/>longest common prefix"]
     score --> s0["slot 0 · tenant A<br/>0.716"]
     score --> s1["slot 1 · tenant B<br/>0.955 ← correct"]
-    score --> s2["slot 2 · tenant C<br/>0.702"]
-    score --> s3["slot 3 · tenant D<br/>0.698"]
+    score --> s2["slot 2 · tenant C<br/>0.710"]
+    score --> s3["slot 3 · tenant D<br/>0.661"]
     s0 --> gate{"clears the<br/>threshold?"}
     s1 --> gate
     s2 --> gate
