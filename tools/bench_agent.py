@@ -28,6 +28,7 @@ import time
 import urllib.error
 import urllib.request
 
+import workloads
 from probe_prefill import SYSTEM, TURNS
 
 TENANT_FLAVOR = [
@@ -180,21 +181,41 @@ def wait_healthy(url: str, timeout_s: float) -> bool:
 
 
 def run(url: str, agents: int, turns: int, max_tokens: int,
-        timeout: float, label: str) -> dict:
+        timeout: float, label: str, workload: str = "agent") -> dict:
+    """One measurement run.
+
+    `workload` selects the prompt SHAPE. It defaults to "agent", which is the
+    original workload, so every result published before this parameter existed
+    remains reproducible by the same call.
+
+    The shape matters because inter-tenant similarity is roughly
+    shared_preamble / total_prompt — a property of the prompts, not of
+    llama.cpp. Comparing shapes is how we test whether the right threshold is a
+    constant or a function of the workload.
+    """
+    wl = workloads.get(workload)
     tok = Tokenizer(url)
 
-    convs = [[{"role": "system", "content": SYSTEM},
-              {"role": "user", "content": TENANT_FLAVOR[i % len(TENANT_FLAVOR)]},
+    # Seed each tenant with its private content BEFORE turn 1. For the agent
+    # workload that is a one-line preference; for RAG it is the retrieved
+    # document, which is the bulk of that tenant's prompt and is what drives
+    # inter-tenant similarity down.
+    convs = [[{"role": "system", "content": wl.system},
+              {"role": "user", "content": wl.seed(i)},
               {"role": "assistant", "content": '{"final": "Understood."}'}]
              for i in range(agents)]
 
-    preamble_tokens = tok.count([{"role": "system", "content": SYSTEM}])
+    preamble_tokens = tok.count([{"role": "system", "content": wl.system}])
+    # Tokens of one tenant's private seed, so the shared fraction can be
+    # reported rather than inferred from character counts.
+    seed_tokens = (tok.count([{"role": "user", "content": wl.seed(0)}])
+                   if agents else 0)
     rows = []
     seq = 0
 
     for rnd in range(turns):
         for a in range(agents):
-            convs[a].append({"role": "user", "content": tenant_turn(a, rnd)})
+            convs[a].append({"role": "user", "content": wl.turn(a, rnd)})
             ptok = tok.count(convs[a])
             ttft, total_ms, otok, text = one_turn(url, convs[a], max_tokens, timeout)
             convs[a].append({"role": "assistant", "content": text[:300] or "{}"})
@@ -205,12 +226,19 @@ def run(url: str, agents: int, turns: int, max_tokens: int,
 
     warm = [r["ttft_ms"] for r in rows if r["round"] > 1]
     cold = [r["ttft_ms"] for r in rows if r["round"] == 1]
+    final_ptok = rows[-1]["prompt_tokens"] if rows else 0
     return {
-        "schema": "specarm.agentbench/1",
+        "schema": "specarm.agentbench/2",
         "label": label, "agents": agents, "turns": turns,
+        "workload": wl.name,
         "token_count_method": tok.method,
         "preamble_tokens": preamble_tokens,
-        "final_prompt_tokens": rows[-1]["prompt_tokens"] if rows else 0,
+        "seed_tokens": seed_tokens,
+        "final_prompt_tokens": final_ptok,
+        # Predicted inter-tenant similarity: the share of a tenant's final
+        # prompt that every other tenant also sends. The threshold must sit
+        # above this to separate tenants.
+        "shared_fraction": round(preamble_tokens / final_ptok, 4) if final_ptok else None,
         "cold_ttft_ms": cold,
         "warm_ttft_ms": warm,
         "warm_median_ms": round(statistics.median(warm), 2) if warm else 0.0,
@@ -228,6 +256,8 @@ def main() -> int:
     ap.add_argument("--max-tokens", type=int, default=48)
     ap.add_argument("--timeout", type=float, default=600.0)
     ap.add_argument("--label", default="run")
+    ap.add_argument("--workload", default="agent",
+                    help="prompt shape: agent (default) or rag")
     ap.add_argument("--out")
     ap.add_argument("--quiet", action="store_true")
     args = ap.parse_args()
@@ -244,7 +274,7 @@ def main() -> int:
 
     try:
         result = run(args.url, args.agents, args.turns, args.max_tokens,
-                     args.timeout, args.label)
+                     args.timeout, args.label, args.workload)
     except (urllib.error.URLError, RuntimeError, TimeoutError, OSError) as exc:
         print(f"run failed: {exc}", file=sys.stderr)
         return 2

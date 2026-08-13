@@ -113,7 +113,7 @@ def analytic(preamble: int, totals: list[int]) -> dict:
 
 def sweep(server: str, model: str, port: int, ctx: int, threads: int,
           agents: int, turns: int, repeats: int,
-          thresholds: list[float]) -> list[dict]:
+          thresholds: list[float], workload: str = "agent") -> list[dict]:
     import bench_agent
     import run_matrix
 
@@ -122,7 +122,7 @@ def sweep(server: str, model: str, port: int, ctx: int, threads: int,
     for t in thresholds:
         warm = []
         for rep in range(repeats):
-            log = os.path.join(RESULTS, f"sweep_sim{t}_r{rep}.log")
+            log = os.path.join(RESULTS, f"sweep_{workload}_sim{t}_r{rep}.log")
             proc = run_matrix.spawn(server, model, port, ctx, threads,
                                     ["-np", "4", "--slot-prompt-similarity", str(t)],
                                     log)
@@ -131,8 +131,10 @@ def sweep(server: str, model: str, port: int, ctx: int, threads: int,
                     print(f"    sim={t} rep={rep}: server unhealthy, see {log}",
                           file=sys.stderr)
                     continue
-                r = bench_agent.run(url, agents, turns, 48, 600.0, f"sim{t}_r{rep}")
+                r = bench_agent.run(url, agents, turns, 48, 600.0,
+                                    f"sim{t}_r{rep}", workload)
                 warm.append(r["warm_median_ms"])
+                shared = r.get("shared_fraction")
             except Exception as exc:
                 print(f"    sim={t} rep={rep}: {exc}", file=sys.stderr)
             finally:
@@ -156,6 +158,8 @@ def main() -> int:
     ap.add_argument("--turns", type=int, default=8)
     ap.add_argument("--json", action="store_true")
     ap.add_argument("--out")
+    ap.add_argument("--workload", default="agent",
+                    help="prompt shape to sweep: agent (default) or rag")
     ap.add_argument("--sweep", action="store_true",
                     help="measure instead of estimating (authoritative)")
     ap.add_argument("--server")
@@ -189,8 +193,10 @@ def main() -> int:
         print(f"\n  Measuring {len(thresholds)} thresholds x {args.repeats} repeats, "
               f"fresh server each run\n")
         rows = sweep(args.server, args.model, args.port, args.ctx, args.threads,
-                     args.agents, args.turns, args.repeats, thresholds)
+                     args.agents, args.turns, args.repeats, thresholds,
+                     args.workload)
         report["mode"] = "measured"
+        report["workload"] = args.workload
         report["sweep"] = rows
         if rows:
             best = min(rows, key=lambda r: r["warm_median_ms"])
