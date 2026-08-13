@@ -276,7 +276,7 @@ def select(agg: list[dict], shape: str, correctness: dict) -> dict:
 
 def _line_svg(path, title, sub, series, ylab, ylog=False):
     """Minimal multi-series line chart. No dependencies, theme-aware."""
-    W, H, L, R, T, B = 860, 430, 78, 26, 78, 74
+    W, H, L, R, T, B = 900, 470, 82, 26, 78, 96
     pw, ph = W - L - R, H - T - B
     xs = sorted({x for s in series for x, _ in s["pts"]})
     ys = [y for s in series for _, y in s["pts"] if y is not None]
@@ -317,11 +317,17 @@ def _line_svg(path, title, sub, series, ylab, ylog=False):
         o.append(f'<path d="{d}" fill="none" stroke="{s["color"]}" stroke-width="2.6"/>')
         for x, y in pts:
             o.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="4" fill="{s["color"]}"/>')
-    lx = L
+    # Wrap the legend rather than letting it run off the canvas. With six
+    # shapes a single row is ~1400px wide against an 860px viewBox, so the
+    # last entries would simply vanish.
+    lx, ly = L, H - B + 40
     for s in series:
-        o.append(f'<rect x="{lx}" y="{H-14}" width="18" height="3" fill="{s["color"]}"/>')
-        o.append(f'<text x="{lx+24}" y="{H-9}" class="a">{s["name"]}</text>')
-        lx += 24 + len(s["name"]) * 6.6 + 26
+        w = 24 + len(s["name"]) * 6.4 + 22
+        if lx + w > L + pw:
+            lx, ly = L, ly + 17
+        o.append(f'<rect x="{lx}" y="{ly-4}" width="18" height="3" fill="{s["color"]}"/>')
+        o.append(f'<text x="{lx+24}" y="{ly}" class="a">{s["name"]}</text>')
+        lx += w
     o.append('</svg>')
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w", encoding="utf-8") as fh:
@@ -403,14 +409,30 @@ def main() -> int:
         print()
 
     # -------------------------------------------------------------- figures
-    COL = {"high_prefix_reuse": "#f0555f", "low_prefix_reuse": "#3fcf7f"}
+    # Order the series by MEASURED inter-tenant similarity, not by name, and
+    # colour them cool -> warm along that axis. The whole point of the figure is
+    # that the shapes form an ordered family and sensitivity switches on
+    # partway along it; six identically-coloured lines would hide exactly that.
+    # Similarity is read at the lowest threshold, where foreign slots still
+    # qualify and the reported value is the inter-tenant similarity.
+    def measured_sim(shape: str):
+        rows = [a for a in agg if a["workload_shape"] == shape
+                and a["chosen_similarity_median"] is not None]
+        return min(rows, key=lambda a: a["threshold"])["chosen_similarity_median"] if rows else 0.0
+
+    RAMP = ["#5aa9ff", "#49c3d6", "#3fcf7f", "#c9c04a", "#ef8a3c", "#f0555f"]
+    ordered = sorted(shapes_present, key=measured_sim)
     figs = os.path.join(ROOT, "docs")
     s_ttft, s_tok = [], []
-    for shape in shapes_present:
+    for i, shape in enumerate(ordered):
+        sim = measured_sim(shape)
+        col = RAMP[min(i, len(RAMP) - 1)] if len(ordered) > 2 else \
+            ("#f0555f" if shape == "high_prefix_reuse" else "#3fcf7f")
         rows = [a for a in agg if a["workload_shape"] == shape and a["n"] >= MIN_REPS]
-        s_ttft.append({"name": shape, "color": COL.get(shape, "#5aa9ff"),
+        label = f"{shape} (sim {sim:.2f})"
+        s_ttft.append({"name": label, "color": col,
                        "pts": [(a["threshold"], a["ttft_median"]) for a in rows]})
-        s_tok.append({"name": shape, "color": COL.get(shape, "#5aa9ff"),
+        s_tok.append({"name": label, "color": col,
                       "pts": [(a["threshold"], a["recomputed_tokens_median"]) for a in rows]})
 
     made = []

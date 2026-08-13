@@ -56,6 +56,41 @@ the tables.*
 
 ---
 
+## But the flag only matters for some workloads
+
+A second experiment swept the threshold across **six prompt shapes** and found a
+boundary. Inter-tenant similarity — the fraction of a tenant's prompt that every
+*other* tenant also sends — decides whether this knob does anything at all.
+
+| prompt shape | measured inter-tenant similarity | recomputation swing across thresholds |
+|:--|--:|--:|
+| RAG, large per-tenant document | 0.121 | **1.00x** — flat |
+| `prefix20` | 0.169 | **1.00x** — flat |
+| `prefix35` | 0.288 | **1.00x** — flat |
+| `prefix50` | 0.414 | **1.00x** — flat |
+| `prefix65` | 0.543 | **16.94x** |
+| Agent, shared system prompt + tools | 0.716 | **6.29x** |
+
+**Below ~0.5 similarity the threshold changes which slot is chosen and changes
+no work at all. Above it, the wrong value costs 6–17x in recomputation.**
+
+![Recomputed tokens vs routing threshold across six prompt shapes](docs/fig_tokens_vs_threshold.svg)
+
+And in both sensitive shapes the cliff lands on that shape's **own** measured
+similarity — 0.543 drops between 0.5 and 0.7, 0.716 drops between 0.7 and 0.8.
+So the value you need is measurable from the server's own log *before* you tune:
+
+```bash
+python3 tools/parse_slot_log.py     # reports the similarity your workload actually has
+```
+
+The four `prefix*` shapes hold total prompt length constant and vary only the
+shared fraction, so this is not the shorter-prompt-is-faster effect. Full data,
+including a per-request trace of the thrash and one result I cannot explain, in
+[docs/results.md](docs/results.md#threshold-sensitivity-across-prompt-shapes).
+
+---
+
 ## Table of Contents
 
 **Understand it**

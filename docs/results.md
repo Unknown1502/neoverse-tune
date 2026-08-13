@@ -1,5 +1,95 @@
 # Results — complete reference
 
+> **Update, 2026-08-13.** A second experiment now measures six prompt shapes and
+> finds a **boundary**: below ~0.5 inter-tenant similarity the routing threshold
+> changes which slot is chosen and changes *no work at all*; above it, the wrong
+> value costs 6–17x in recomputation. See
+> [Threshold sensitivity across prompt shapes](#threshold-sensitivity-across-prompt-shapes).
+> The single-workload numbers below remain exactly as measured.
+
+## Threshold sensitivity across prompt shapes
+
+Six shapes, each swept across routing thresholds, `n=5` for the four
+`prefix*` shapes (meets `MIN_REPS`) and `n=3` for the two original shapes.
+
+| shape | measured inter-tenant similarity | recomputation swing | latency worst/best | sensitive? |
+|:--|--:|--:|--:|:--|
+| `low_prefix_reuse` (rag) | 0.121 | **1.00x** | 2.26x | no |
+| `prefix20` | 0.169 | **1.00x** | 1.80x | no |
+| `prefix35` | 0.288 | **1.00x** | 1.37x | no |
+| `prefix50` | 0.414 | **1.00x** | 1.26x | no |
+| `prefix65` | 0.543 | **16.94x** | 11.86x | **YES** |
+| `high_prefix_reuse` (agent) | 0.716 | **6.29x** | 5.91x | **YES** |
+
+![TTFT vs routing threshold, six shapes](fig_ttft_vs_threshold.svg)
+
+![Recomputed tokens vs routing threshold, six shapes](fig_tokens_vs_threshold.svg)
+
+**Sensitivity switches on between measured similarity 0.414 and 0.543.** Below
+that, recomputation is identical at every threshold tested. Above it, the knob
+is worth 6–17x.
+
+### The four `prefix*` shapes are not confounded by length
+
+The original two shapes differed in shared-prefix fraction **and** total prompt
+length, and length independently changes prefill cost. The `prefix*` family
+holds total length constant at ~2650 characters and varies only the shared
+fraction, so a difference across them cannot be attributed to one workload
+simply having more tokens.
+
+### The cliff sits at the workload's own similarity
+
+| shape | measured similarity | recomputation drops between |
+|:--|--:|:--|
+| `prefix65` | 0.543 (range 0.522–0.588) | **0.5 and 0.7** |
+| `high_prefix_reuse` | 0.716 | **0.7 and 0.8** |
+
+This was predicted in `tools/workloads.py` before the run and held on a shape
+that did not exist when the prediction was written.
+
+### Why latency alone would have produced four false positives
+
+`prefix20`, `prefix35`, `prefix50` and `low_prefix_reuse` show latency spreads
+of 1.26–2.26x that look like mild sensitivity. They are not: recomputation is
+**byte-identical at every threshold across all repetitions**, and most of their
+thresholds fail the project's 10% noise gate. The spread is the machine.
+
+`tools/analyze_threshold_sweep.py` therefore decides sensitivity on
+recomputation. An earlier version compared latency medians and reported
+"optimal threshold DIFFERED across shapes" listing six values, four of which
+ranked pure noise.
+
+### Per-request evidence for the thrash
+
+```
+prefix65 @ 0.1   [617, 254, 257, 257 | 278,278,281,281, 305,305,306,306, 332,332,333,333]
+prefix65 @ 0.7   [617, 617, 257, 257 | 17,17,17,17,     19,19,19,19,     18,18,18,18]
+```
+
+Turn 1 then warm turns. At the low threshold every warm request re-prefills
+278–333 tokens and the cost *grows* with the conversation — the self-sustaining
+eviction loop. At 0.7 it collapses to 17–19.
+
+### Unexplained
+
+`prefix20` at threshold 0.1 reports chosen-slot similarity **0.169** — a foreign
+slot — while recomputing only 17–19 tokens per warm request. Those two facts
+should not coexist under `f_sim_best ≈ shared_prefix / total_prompt`. Either the
+metric's denominator differs from that model, or slot assignment does something
+the model does not capture. The recomputation measurements are deterministic
+across all five repetitions and stand on their own; the *explanation* of
+low-shared-fraction behaviour does not.
+
+### Correctness
+
+Four thresholds (0.1, 0.5, 0.8, 0.9), five fixed prompts, greedy decoding:
+**byte-identical output**, `sha256 6cdd292a39a33d60…`. No configuration was
+excluded for correctness.
+
+---
+
+## Single-workload reference (original experiment)
+
 Every number this project has produced, with the machine that produced it. No
 figure appears here without its host, its sample count, and its interval.
 
