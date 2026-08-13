@@ -172,6 +172,20 @@
       "ttft_max": null,
       "recomputed_tokens_median": 25,
       "chosen_similarity_median": 0.953
+    },
+    {
+      "workload_shape": "low_prefix_reuse",
+      "threshold": 0.3,
+      "n": 0,
+      "n_failed": 0,
+      "ttft_median": null,
+      "ttft_mean": null,
+      "ttft_sd": null,
+      "ttft_p95": null,
+      "ttft_min": null,
+      "ttft_max": null,
+      "recomputed_tokens_median": 25,
+      "chosen_similarity_median": 0.952
     }
   ],
   "correctness_measured": false,

@@ -141,6 +141,18 @@ def collect(shape: str, spec: dict) -> list[dict]:
     if shape == "high_prefix_reuse":
         paths = [p for p in paths if "_rag_" not in os.path.basename(p)]
 
+    # ttft_ms is client-side timing and is NOT in the server log, so it is
+    # joined to each log by POSITION: samples[repetition]. sweep() appends a
+    # sample only for a repetition that produced one, so if any repetition had
+    # failed the list would be short and every later row would silently shift
+    # onto the wrong measurement. Count logs per threshold first and refuse the
+    # join when the counts disagree, rather than emitting a plausible lie.
+    logs_per_thr: dict[float, int] = {}
+    for p in paths:
+        m = RE_NAME.search(os.path.basename(p))
+        if m:
+            logs_per_thr[float(m.group(1))] = logs_per_thr.get(float(m.group(1)), 0) + 1
+
     rows = []
     for p in sorted(paths):
         m = RE_NAME.search(os.path.basename(p))
@@ -149,12 +161,16 @@ def collect(shape: str, spec: dict) -> list[dict]:
         thr, rep = float(m.group(1)), int(m.group(2))
         mech = parse_log(p)
         samples = ttft_by_thr.get(thr, [])
+        aligned = len(samples) == logs_per_thr.get(thr, 0)
         rows.append({
             "experiment_id": f"{shape}-{str(thr).replace('.', '')}-r{rep:02d}",
             "workload_shape": shape,
             "threshold": thr,
             "repetition": rep,
-            "ttft_ms": samples[rep] if rep < len(samples) else None,
+            "ttft_ms": (samples[rep] if aligned and rep < len(samples) else None),
+            "ttft_source": ("tune json, positional join, counts agree" if aligned
+                            else f"WITHHELD: {len(samples)} samples vs "
+                                 f"{logs_per_thr.get(thr,0)} logs at this threshold"),
             "recomputed_prompt_tokens": mech.get("median_recomputed_tokens"),
             "max_recomputed_tokens": mech.get("max_recomputed_tokens"),
             "chosen_slot_similarity": mech.get("median_similarity"),
